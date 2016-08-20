@@ -12,7 +12,7 @@
 =========================================================================*/
 
 // .NAME vtkboneLinearAnisotropicMaterialArray - An object representing an
-// array of linear aniisotropic materials.
+// array of linear anisotropic materials.
 //
 // .SECTION Description
 // vtkboneLinearAnisotropicMaterialArray stores the parameters for an
@@ -44,20 +44,20 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterialArray : public vtkboneMater
     virtual vtkIdType GetSize();
 
     // Description:
-    // Set the array for Young's modulus (E).
+    // Set the array for stress-strain matrices.
     // Assuming that your length units are mm, then modulus units are MPa.
-    // The stiffness matrices are in upper triangular format. Thus the
+    // The stress-strain matrices are in upper triangular format. Thus the
     // number of components must be set to 21. Each matrix is stored as:
     // K11, K12... K16, K22, K23... K26...
-    vtkGetObjectMacro(StiffnessMatrixUpperTriangular, vtkFloatArray);
+    vtkGetObjectMacro(StressStrainMatrixUpperTriangular, vtkFloatArray);
 
     // Description:
-    // Set the array for Young's modulus (E).
+    // Set the array for stress-strain matrices.
     // Assuming that your length units are mm, then modulus units are MPa.
-    // The stiffness matrices are in upper triangular format. Thus the
+    // The stress-strain matrices are in upper triangular format. Thus the
     // number of components must be set to 21. Each matrix is stored as:
     // K11, K12... K16, K22, K23... K26...
-    virtual void SetStiffnessMatrixUpperTriangular(vtkFloatArray* K);
+    virtual void SetStressStrainMatrixUpperTriangular(vtkFloatArray* K);
 
     // Description
     // Sets the values for index k to correspond to the
@@ -90,7 +90,7 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterialArray : public vtkboneMater
     vtkboneLinearAnisotropicMaterialArray();
     ~vtkboneLinearAnisotropicMaterialArray();
 
-    vtkFloatArray* StiffnessMatrixUpperTriangular;
+    vtkFloatArray* StressStrainMatrixUpperTriangular;
 
   private:
     vtkboneLinearAnisotropicMaterialArray(const vtkboneLinearAnisotropicMaterialArray&);  // Not implemented.

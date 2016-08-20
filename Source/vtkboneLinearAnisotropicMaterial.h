@@ -43,32 +43,32 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterial : public vtkboneMaterial
     void PrintSelf(ostream& os, vtkIndent indent);
 
     // Description:
-    // Sets the stiffness matrix. Arguement should be 36 values,
+    // Sets the stress-strain matrix. Arguement should be 36 values,
     // corresponding to 6x6 symmetric matrix.
-    void SetStiffnessMatrix (const double* k);
+    void SetStressStrainMatrix (const double* k);
 
     // Description:
-    // Sets the stiffness matrix. Arguement should be 36 values,
+    // Sets the stress-strain matrix. Arguement should be 36 values,
     // corresponding to 6x6 symmetric matrix.
-    void SetStiffnessMatrix (vtkDataArray* k);
+    void SetStressStrainMatrix (vtkDataArray* k);
 
     // Description:
-    // Gets a pointer to the stiffness matrix, which is 36 values,
-    // Copies the stiffness matrix to k as 36 values,
+    // Gets a pointer to the stress-strain matrix, which is 36 values,
+    // Copies the stress-strain matrix to k as 36 values,
     // corresponding to 6x6 symmetric matrix.
-    double* GetStiffnessMatrix() {return this->StiffnessMatrix; };
+    double* GetStressStrainMatrix() {return this->StressStrainMatrix; };
 
     // Description:
-    // Copies the stiffness matrix to k as 36 values,
+    // Copies the stress-strain matrix to k as 36 values,
     // corresponding to 6x6 symmetric matrix.
     // k must be allocated beforehand.
-    void GetStiffnessMatrix (double* k);
+    void GetStressStrainMatrix (double* k);
 
     // Description:
-    // Copies the stiffness matrix to k as 36 values,
+    // Copies the stress-strain matrix to k as 36 values,
     // corresponding to 6x6 symmetric matrix.
     // k will be resized to 6x6.
-    void GetStiffnessMatrix (vtkDataArray* k);
+    void GetStressStrainMatrix (vtkDataArray* k);
 
     // Description:
     // Creates a copy of this object.
@@ -86,7 +86,7 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterial : public vtkboneMaterial
     vtkboneLinearAnisotropicMaterial();
     ~vtkboneLinearAnisotropicMaterial();
     
-    double StiffnessMatrix[6*6];
+    double StressStrainMatrix[6*6];
 
   private:
     vtkboneLinearAnisotropicMaterial(const vtkboneLinearAnisotropicMaterial&);  // Not implemented.

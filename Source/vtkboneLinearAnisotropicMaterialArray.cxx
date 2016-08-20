@@ -8,43 +8,43 @@ vtkStandardNewMacro (vtkboneLinearAnisotropicMaterialArray);
 //----------------------------------------------------------------------------
 vtkboneLinearAnisotropicMaterialArray::vtkboneLinearAnisotropicMaterialArray()
   {
-  this->StiffnessMatrixUpperTriangular = vtkFloatArray::New();
+  this->StressStrainMatrixUpperTriangular = vtkFloatArray::New();
   }
 
 //----------------------------------------------------------------------------
 vtkboneLinearAnisotropicMaterialArray::~vtkboneLinearAnisotropicMaterialArray()
   {
-  if (this->StiffnessMatrixUpperTriangular) {this->StiffnessMatrixUpperTriangular->Delete();}
+  if (this->StressStrainMatrixUpperTriangular) {this->StressStrainMatrixUpperTriangular->Delete();}
   }
 
 //----------------------------------------------------------------------------
 void vtkboneLinearAnisotropicMaterialArray::PrintSelf (ostream& os, vtkIndent indent)
   {
   this->Superclass::PrintSelf(os,indent);
-  os << indent << "StiffnessMatrixUpperTriangular:\n";
-  this->StiffnessMatrixUpperTriangular->PrintSelf(os,indent.GetNextIndent());
+  os << indent << "StressStrainMatrixUpperTriangular:\n";
+  this->StressStrainMatrixUpperTriangular->PrintSelf(os,indent.GetNextIndent());
   }
 
 //----------------------------------------------------------------------------
 void vtkboneLinearAnisotropicMaterialArray::Resize(vtkIdType size)
   {
-  this->StiffnessMatrixUpperTriangular->SetNumberOfComponents(21);
-  this->StiffnessMatrixUpperTriangular->SetNumberOfTuples(size);
+  this->StressStrainMatrixUpperTriangular->SetNumberOfComponents(21);
+  this->StressStrainMatrixUpperTriangular->SetNumberOfTuples(size);
   }
 
 //----------------------------------------------------------------------------
 vtkIdType vtkboneLinearAnisotropicMaterialArray::GetSize()
   {
-  vtkIdType size = this->StiffnessMatrixUpperTriangular->GetNumberOfTuples();
+  vtkIdType size = this->StressStrainMatrixUpperTriangular->GetNumberOfTuples();
   return size;
   }
 
 //----------------------------------------------------------------------------
-void vtkboneLinearAnisotropicMaterialArray::SetStiffnessMatrixUpperTriangular(vtkFloatArray* K)
+void vtkboneLinearAnisotropicMaterialArray::SetStressStrainMatrixUpperTriangular(vtkFloatArray* K)
   {
-  if (this->StiffnessMatrixUpperTriangular) {this->StiffnessMatrixUpperTriangular->Delete();}
-  this->StiffnessMatrixUpperTriangular = K;
-  this->StiffnessMatrixUpperTriangular->Register(this);
+  if (this->StressStrainMatrixUpperTriangular) {this->StressStrainMatrixUpperTriangular->Delete();}
+  this->StressStrainMatrixUpperTriangular = K;
+  this->StressStrainMatrixUpperTriangular->Register(this);
   }
 
 //----------------------------------------------------------------------------
@@ -56,8 +56,8 @@ void vtkboneLinearAnisotropicMaterialArray::SetItem
   for (vtkIdType i=0; i<6; ++i)
     for (vtkIdType j=0; j<=i; ++j)
       {
-      this->StiffnessMatrixUpperTriangular->SetComponent(
-        k, n, material->GetStiffnessMatrix()[i*6+j]);
+      this->StressStrainMatrixUpperTriangular->SetComponent(
+        k, n, material->GetStressStrainMatrix()[i*6+j]);
       ++n;
       }
   }
@@ -72,8 +72,8 @@ void vtkboneLinearAnisotropicMaterialArray::SetScaledItem
   for (vtkIdType i=0; i<6; ++i)
     for (vtkIdType j=0; j<=i; ++j)
       {
-      this->StiffnessMatrixUpperTriangular->SetComponent(
-        k, n, factor * material->GetStiffnessMatrix()[i*6+j]);
+      this->StressStrainMatrixUpperTriangular->SetComponent(
+        k, n, factor * material->GetStressStrainMatrix()[i*6+j]);
       ++n;
       }
   }
@@ -83,7 +83,7 @@ vtkboneMaterial* vtkboneLinearAnisotropicMaterialArray::Copy()
   {
   vtkboneLinearAnisotropicMaterialArray* new_mat = vtkboneLinearAnisotropicMaterialArray::New();
   new_mat->SetName(this->Name);
-  new_mat->SetStiffnessMatrixUpperTriangular(this->StiffnessMatrixUpperTriangular);
+  new_mat->SetStressStrainMatrixUpperTriangular(this->StressStrainMatrixUpperTriangular);
   return new_mat;
   }
 
@@ -100,9 +100,9 @@ vtkboneMaterial* vtkboneLinearAnisotropicMaterialArray::ScaledCopy(double factor
     {
     for (vtkIdType j=0; j<21; ++j)
       {
-      K->SetComponent(i, j, factor * this->StiffnessMatrixUpperTriangular->GetComponent(i,j));
+      K->SetComponent(i, j, factor * this->StressStrainMatrixUpperTriangular->GetComponent(i,j));
       }
     }
-  new_mat->SetStiffnessMatrixUpperTriangular(K);
+  new_mat->SetStressStrainMatrixUpperTriangular(K);
   return new_mat;
   }

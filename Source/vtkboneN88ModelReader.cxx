@@ -738,23 +738,25 @@ int vtkboneN88ModelReader::ReadMaterialTable
 
     else if (type == "LinearAnisotropic")
       {
-      if (nc_inq_attlen(ncids[i], NC_GLOBAL, "StiffnessMatrix", &att_len) != NC_NOERR)
+      if ((nc_inq_attlen(ncids[i], NC_GLOBAL, "StressStrainMatrix", &att_len) != NC_NOERR) ||
+          (nc_inq_attlen(ncids[i], NC_GLOBAL, "StiffnessMatrix", &att_len) != NC_NOERR))
         {
         // No attributes -> values must be in a variable.
         vtkboneLinearAnisotropicMaterialArray* material = vtkboneLinearAnisotropicMaterialArray::New();
         material->SetName(&name[0]);
         matdefs[std::string(&name[0])] = vtkSmartPointer<vtkboneMaterial>::Take(material);
         int varid;
-        if (nc_inq_varid (ncids[i], "StiffnessMatrix", &varid) != NC_NOERR)
+        if ((nc_inq_varid (ncids[i], "StressStrain", &varid) != NC_NOERR) ||
+            (nc_inq_varid (ncids[i], "StiffnessMatrix", &varid) != NC_NOERR))
           {
-          vtkErrorMacro (<< "LinearAnisotropic material " << &name[0] << " has no 'StiffnessMatrix' attribute or variable.");
+          vtkErrorMacro (<< "LinearAnisotropic material " << &name[0] << " has no 'StressStrainMatrix' attribute or variable.");
           return VTK_ERROR;
           }
         int ndims = 0;
         NC_SAFE_CALL (nc_inq_varndims(ncids[i], varid, &ndims));
         if (ndims != 2)
           {
-          vtkErrorMacro (<< "LinearAnisotropic material " << &name[0] << " has 'StiffnessMatrix' variable of incorrect dimension.");
+          vtkErrorMacro (<< "LinearAnisotropic material " << &name[0] << " has 'StressStrainMatrix' variable of incorrect dimension.");
           return VTK_ERROR;
           }
         int dimids[2];
@@ -765,14 +767,14 @@ int vtkboneN88ModelReader::ReadMaterialTable
         NC_SAFE_CALL (nc_inq_dimlen(ncids[i], dimids[1], &components));
         if (components != 21)
           {
-          vtkErrorMacro (<< "LinearAnisotropic material " << &name[0] << " has 'StiffnessMatrix' variable of incorrect dimension.");
+          vtkErrorMacro (<< "LinearAnisotropic material " << &name[0] << " has 'StressStrainMatrix' variable of incorrect dimension.");
           return VTK_ERROR;
           }
         vtkSmartPointer<vtkFloatArray> K = vtkSmartPointer<vtkFloatArray>::New();
         K->SetNumberOfComponents(21);
         K->SetNumberOfTuples(size);
         NC_SAFE_CALL (nc_get_var_float(ncids[i], varid, (float*)K->GetPointer(0)));
-        material->SetStiffnessMatrixUpperTriangular(K);
+        material->SetStressStrainMatrixUpperTriangular(K);
         }
       else
         {
@@ -782,10 +784,10 @@ int vtkboneN88ModelReader::ReadMaterialTable
         matdefs[std::string(&name[0])] = vtkSmartPointer<vtkboneMaterial>::Take(material);
         if (att_len != 6*6)
           {
-          vtkErrorMacro(<< "LinearAnisotropic material " << &name[0] << " StiffnessMatrix attribute does not have length 36.");
+          vtkErrorMacro(<< "LinearAnisotropic material " << &name[0] << " StressStrainMatrix attribute does not have length 36.");
           return VTK_ERROR;
           }
-        NC_SAFE_CALL (nc_get_att_double (ncids[i], NC_GLOBAL, "StiffnessMatrix", material->GetStiffnessMatrix()));
+        NC_SAFE_CALL (nc_get_att_double (ncids[i], NC_GLOBAL, "StressStrainMatrix", material->GetStressStrainMatrix()));
         }
       }
 

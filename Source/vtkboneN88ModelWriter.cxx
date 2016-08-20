@@ -348,8 +348,8 @@ int vtkboneN88ModelWriter::DefineMaterialDefinitions
       {
       const char* value = "LinearAnisotropic";
       NC_SAFE_CALL (nc_put_att_text (material_ncid, NC_GLOBAL, "Type", strlen(value), value));
-      NC_SAFE_CALL (nc_put_att_double (material_ncid, NC_GLOBAL, "StiffnessMatrix", NC_DOUBLE, 6*6,
-                                       anisomat->GetStiffnessMatrix()));
+      NC_SAFE_CALL (nc_put_att_double (material_ncid, NC_GLOBAL, "StressStrainMatrix", NC_DOUBLE, 6*6,
+                                       anisomat->GetStressStrainMatrix()));
       continue;
       }
     if (vtkboneLinearIsotropicMaterialArray* isomatarray =
@@ -403,7 +403,7 @@ int vtkboneN88ModelWriter::DefineMaterialDefinitions
       dimids[0] = nmats_dimid;
       dimids[1] = comp_dimid;
       int K_varid;
-      NC_SAFE_CALL (nc_def_var (material_ncid, "StiffnessMatrix", NC_FLOAT, 2, dimids, &K_varid));
+      NC_SAFE_CALL (nc_def_var (material_ncid, "StressStrainMatrix", NC_FLOAT, 2, dimids, &K_varid));
       NC_SAFE_CALL (SetChunking (material_ncid, K_varid));
       continue;
       }
@@ -1200,8 +1200,8 @@ int vtkboneN88ModelWriter::WriteMaterialDefinitions
         vtkboneLinearAnisotropicMaterialArray::SafeDownCast(material))
       {
       int K_varid;
-      NC_SAFE_CALL (nc_inq_varid (material_ncid, "StiffnessMatrix", &K_varid));
-      if (this->WriteVTKDataArrayToNetCDF (material_ncid, K_varid, anisomatarray->GetStiffnessMatrixUpperTriangular()) == VTK_ERROR)
+      NC_SAFE_CALL (nc_inq_varid (material_ncid, "StressStrainMatrix", &K_varid));
+      if (this->WriteVTKDataArrayToNetCDF (material_ncid, K_varid, anisomatarray->GetStressStrainMatrixUpperTriangular()) == VTK_ERROR)
         { return VTK_ERROR; }
       continue;
       }
