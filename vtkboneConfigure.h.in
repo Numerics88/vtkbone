@@ -1,0 +1,13 @@
+/* 
+ * Here is where system computed values get stored.
+ * These values should only change when the target compile platform changes.
+ */
+
+#cmakedefine VTKBONE_BUILD_SHARED_LIBS
+#ifndef VTKBONE_BUILD_SHARED_LIBS
+#define VTKBONE_STATIC
+#endif
+
+#if defined(_MSC_VER) && !defined(VTKBONE_STATIC)
+#pragma warning ( disable : 4275 )
+#endif

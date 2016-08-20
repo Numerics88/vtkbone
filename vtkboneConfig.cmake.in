@@ -1,0 +1,29 @@
+# Config file for the vtkbone package
+#
+# VTKBONE_INCLUDE_DIRS - where to find .h files for vtkbone
+# VTKBONE_LIBRARIES    - libraries to link against
+# VTK_DIR             - location of VTK CMake file that we linked against
+# VTKBONE_USE_VTKNETCDF - whether vtkbone uses vtknetcdf. If not, project must
+#                        link to netcdf.
+
+# Compute paths
+get_filename_component(VTKBONE_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(VTKBONE_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+if(NOT TARGET vtkbone AND NOT vtkbone_BINARY_DIR)
+  include("${VTKBONE_CMAKE_DIR}/vtkboneTargets.cmake")
+endif()
+
+# These are IMPORTED targets created by VTKBONETargets.cmake
+set(VTKBONE_LIBRARIES vtkbone)
+
+# Because Anaconda Python under Windows needs to be able to find paths in
+# standard Windows format (with single back-slash directory separators),
+# here we use a CMake bracket style argument, in which escape sequences
+# are not processed.
+set(VTK_DIR [=[@VTK_DIR@]=])
+string(REPLACE [=[\\]=] "/" VTK_DIR ${VTK_DIR})
+string(REPLACE [=[\]=] "/" VTK_DIR ${VTK_DIR})
+
+set(VTKBONE_USE_VTKNETCDF "@VTKBONE_USE_VTKNETCDF@")
