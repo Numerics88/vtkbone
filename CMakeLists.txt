@@ -85,6 +85,7 @@ set (VTKBONE_WRAPPED_SRCS
     Source/vtkboneSelectionUtilities.cxx
     Source/vtkboneSelectVisiblePoints.cxx
     Source/vtkboneSolverParameters.cxx
+    Source/vtkboneStressStrainMatrix.cxx
     Source/vtkboneTensorOfInertia.cxx
     Source/vtkboneVerifyUnstructuredGrid.cxx
     Source/vtkboneVersion.cxx
@@ -154,6 +155,7 @@ set (VTKBONE_DISTRIBUTED_INCLUDE_FILES
     Source/vtkboneSelectionUtilities.h
     Source/vtkboneSelectVisiblePoints.h
     Source/vtkboneSolverParameters.h
+    Source/vtkboneStressStrainMatrix.h
     Source/vtkboneTensorOfInertia.h
     Source/vtkboneVerifyUnstructuredGrid.h    
     Source/vtkboneVersion.h
