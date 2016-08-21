@@ -3,7 +3,7 @@ project (vtkbone)
 
 # === Versioning
 
-set(VTKBONE_MAJOR_VERSION 8)
+set(VTKBONE_MAJOR_VERSION 1)
 set(VTKBONE_MINOR_VERSION 0)
 set(VTKBONE_PATCH_VERSION 0)
 set (VTKBONE_VERSION_TAG "devel")
