@@ -49,7 +49,7 @@ void vtkboneLinearAnisotropicMaterialArray::SetStressStrainMatrixUpperTriangular
 
 //----------------------------------------------------------------------------
 void vtkboneLinearAnisotropicMaterialArray::SetItem
- (vtkIdType k,
+  (vtkIdType k,
   vtkboneLinearAnisotropicMaterial* material)
   {
   vtkIdType n = 0;
@@ -64,7 +64,7 @@ void vtkboneLinearAnisotropicMaterialArray::SetItem
 
 //----------------------------------------------------------------------------
 void vtkboneLinearAnisotropicMaterialArray::SetScaledItem
- (vtkIdType k,
+  (vtkIdType k,
   vtkboneLinearAnisotropicMaterial* material,
   double factor)
   {
@@ -76,6 +76,37 @@ void vtkboneLinearAnisotropicMaterialArray::SetScaledItem
         k, n, factor * material->GetStressStrainMatrix()[i*6+j]);
       ++n;
       }
+  }
+
+//----------------------------------------------------------------------------
+void vtkboneLinearAnisotropicMaterialArray::SetScaledItemUpperTriangular
+  (vtkIdType k,
+  float* ut,
+  double factor)
+  {
+  for (vtkIdType i=0; i<21; ++i)
+    {
+    this->StressStrainMatrixUpperTriangular->SetComponent(k, i, factor * ut[i]);
+    }
+  }
+
+//----------------------------------------------------------------------------
+void vtkboneLinearAnisotropicMaterialArray::SetScaledItemUpperTriangular
+  (vtkIdType k,
+  double* ut,
+  double factor)
+  {
+  for (vtkIdType i=0; i<21; ++i)
+    {
+    this->StressStrainMatrixUpperTriangular->SetComponent(k, i, factor * ut[i]);
+    }
+  }
+
+//----------------------------------------------------------------------------
+float* vtkboneLinearAnisotropicMaterialArray::GetItemUpperTriangular
+  (vtkIdType k)
+  {
+  return (float*)(this->StressStrainMatrixUpperTriangular->WriteVoidPointer(21,0));
   }
 
 //----------------------------------------------------------------------------

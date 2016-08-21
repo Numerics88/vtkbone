@@ -74,6 +74,18 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterialArray : public vtkboneMater
                                 vtkboneLinearAnisotropicMaterial* material,
                                 double factor);
 
+    // Description
+    // Sets the values for index k to correspond to the
+    // specified individual material, with modulii scaled by factor.
+    virtual void SetScaledItemUpperTriangular (vtkIdType k,
+                                               float* ut,
+                                               double factor);
+    virtual void SetScaledItemUpperTriangular (vtkIdType k,
+                                               double* ut,
+                                               double factor);
+
+    float* GetItemUpperTriangular (vtkIdType k);
+
     // Description:
     // Creates a copy of this object.
     // You should almost certainly give the copy or the original a new name.

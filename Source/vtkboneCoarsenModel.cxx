@@ -10,6 +10,7 @@
 #include "vtkboneLinearAnisotropicMaterialArray.h"
 #include "vtkboneConstraintCollection.h"
 #include "vtkboneSolverParameters.h"
+#include "vtkboneStressStrainMatrix.h"
 #include "vtkDataArrayCollection.h"
 #include "vtkCell.h"
 #include "vtkCellData.h"
@@ -626,44 +627,111 @@ int vtkboneCoarsenModel::GenerateMaterials
       have_orthotropic = true;
       }
     }
-  // if (have_anisotropic)
-  //   {
-  //   std::cout << "Using anisotropic\n";
-  //   }
-  // else if (have_orthotropic)
-  //   {
-  //   std::cout << "Using orthotropic\n";
-  //   }
-  // else
-  //   {
-  //   std::cout << "Using isotropic\n";
-  //   }
 
   // ---- Now populate the material array by averaging over 2x2x2 input cells
 
-  if (have_anisotropic)
+  // Even in orthotropic case, use anisotropic for output: more sensible averaging.
+  if (have_anisotropic || have_orthotropic)
     {
     vtkSmartPointer<vtkboneLinearAnisotropicMaterialArray> anisoMaterials =
         vtkSmartPointer<vtkboneLinearAnisotropicMaterialArray>::New();
     anisoMaterials->Resize(nOutputCells);
-
     output->GetMaterialTable()->AddMaterial(1, anisoMaterials);
+    std::vector<float> D (21);
+    std::vector<float> sum_D (21);
+    vtkSmartPointer<vtkboneStressStrainMatrix> stressStrain =
+        vtkSmartPointer<vtkboneStressStrainMatrix>::New();
+    for (unsigned int oel=0; oel<nOutputCells; ++oel)
+      {
+      for (unsigned int k=0; k<21; ++k)
+        { sum_D[k] = 0; }
+      unsigned int count = 0;
+      for (unsigned int i=0; i<8; ++i)
+        {
+        unsigned int iel = reverseCellMap(oel,i);
+        if (iel != EMPTY)
+          {
+          int id = input->GetCellData()->GetScalars()->GetComponent(iel,0);
+          vtkboneMaterial* material = NULL;
+          int offset = 0;
+          inputMaterialTable->GetMaterialOrArray (id, material, offset);
+          n88_assert (material);
+          if (vtkboneLinearAnisotropicMaterial* m =
+                vtkboneLinearAnisotropicMaterial::SafeDownCast(material))
+            {
+            stressStrain->SetStressStrainMatrix (m->GetStressStrainMatrix());
+            }
+          else if (vtkboneLinearAnisotropicMaterialArray* m =
+                vtkboneLinearAnisotropicMaterialArray::SafeDownCast(material))
+            {
+            n88_assert (m->GetSize() > offset);
+            stressStrain->SetUpperTriangularPacked (m->GetItemUpperTriangular (offset));
+            }
+          else if (vtkboneLinearOrthotropicMaterial* m =
+                vtkboneLinearOrthotropicMaterial::SafeDownCast(material))
+            {
+            stressStrain->SetOrthotropic (m->GetYoungsModulusX(),
+                                          m->GetYoungsModulusY(),
+                                          m->GetYoungsModulusZ(),
+                                          m->GetPoissonsRatioYZ(),
+                                          m->GetPoissonsRatioZX(),
+                                          m->GetPoissonsRatioXY(),
+                                          m->GetShearModulusYZ(),
+                                          m->GetShearModulusZX(),
+                                          m->GetShearModulusXY());
+            }
+          else if (vtkboneLinearOrthotropicMaterialArray* m =
+                vtkboneLinearOrthotropicMaterialArray::SafeDownCast(material))
+            {
+            n88_assert (m->GetSize() > offset);
+            stressStrain->SetOrthotropic (
+                     m->GetYoungsModulus()->GetComponent (offset, 0),
+                     m->GetYoungsModulus()->GetComponent (offset, 1),
+                     m->GetYoungsModulus()->GetComponent (offset, 2),
+                     m->GetPoissonsRatio()->GetComponent (offset, 0),
+                     m->GetPoissonsRatio()->GetComponent (offset, 1),
+                     m->GetPoissonsRatio()->GetComponent (offset, 2),
+                     m->GetShearModulus()->GetComponent (offset, 0),
+                     m->GetShearModulus()->GetComponent (offset, 1),
+                     m->GetShearModulus()->GetComponent (offset, 2));
+            }
+          else if (vtkboneLinearIsotropicMaterial* m =
+                vtkboneLinearIsotropicMaterial::SafeDownCast(material))
+            {
+            stressStrain->SetIsotropic (m->GetYoungsModulus(),
+                                        m->GetPoissonsRatio());
+            }
+          else if (vtkboneLinearIsotropicMaterialArray* m =
+                vtkboneLinearIsotropicMaterialArray::SafeDownCast(material))
+            {
+            n88_assert (m->GetSize() > offset);
+            stressStrain->SetIsotropic (
+                     m->GetYoungsModulus()->GetComponent (offset, 0),
+                     m->GetPoissonsRatio()->GetComponent (offset, 0));
+            }
+          else
+            {
+            throw_n88_exception ("Internal error.");
+            }
+          for (unsigned int k=0; k<21; ++k)
+            {
+            stressStrain->GetUpperTriangularPacked(D.data());
+            sum_D[k] += D[k];
+            }
+          ++count;
+          }
+        }
+      n88_assert (count); // Must be at least one input element corresponding to output element
+      anisoMaterials->SetScaledItemUpperTriangular (oel,sum_D.data(), 1.0/8.0);
+      }
     }
 
-  else if (have_orthotropic)
-    {
-    vtkSmartPointer<vtkboneLinearOrthotropicMaterialArray> orthoMaterials =
-        vtkSmartPointer<vtkboneLinearOrthotropicMaterialArray>::New();
-    orthoMaterials->Resize(nOutputCells);
-
-    output->GetMaterialTable()->AddMaterial(1, orthoMaterials);
-    }
-
-  else  // Isotropic
+  else  // Only isotropic materials
     {
     vtkSmartPointer<vtkboneLinearIsotropicMaterialArray> isoMaterials =
         vtkSmartPointer<vtkboneLinearIsotropicMaterialArray>::New();
     isoMaterials->Resize(nOutputCells);
+    output->GetMaterialTable()->AddMaterial(1, isoMaterials);
     for (unsigned int oel=0; oel<nOutputCells; ++oel)
       {
       double E=0;
@@ -704,11 +772,9 @@ int vtkboneCoarsenModel::GenerateMaterials
       n88_assert (count); // Must be at least one input element corresponding to output element
       E /= 8;
       nu /= count;
-      // std::cout << E << "\n";
       isoMaterials->GetYoungsModulus()->SetComponent(oel,0,E);
       isoMaterials->GetPoissonsRatio()->SetComponent(oel,0,nu);
       }
-    output->GetMaterialTable()->AddMaterial(1, isoMaterials);
     }
 
   return 1;
