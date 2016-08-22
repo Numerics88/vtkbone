@@ -71,9 +71,9 @@ void vtkboneStressStrainMatrix::SetOrthotropic
 //----------------------------------------------------------------------------
 void vtkboneStressStrainMatrix::SetOrthotropic
   (
-  const double* E,
-  const double* nu,
-  const double* G
+  const double E[3],
+  const double nu[3],
+  const double G[3]
   )
   {
   for (size_t i=0; i<6; ++i)
@@ -100,9 +100,9 @@ void vtkboneStressStrainMatrix::SetOrthotropic
 //----------------------------------------------------------------------------
 void vtkboneStressStrainMatrix::SetOrthotropic
   (
-  const float* E,
-  const float* nu,
-  const float* G
+  const float E[3],
+  const float nu[3],
+  const float G[3]
   )
   {
   this->SetOrthotropic (E[0], E[1], E[2], nu[0], nu[1], nu[2], G[0], G[1], G[2]);
@@ -122,6 +122,27 @@ void vtkboneStressStrainMatrix::SetStressStrainMatrix (const float* D)
   double* s = &(this->StressStrainMatrix[0][0]);
   for (size_t k=0; k<36; ++k)
     { s[k] = D[k]; }
+  }
+
+//----------------------------------------------------------------------------
+void vtkboneStressStrainMatrix::SetStressStrainMatrix (vtkDataArray* D)
+  {
+  double* s = &(this->StressStrainMatrix[0][0]);
+  if (D->GetNumberOfComponents() == 6)
+    {
+    for (size_t i=0; i<6; ++i)
+      for (size_t j=0; j<6; ++j)
+        {
+        s[i*6+j] = D->GetComponent(i,j);
+        }
+    }
+  else
+    {
+    for (size_t k=0; k<36; ++k)
+      {
+      s[k] = D->GetComponent(k,0);
+      }
+    }
   }
 
 //----------------------------------------------------------------------------
@@ -209,6 +230,48 @@ void vtkboneStressStrainMatrix::SetUpperTriangularPacked (const float* UT)
   }
 
 //----------------------------------------------------------------------------
+void vtkboneStressStrainMatrix::SetUpperTriangularPacked (vtkDataArray* UT)
+  {
+  double* s = &(this->StressStrainMatrix[0][0]);
+  *s = UT->GetComponent( 0, 0); ++s;
+  *s = UT->GetComponent( 1, 0); ++s;
+  *s = UT->GetComponent( 3, 0); ++s;
+  *s = UT->GetComponent( 6, 0); ++s;
+  *s = UT->GetComponent(10, 0); ++s;
+  *s = UT->GetComponent(15, 0); ++s;
+  *s = UT->GetComponent( 1, 0); ++s;
+  *s = UT->GetComponent( 2, 0); ++s;
+  *s = UT->GetComponent( 4, 0); ++s;
+  *s = UT->GetComponent( 7, 0); ++s;
+  *s = UT->GetComponent(11, 0); ++s;
+  *s = UT->GetComponent(16, 0); ++s;
+  *s = UT->GetComponent( 3, 0); ++s;
+  *s = UT->GetComponent( 4, 0); ++s;
+  *s = UT->GetComponent( 5, 0); ++s;
+  *s = UT->GetComponent( 8, 0); ++s;
+  *s = UT->GetComponent(12, 0); ++s;
+  *s = UT->GetComponent(17, 0); ++s;
+  *s = UT->GetComponent( 6, 0); ++s;
+  *s = UT->GetComponent( 7, 0); ++s;
+  *s = UT->GetComponent( 8, 0); ++s;
+  *s = UT->GetComponent( 9, 0); ++s;
+  *s = UT->GetComponent(13, 0); ++s;
+  *s = UT->GetComponent(18, 0); ++s;
+  *s = UT->GetComponent(10, 0); ++s;
+  *s = UT->GetComponent(11, 0); ++s;
+  *s = UT->GetComponent(12, 0); ++s;
+  *s = UT->GetComponent(13, 0); ++s;
+  *s = UT->GetComponent(14, 0); ++s;
+  *s = UT->GetComponent(19, 0); ++s;
+  *s = UT->GetComponent(15, 0); ++s;
+  *s = UT->GetComponent(16, 0); ++s;
+  *s = UT->GetComponent(17, 0); ++s;
+  *s = UT->GetComponent(18, 0); ++s;
+  *s = UT->GetComponent(19, 0); ++s;
+  *s = UT->GetComponent(20, 0);
+  }
+
+//----------------------------------------------------------------------------
 void vtkboneStressStrainMatrix::GetStressStrainMatrix (double* D)
   {
   size_t k=0;
@@ -229,6 +292,18 @@ void vtkboneStressStrainMatrix::GetStressStrainMatrix (float* D)
       {
       D[k] = this->StressStrainMatrix[i][j];
       ++k;
+      }
+  }
+
+//----------------------------------------------------------------------------
+void vtkboneStressStrainMatrix::GetStressStrainMatrix (vtkDataArray* D)
+  {
+  D->SetNumberOfComponents(1);
+  D->SetNumberOfTuples(36);
+  for (size_t i=0; i<6; ++i)
+    for (size_t j=0; j<6; ++j)
+      {
+      D->SetComponent(i*6+j, 0, this->StressStrainMatrix[i][j]);
       }
   }
 
@@ -284,4 +359,33 @@ void vtkboneStressStrainMatrix::GetUpperTriangularPacked (float* UT)
   UT[18] = *s;  ++s;
   UT[19] = *s;  ++s;
   UT[20] = *s;
+  }
+
+//----------------------------------------------------------------------------
+void vtkboneStressStrainMatrix::GetUpperTriangularPacked (vtkDataArray* UT)
+  {
+  UT->SetNumberOfComponents(1);
+  UT->SetNumberOfTuples(21);
+  double* s = &(this->StressStrainMatrix[0][0]);
+  UT->SetComponent( 0, 0, *s);  s += 6;
+  UT->SetComponent( 1, 0, *s);  ++s;
+  UT->SetComponent( 2, 0, *s);  s += 5;
+  UT->SetComponent( 3, 0, *s);  ++s;
+  UT->SetComponent( 4, 0, *s);  ++s;
+  UT->SetComponent( 5, 0, *s);  s += 4;
+  UT->SetComponent( 6, 0, *s);  ++s;
+  UT->SetComponent( 7, 0, *s);  ++s;
+  UT->SetComponent( 8, 0, *s);  ++s;
+  UT->SetComponent( 9, 0, *s);  s += 3;
+  UT->SetComponent(10, 0, *s);  ++s;
+  UT->SetComponent(11, 0, *s);  ++s;
+  UT->SetComponent(12, 0, *s);  ++s;
+  UT->SetComponent(13, 0, *s);  ++s;
+  UT->SetComponent(14, 0, *s);  s += 2;
+  UT->SetComponent(15, 0, *s);  ++s;
+  UT->SetComponent(16, 0, *s);  ++s;
+  UT->SetComponent(17, 0, *s);  ++s;
+  UT->SetComponent(18, 0, *s);  ++s;
+  UT->SetComponent(19, 0, *s);  ++s;
+  UT->SetComponent(20, 0, *s);
   }

@@ -25,6 +25,7 @@ Set (Tests
   TestApplyDirectionalShearTest.py
   TestApplySymmetricShearTest.py
   TestApplyTorsionTest.py
+  TestStressStrainMatrix.py
   TestCoarsenModel.py
   )
 

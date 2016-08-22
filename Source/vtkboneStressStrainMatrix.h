@@ -32,6 +32,7 @@
 #define __vtkboneStressStrainMatrix_h
 
 #include "vtkObject.h"
+#include "vtkDataArray.h"
 #include "vtkboneWin32Header.h"
 
 class VTKBONE_EXPORT vtkboneStressStrainMatrix : public vtkObject
@@ -56,28 +57,32 @@ public:
                       double Gyz,
                       double Gzx,
                       double Gxy);
-  void SetOrthotropic(const double* E, const double* nu, const double* G);
-  void SetOrthotropic(const float* E, const float* nu, const float* G);
+  void SetOrthotropic(const double E[3], const double nu[3], const double G[3]);
+  void SetOrthotropic(const float E[3], const float nu[3], const float G[3]);
 
   // Description:
   // Set the stress-strain matrix.
   void SetStressStrainMatrix (const double* D);
   void SetStressStrainMatrix (const float* D);
+  void SetStressStrainMatrix (vtkDataArray* D);
 
   // Description:
   // Set the stress-strain matrix using the 21 upper triangular packed values.
   void SetUpperTriangularPacked (const double* UT);
   void SetUpperTriangularPacked (const float* UT);
+  void SetUpperTriangularPacked (vtkDataArray* UT);
 
   // Description:
   // Get the stress-strain matrix.
   void GetStressStrainMatrix (double* D);
   void GetStressStrainMatrix (float* D);
+  void GetStressStrainMatrix (vtkDataArray* D);
 
   // Description:
   // Get the 21 upper triangular packed values of the stress-strain matrix.
   void GetUpperTriangularPacked (double* UT);
   void GetUpperTriangularPacked (float* UT);
+  void GetUpperTriangularPacked (vtkDataArray* UT);
 
 protected:
 
