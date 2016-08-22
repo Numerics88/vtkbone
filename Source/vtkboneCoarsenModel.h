@@ -19,14 +19,19 @@
 // that have twice the linear dimension (so 8 times the volume). Every
 // essential feature of the FE model is translated to these new larger
 // elements, including Constraints such as boundary conditions, and
-// associated element and node sets. 2x2x2 groups of input elements
-// are mapped onto a single output element. Has long as at least
+// associated element and node sets.
+//
+// 2x2x2 groups of input elements
+// are mapped onto a single output element. As long as at least
 // one of the locations in the corresponding 2x2x2 input region actually
 // has a element (Cell), then an output element (Cell) will be
-// generated there. Material properties are averaged over the corresponding
-// 2x2x2 input elements (Cells), which a non-existant element is treated
-// as value zero for the purposes of calculating the average.
+// generated there. If there is an odd number of cells along a dimension,
+// the input model is padded out to an even dimension by duplicating
+// the outer-most layer of cells.
 //
+// Material properties are averaged over the corresponding
+// 2x2x2 input elements (Cells), for which a non-present element is treated
+// as value zero for the purposes of calculating the average.
 // If the input model has exactly one input material, then the output
 // model will have 8 materials (implemented as a material array).
 // Otherwise, a material array will be used that has length equal
