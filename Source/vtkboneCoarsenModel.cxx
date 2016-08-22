@@ -575,7 +575,16 @@ int vtkboneCoarsenModel::GenerateMaterials
 
   // Check if we have a single material, and can use the special method
   // GenerateMaterialsSingleInputMaterial.
-  if (inputMaterialTable->GetNumberOfMaterials() == 1)
+  int numberUniqueMaterials = 0;
+  inputMaterialTable->InitTraversal(); 
+  while (inputMaterialTable->GetNextUniqueIndex())
+    { ++numberUniqueMaterials; }
+  if (numberUniqueMaterials == 0)
+    {
+    vtkErrorMacro(<<"Empty material table.");
+    return VTK_ERROR;
+    }  
+  if (numberUniqueMaterials == 1)
     {
     // Need additionally to verify that this material is not a material array.
     inputMaterialTable->InitTraversal(); 
