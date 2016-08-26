@@ -801,12 +801,12 @@ int vtkboneCoarsenModel::GenerateMaterialsSingleInputMaterial
   vtkIdType nOutputCells = output->GetNumberOfCells();
   n88::const_array<2,unsigned int> reverseCellMap (reverseCellMap_ptr, nOutputCells, 8);
 
-  // We know there is only one material
+  // We know there is only one material defined.
   vtkboneMaterialTable* inputMaterialTable = input->GetMaterialTable();
   inputMaterialTable->InitTraversal(); 
-  inputMaterialTable->GetNextIndex();
+  inputMaterialTable->GetNextUniqueIndex();
   vtkboneMaterial* material = inputMaterialTable->GetCurrentMaterial();
-  n88_assert (inputMaterialTable->GetNextIndex() == 0); // verify no other materials
+  n88_assert (inputMaterialTable->GetNextUniqueIndex() == 0); // verify no other materials
 
   // ---- Determine what kind of material
 
