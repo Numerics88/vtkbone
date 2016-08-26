@@ -274,10 +274,6 @@ void vtkboneAIMWriter::WriteData()
       return;
     }
 
-  this->UpdateProgress(.9);
-
-  vtkDebugMacro(<<"Wrote AIM file with "
-                << dim.x*dim.y*dim.z << " points.");
   this->UpdateProgress(1.0);
 
   return;
