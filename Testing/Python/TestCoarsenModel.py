@@ -96,6 +96,7 @@ class TestCoarsenModel (unittest.TestCase):
     # Apply coarsener
     coarsener = vtkbone.vtkboneCoarsenModel()
     coarsener.SetInputData (model)
+    coarsener.SetMaterialAveragingMethod (vtkbone.vtkboneCoarsenModel.LINEAR)
     coarsener.Update()
     coarse_model = coarsener.GetOutput()
 
@@ -159,6 +160,7 @@ class TestCoarsenModel (unittest.TestCase):
     # Apply coarsener
     coarsener = vtkbone.vtkboneCoarsenModel()
     coarsener.SetInputData (model)
+    coarsener.SetMaterialAveragingMethod (vtkbone.vtkboneCoarsenModel.LINEAR)
     coarsener.Update()
     coarse_model = coarsener.GetOutput()
 
@@ -222,6 +224,7 @@ class TestCoarsenModel (unittest.TestCase):
     # Apply coarsener
     coarsener = vtkbone.vtkboneCoarsenModel()
     coarsener.SetInputData (model)
+    coarsener.SetMaterialAveragingMethod (vtkbone.vtkboneCoarsenModel.LINEAR)
     coarsener.Update()
     coarse_model = coarsener.GetOutput()
 
@@ -243,7 +246,7 @@ class TestCoarsenModel (unittest.TestCase):
     self.assertTrue (alltrue(abs(coarse_E[2,:,:] - 5) < 1E-6))
 
 
-  def test_cube_with_holes (self):
+  def test_cube_with_holes_linear (self):
 	# Create 4x4x4 cube image
     cellmap = ones((4,4,4), int16)   # z,y,x order
     # Punch some holes in such as way that the first coarse element
@@ -303,6 +306,7 @@ class TestCoarsenModel (unittest.TestCase):
     # Apply coarsener
     coarsener = vtkbone.vtkboneCoarsenModel()
     coarsener.SetInputData (model)
+    coarsener.SetMaterialAveragingMethod (vtkbone.vtkboneCoarsenModel.LINEAR)
     coarsener.Update()
     coarse_model = coarsener.GetOutput()
 
@@ -348,7 +352,115 @@ class TestCoarsenModel (unittest.TestCase):
     self.assertEqual (cell_scalars[5], 2)
     self.assertEqual (cell_scalars[6], 1)
 
-  def test_two_isotropic_materials (self):
+
+  def test_cube_with_holes_homminga_density (self):
+    # Create 4x4x4 cube image
+    cellmap = ones((4,4,4), int16)   # z,y,x order
+    # Punch some holes in such as way that the first coarse element
+    # has one hole, the second two, etc... Make sure 1,1,1 is the
+    # last to be knocked out, to avoid reduced the bounds of the
+    # FE model.
+    offsets = array([[0,2,0,2,0,2,0,2],
+                     [0,0,2,2,0,0,2,2],
+                     [0,0,0,0,2,2,2,2]])
+    cellmap[1+offsets[2],1+offsets[1],0+offsets[0]] = 0
+    offsets = offsets[:,1:]
+    cellmap[1+offsets[2],0+offsets[1],0+offsets[0]] = 0
+    offsets = offsets[:,1:]
+    cellmap[0+offsets[2],0+offsets[1],0+offsets[0]] = 0
+    offsets = offsets[:,1:]
+    cellmap[0+offsets[2],1+offsets[1],1+offsets[0]] = 0
+    offsets = offsets[:,1:]
+    cellmap[1+offsets[2],0+offsets[1],1+offsets[0]] = 0
+    offsets = offsets[:,1:]
+    cellmap[0+offsets[2],0+offsets[1],1+offsets[0]] = 0
+    offsets = offsets[:,1:]
+    cellmap[0+offsets[2],1+offsets[1],0+offsets[0]] = 0
+    offsets = offsets[:,1:]
+    cellmap[1+offsets[2],1+offsets[1],1+offsets[0]] = 0
+    cellmap_flat = cellmap.flatten().copy()
+    cellmap_vtk = numpy_to_vtk(cellmap_flat, deep=1)
+    image = vtk.vtkImageData()
+    image.SetDimensions((5,5,5))     # x,y,z order
+    image.SetSpacing(1.5,1.5,1.5)
+    image.SetOrigin(3.5,4.5,5.5)
+    image.GetCellData().SetScalars(cellmap_vtk)
+
+    # Convert to mesh
+    geometry_generator = vtkbone.vtkboneImageToMesh()
+    geometry_generator.SetInputData(image)
+    geometry_generator.Update()
+    geometry = geometry_generator.GetOutput()
+
+    # Generate material.
+    material = vtkbone.vtkboneLinearIsotropicMaterial()
+    material.SetName("linear_iso_material")
+    material.SetYoungsModulus(6000)
+    material.SetPoissonsRatio(0.3)
+    mt_generator = vtkbone.vtkboneGenerateHomogeneousMaterialTable()
+    mt_generator.SetMaterial(material)
+    mt_generator.SetMaterialIdList(image.GetCellData().GetScalars())
+    mt_generator.Update()
+    material_table = mt_generator.GetOutput()
+
+    # Generate model
+    generator = vtkbone.vtkboneApplyCompressionTest()
+    generator.SetInputData(0, geometry)
+    generator.SetInputData(1, material_table)
+    generator.Update()
+    model = generator.GetOutput()
+
+    # Apply coarsener
+    coarsener = vtkbone.vtkboneCoarsenModel()
+    coarsener.SetInputData (model)
+    coarsener.SetMaterialAveragingMethod (vtkbone.vtkboneCoarsenModel.HOMMINGA_DENSITY)
+    coarsener.Update()
+    coarse_model = coarsener.GetOutput()
+
+    # Check bounds
+    bounds = coarse_model.GetBounds()
+    self.assertAlmostEqual (bounds[0], 3.5)
+    self.assertAlmostEqual (bounds[1], 9.5)
+    self.assertAlmostEqual (bounds[2], 4.5)
+    self.assertAlmostEqual (bounds[3], 10.5)
+    self.assertAlmostEqual (bounds[4], 5.5)
+    self.assertAlmostEqual (bounds[5], 11.5)
+
+    # Check materials: material array with 8 possible output materials
+    coarse_material = coarse_model.GetMaterialTable().GetMaterial(1)
+    self.assertTrue (isinstance (coarse_material, vtkbone.vtkboneLinearIsotropicMaterialArray))
+    self.assertEqual (coarse_material.GetSize(), 8)
+    coarse_E = vtk_to_numpy (coarse_material.GetYoungsModulus())
+    self.assertAlmostEqual (coarse_E[0], 6000*(1/8)**1.7, delta=1E-2)
+    self.assertAlmostEqual (coarse_E[1], 6000*(2/8)**1.7, delta=1E-2)
+    self.assertAlmostEqual (coarse_E[2], 6000*(3/8)**1.7, delta=1E-2)
+    self.assertAlmostEqual (coarse_E[3], 6000*(4/8)**1.7, delta=1E-2)
+    self.assertAlmostEqual (coarse_E[4], 6000*(5/8)**1.7, delta=1E-2)
+    self.assertAlmostEqual (coarse_E[5], 6000*(6/8)**1.7, delta=1E-2)
+    self.assertAlmostEqual (coarse_E[6], 6000*(7/8)**1.7, delta=1E-2)
+    self.assertAlmostEqual (coarse_E[7], 6000)
+    coarse_nu = vtk_to_numpy (coarse_material.GetPoissonsRatio())
+    self.assertAlmostEqual (coarse_nu[0], 0.3)
+    self.assertAlmostEqual (coarse_nu[1], 0.3)
+    self.assertAlmostEqual (coarse_nu[2], 0.3)
+    self.assertAlmostEqual (coarse_nu[3], 0.3)
+    self.assertAlmostEqual (coarse_nu[4], 0.3)
+    self.assertAlmostEqual (coarse_nu[5], 0.3)
+    self.assertAlmostEqual (coarse_nu[6], 0.3)
+
+    # Check cell scalars: point to appropriate material ID
+    cell_scalars = vtk_to_numpy (coarse_model.GetCellData().GetScalars())
+    self.assertEqual (len(cell_scalars), 7)
+    self.assertEqual (cell_scalars[0], 7)
+    self.assertEqual (cell_scalars[1], 6)
+    self.assertEqual (cell_scalars[2], 5)
+    self.assertEqual (cell_scalars[3], 4)
+    self.assertEqual (cell_scalars[4], 3)
+    self.assertEqual (cell_scalars[5], 2)
+    self.assertEqual (cell_scalars[6], 1)
+
+
+  def test_two_isotropic_materials_linear (self):
     # Create 2x2x4 cube image
     cellmap = zeros((4,2,2), int16)   # z,y,x order
     # Bottom output cell has 6 input cells, of which 2 are materialA (ID 10), 4 material B (ID 14)
@@ -401,6 +513,7 @@ class TestCoarsenModel (unittest.TestCase):
     # Apply coarsener
     coarsener = vtkbone.vtkboneCoarsenModel()
     coarsener.SetInputData (model)
+    coarsener.SetMaterialAveragingMethod (vtkbone.vtkboneCoarsenModel.LINEAR)
     coarsener.Update()
     coarse_model = coarsener.GetOutput()
 
@@ -431,7 +544,209 @@ class TestCoarsenModel (unittest.TestCase):
     self.assertAlmostEqual (coarse_nu[1], (4*0.3 + 1*0.4)/5)
 
 
-  def test_mixed_materials (self):
+  def test_two_isotropic_materials_homminga_density (self):
+    # Create 2x2x4 cube image
+    cellmap = zeros((4,2,2), int16)   # z,y,x order
+    # Bottom output cell has 6 input cells, of which 2 are materialA (ID 10), 4 material B (ID 14)
+    cellmap[0,0,1] = 10
+    cellmap[0,1,1] = 12
+    cellmap[1,0,0] = 12
+    cellmap[1,0,1] = 10
+    cellmap[1,1,0] = 10
+    cellmap[1,1,1] = 10
+    # Top output cell has 5 input cells, of which 1 is material B
+    cellmap[2,0,0] = 10
+    cellmap[2,1,1] = 10
+    cellmap[2,1,0] = 10
+    cellmap[3,0,0] = 12
+    cellmap[3,1,0] = 10
+    cellmap_flat = cellmap.flatten().copy()
+    cellmap_vtk = numpy_to_vtk(cellmap_flat, deep=1)
+    image = vtk.vtkImageData()
+    image.SetDimensions((3,3,5))     # x,y,z order
+    image.SetSpacing(1.5,1.5,1.5)
+    image.SetOrigin(3.5,4.5,5.5)
+    image.GetCellData().SetScalars(cellmap_vtk)
+
+    # Convert to mesh
+    geometry_generator = vtkbone.vtkboneImageToMesh()
+    geometry_generator.SetInputData(image)
+    geometry_generator.Update()
+    geometry = geometry_generator.GetOutput()
+
+    # Generate materials.
+    materialA = vtkbone.vtkboneLinearIsotropicMaterial()
+    materialA.SetName("materialA")
+    materialA.SetYoungsModulus(6000)
+    materialA.SetPoissonsRatio(0.3)
+    materialB = vtkbone.vtkboneLinearIsotropicMaterial()
+    materialB.SetName("materialB")
+    materialB.SetYoungsModulus(4000)
+    materialB.SetPoissonsRatio(0.4)
+    material_table = vtkbone.vtkboneMaterialTable()
+    material_table.AddMaterial (10, materialA)
+    material_table.AddMaterial (12, materialB)
+
+    # Generate model
+    generator = vtkbone.vtkboneApplyCompressionTest()
+    generator.SetInputData(0, geometry)
+    generator.SetInputData(1, material_table)
+    generator.Update()
+    model = generator.GetOutput()
+
+    # Apply coarsener
+    coarsener = vtkbone.vtkboneCoarsenModel()
+    coarsener.SetInputData (model)
+    coarsener.SetMaterialAveragingMethod (vtkbone.vtkboneCoarsenModel.HOMMINGA_DENSITY)
+    coarsener.Update()
+    coarse_model = coarsener.GetOutput()
+
+    # Check bounds
+    bounds = coarse_model.GetBounds()
+    self.assertAlmostEqual (bounds[0], 3.5)
+    self.assertAlmostEqual (bounds[1], 6.5)
+    self.assertAlmostEqual (bounds[2], 4.5)
+    self.assertAlmostEqual (bounds[3], 7.5)
+    self.assertAlmostEqual (bounds[4], 5.5)
+    self.assertAlmostEqual (bounds[5], 11.5)
+
+    # Check cell scalars: sequence
+    cell_scalars = vtk_to_numpy (coarse_model.GetCellData().GetScalars())
+    self.assertEqual (len(cell_scalars), 2)
+    self.assertEqual (cell_scalars[0], 1)
+    self.assertEqual (cell_scalars[1], 2)
+
+    # Check materials
+    coarse_material = coarse_model.GetMaterialTable().GetMaterial(1)
+    self.assertTrue (isinstance (coarse_material, vtkbone.vtkboneLinearIsotropicMaterialArray))
+    self.assertEqual (coarse_material.GetSize(), 2)
+    coarse_E = vtk_to_numpy (coarse_material.GetYoungsModulus())
+    self.assertAlmostEqual (coarse_E[0], ((4*6000**(1/1.7) + 2*4000**(1/1.7))/8)**1.7, delta=1E-2)
+    self.assertAlmostEqual (coarse_E[1], ((4*6000**(1/1.7) + 1*4000**(1/1.7))/8)**1.7, delta=1E-2)
+    coarse_nu = vtk_to_numpy (coarse_material.GetPoissonsRatio())
+    self.assertAlmostEqual (coarse_nu[0], (4*0.3 + 2*0.4)/6)
+    self.assertAlmostEqual (coarse_nu[1], (4*0.3 + 1*0.4)/5)
+
+
+  def test_mixed_materials_linear (self):
+    # Create 2x2x4 cube image
+    cellmap = zeros((4,2,2), int16)   # z,y,x order
+    # Bottom output cell has 6 input cells, of which:
+    #   3 are materialA (ID 10)
+    #   2 material B (ID 12)
+    #   1 is material C (ID 15)
+    cellmap[0,0,1] = 10
+    cellmap[0,1,1] = 12
+    cellmap[1,0,0] = 12
+    cellmap[1,0,1] = 15
+    cellmap[1,1,0] = 10
+    cellmap[1,1,1] = 10
+    # Top output cell has 5 input cells, of which:
+    #   2 are materialA (ID 10)
+    #   1 is material B (ID 12)
+    #   2 are materialC (ID 15)
+    cellmap[2,0,0] = 15
+    cellmap[2,1,1] = 10
+    cellmap[2,1,0] = 10
+    cellmap[3,0,0] = 12
+    cellmap[3,1,0] = 15
+    cellmap_flat = cellmap.flatten().copy()
+    cellmap_vtk = numpy_to_vtk(cellmap_flat, deep=1)
+    image = vtk.vtkImageData()
+    image.SetDimensions((3,3,5))     # x,y,z order
+    image.SetSpacing(1.5,1.5,1.5)
+    image.SetOrigin(3.5,4.5,5.5)
+    image.GetCellData().SetScalars(cellmap_vtk)
+
+    # Convert to mesh
+    geometry_generator = vtkbone.vtkboneImageToMesh()
+    geometry_generator.SetInputData(image)
+    geometry_generator.Update()
+    geometry = geometry_generator.GetOutput()
+
+    # Generate materials.
+    materialA = vtkbone.vtkboneLinearIsotropicMaterial()
+    materialA.SetName("materialA")
+    materialA.SetYoungsModulus(6000)
+    materialA.SetPoissonsRatio(0.3)
+    DA = stress_strain_isotropic (6000.0, 0.3)
+    materialB = vtkbone.vtkboneLinearOrthotropicMaterial()
+    materialB.SetYoungsModulusX(1000)
+    materialB.SetYoungsModulusY(1100)
+    materialB.SetYoungsModulusZ(1200)
+    materialB.SetPoissonsRatioYZ(0.25)
+    materialB.SetPoissonsRatioZX(0.3)
+    materialB.SetPoissonsRatioXY(0.2)
+    # These values are not necessarily consistent
+    GYZ = 1000/(2*(1+0.25))
+    GZX = 1100/(2*(1+0.3))
+    GXY = 1200/(2*(1+0.2))
+    materialB.SetShearModulusYZ(GYZ)
+    materialB.SetShearModulusZX(GZX)
+    materialB.SetShearModulusXY(GXY)
+    DB = stress_strain_orthotropic ((1000.0, 1100.0, 1200.0),
+                                    (   0.25,    0.3,   0.2),
+                                    (    GYZ,    GZX,   GXY))
+    materialC = vtkbone.vtkboneLinearAnisotropicMaterial()
+    DC = array((
+          (1571.653,   540.033,   513.822,     7.53 ,  -121.22 ,   -57.959),
+          ( 540.033,  2029.046,   469.974,    78.591,   -53.69 ,   -50.673),
+          ( 513.822,   469.974,  1803.998,    20.377,   -57.014,   -15.761),
+          (   7.53 ,    78.591,    20.377,   734.405,   -23.127,   -36.557),
+          (-121.22 ,   -53.69 ,   -57.014,   -23.127,   627.396,    13.969),
+          ( -57.959,   -50.673,   -15.761,   -36.557,    13.969,   745.749)))
+    DC_vtk = numpy_to_vtk (DC, array_type=vtk.VTK_FLOAT)
+    materialC.SetStressStrainMatrix(DC_vtk)
+    material_table = vtkbone.vtkboneMaterialTable()
+    material_table.AddMaterial (10, materialA)
+    material_table.AddMaterial (12, materialB)
+    material_table.AddMaterial (15, materialC)
+
+    # Generate model
+    generator = vtkbone.vtkboneApplyCompressionTest()
+    generator.SetInputData(0, geometry)
+    generator.SetInputData(1, material_table)
+    generator.Update()
+    model = generator.GetOutput()
+
+    # Apply coarsener
+    coarsener = vtkbone.vtkboneCoarsenModel()
+    coarsener.SetInputData (model)
+    coarsener.SetMaterialAveragingMethod (vtkbone.vtkboneCoarsenModel.LINEAR)
+    coarsener.Update()
+    coarse_model = coarsener.GetOutput()
+
+    # Check bounds
+    bounds = coarse_model.GetBounds()
+    self.assertAlmostEqual (bounds[0], 3.5)
+    self.assertAlmostEqual (bounds[1], 6.5)
+    self.assertAlmostEqual (bounds[2], 4.5)
+    self.assertAlmostEqual (bounds[3], 7.5)
+    self.assertAlmostEqual (bounds[4], 5.5)
+    self.assertAlmostEqual (bounds[5], 11.5)
+
+    # Check cell scalars: sequence
+    cell_scalars = vtk_to_numpy (coarse_model.GetCellData().GetScalars())
+    self.assertEqual (len(cell_scalars), 2)
+    self.assertEqual (cell_scalars[0], 1)
+    self.assertEqual (cell_scalars[1], 2)
+
+    # Check materials
+    coarse_material = coarse_model.GetMaterialTable().GetMaterial(1)
+    self.assertTrue (isinstance (coarse_material, vtkbone.vtkboneLinearAnisotropicMaterialArray))
+    self.assertEqual (coarse_material.GetSize(), 2)
+    ut_vtk = coarse_material.GetStressStrainMatrixUpperTriangular()
+    ut = vtk_to_numpy (ut_vtk)
+    self.assertEqual (ut.shape, (2,21))
+    D1 = upper_triangular_to_square (ut[0])
+    D1_ref = (3*DA + 2*DB + 1*DC)/8
+    self.assertTrue (alltrue(abs(D1-D1_ref) < 1E-3))
+    D2 = upper_triangular_to_square (ut[1])
+    D2_ref = (2*DA + 1*DB + 2*DC)/8
+    self.assertTrue (alltrue(abs(D2-D2_ref) < 1E-3))
+
+
+  def test_mixed_materials_homminga_density (self):
     # Create 2x2x4 cube image
     cellmap = zeros((4,2,2), int16)   # z,y,x order
     # Bottom output cell has 6 input cells, of which:
@@ -515,6 +830,7 @@ class TestCoarsenModel (unittest.TestCase):
     # Apply coarsener
     coarsener = vtkbone.vtkboneCoarsenModel()
     coarsener.SetInputData (model)
+    coarsener.SetMaterialAveragingMethod (vtkbone.vtkboneCoarsenModel.HOMMINGA_DENSITY)
     coarsener.Update()
     coarse_model = coarsener.GetOutput()
 
@@ -541,8 +857,58 @@ class TestCoarsenModel (unittest.TestCase):
     ut = vtk_to_numpy (ut_vtk)
     self.assertEqual (ut.shape, (2,21))
     D1 = upper_triangular_to_square (ut[0])
-    D1_ref = (3*DA + 2*DB + 1*DC)/8
-    self.assertTrue (alltrue(abs(D1-D1_ref) < 1E-3))
+    D1_ref = zeros((6,6), dtype=float)
+    for i in range(6):
+        for j in range (6):
+            x = 0.0
+            a = DA[i,j]
+            b = DB[i,j]
+            c = DC[i,j]
+            if a > 0:
+                x += 3*a**(1/1.7)
+            if a < 0:
+                x -= 3*(-a)**(1/1.7)
+            if b > 0:
+                x += 2*b**(1/1.7)
+            if b < 0:
+                x -= 2*(-b)**(1/1.7)
+            if c > 0:
+                x += 1*c**(1/1.7)
+            if c < 0:
+                x -= 1*(-c)**(1/1.7)
+            x /= 8
+            if x > 0:
+                D1_ref[i,j] = x**1.7
+            if x < 0:
+                D1_ref[i,j] = -((-x)**1.7)
+    self.assertTrue (alltrue(abs(D1-D1_ref) < 1E-2))
+    D2 = upper_triangular_to_square (ut[1])
+    D2_ref = zeros((6,6), dtype=float)
+    for i in range(6):
+        for j in range (6):
+            x = 0.0
+            a = DA[i,j]
+            b = DB[i,j]
+            c = DC[i,j]
+            if a > 0:
+                x += 2*a**(1/1.7)
+            if a < 0:
+                x -= 2*(-a)**(1/1.7)
+            if b > 0:
+                x += 1*b**(1/1.7)
+            if b < 0:
+                x -= 1*(-b)**(1/1.7)
+            if c > 0:
+                x += 2*c**(1/1.7)
+            if c < 0:
+                x -= 2*(-c)**(1/1.7)
+            x /= 8
+            if x > 0:
+                D2_ref[i,j] = x**1.7
+            if x < 0:
+                D2_ref[i,j] = -((-x)**1.7)
+    self.assertTrue (alltrue(abs(D2-D2_ref) < 1E-2))
+
 
 if __name__ == '__main__':
     unittest.main()

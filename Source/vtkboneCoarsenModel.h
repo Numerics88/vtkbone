@@ -57,9 +57,27 @@ public:
   vtkTypeMacro(vtkboneCoarsenModel,vtkboneFiniteElementModelAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent);
 
+  enum MaterialAveragingMethod_t {
+    LINEAR,
+    HOMMINGA_DENSITY,
+    NUMBER_OF_MaterialAveragingMethod
+  };
+
+  // Description:
+  // Set/Get how materials are averaged. If set to LINEAR, stress-strain
+  // matrices are linearly averaged. If set to HOMMINGA_DENSITY,
+  // Young's modulii are converted to a density according to
+  // Homminga's formula, which is averaged before being converted back
+  // to a Young's modulus. For orthotropic and anisotropic materials,
+  // the same transformations are applied to the entire stress-strain matrix.
+  vtkSetClampMacro(MaterialAveragingMethod,
+                   int, 0, NUMBER_OF_MaterialAveragingMethod);
+  vtkGetMacro(MaterialAveragingMethod, int);
+
+
 protected:
 
-  vtkboneCoarsenModel() {}
+  vtkboneCoarsenModel();
   ~vtkboneCoarsenModel() {}
 
   virtual int RequestData(vtkInformation* request,
@@ -102,6 +120,8 @@ protected:
                                          const vtkIdType* cellMap);
   virtual int GenerateAdditionalInformation(vtkboneFiniteElementModel* output,
                                             vtkboneFiniteElementModel* input);
+
+  int MaterialAveragingMethod;
 
 private:
   vtkboneCoarsenModel(const vtkboneCoarsenModel&);  // Not implemented.

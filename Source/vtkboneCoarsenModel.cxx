@@ -25,12 +25,74 @@
 #include "n88util/const_array.hpp"
 #include <map>
 #include <set>
+#include <cmath>
 
 vtkStandardNewMacro(vtkboneCoarsenModel);
 
+const float homminga_exponent = 1.7;
 
 const unsigned int EMPTY = std::numeric_limits<unsigned int>::max();
 
+namespace CoarsenModel_Utility
+{
+
+template <typename T>
+T to_homminga_density (T x)
+  {
+  if (x == 0) {
+    return 0; }
+  else if (x < 0) {
+    return T(-1) * pow (-x, T(1)/T(homminga_exponent)); }
+  else {
+    return pow (x, T(1)/T(homminga_exponent)); }
+  }
+
+template <typename T>
+void to_homminga_density_inplace (T& x)
+  {
+  x = to_homminga_density (x);
+  }
+
+template <typename T>
+void to_homminga_density_inplace (T* x, size_t count)
+  {
+  for (size_t i=0; i<count; ++i) {
+    x[i] = to_homminga_density (x[i]); }
+  }
+
+template <typename T>
+T from_homminga_density (T x)
+  {
+  if (x == 0 ) {
+    return 0; }
+  else if (x < 0) {
+    return T(-1) * pow (-x, T(homminga_exponent)); }
+  else {
+    return pow (x, T(homminga_exponent)); }
+  }
+
+template <typename T>
+void from_homminga_density_inplace (T& x)
+  {
+  x = from_homminga_density (x);
+  }
+
+template <typename T>
+void from_homminga_density_inplace (T* x, size_t count)
+  {
+  for (size_t i=0; i<count; ++i) {
+    x[i] = from_homminga_density (x[i]); }
+  }
+
+}  // namespace
+
+using namespace CoarsenModel_Utility;
+
+//----------------------------------------------------------------------------
+vtkboneCoarsenModel::vtkboneCoarsenModel()
+  :
+  MaterialAveragingMethod (HOMMINGA_DENSITY)
+  {}
 
 //----------------------------------------------------------------------------
 int vtkboneCoarsenModel::RequestUpdateExtent(
@@ -722,16 +784,30 @@ int vtkboneCoarsenModel::GenerateMaterials
             {
             throw_n88_exception ("Internal error.");
             }
-          for (unsigned int k=0; k<21; ++k)
+          stressStrain->GetUpperTriangularPacked(D.data());
+          if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
             {
-            stressStrain->GetUpperTriangularPacked(D.data());
-            sum_D[k] += D[k];
+            for (unsigned int k=0; k<21; ++k)
+              {
+              sum_D[k] += to_homminga_density(D[k]);
+              }
+            }
+          else
+            {
+            for (unsigned int k=0; k<21; ++k)
+              {
+              sum_D[k] += D[k];
+              }
             }
           ++count;
           }
         }
       n88_assert (count); // Must be at least one input element corresponding to output element
       anisoMaterials->SetScaledItemUpperTriangular (oel,sum_D.data(), 1.0/8.0);
+      if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
+        {
+        from_homminga_density_inplace (anisoMaterials->GetItemUpperTriangular(oel), 21);
+        }
       }
     }
 
@@ -760,15 +836,28 @@ int vtkboneCoarsenModel::GenerateMaterials
                 vtkboneLinearIsotropicMaterial::SafeDownCast(material))
             {
             n88_assert (offset == 0);
-            E += m->GetYoungsModulus();
+            if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
+              {
+              E += to_homminga_density (m->GetYoungsModulus());
+              }
+            else
+              {
+              E += m->GetYoungsModulus();
+              }
             nu += m->GetPoissonsRatio();
             }
           else if (vtkboneLinearIsotropicMaterialArray* m =
                 vtkboneLinearIsotropicMaterialArray::SafeDownCast(material))
             {
             n88_assert (m->GetSize() > offset);
-            // std::cout << id << ", " << offset << ", " << m->GetYoungsModulus()->GetComponent(offset,0) << "\n";
-            E += m->GetYoungsModulus()->GetComponent(offset,0);
+            if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
+              {
+              E += to_homminga_density (m->GetYoungsModulus()->GetComponent(offset,0));
+              }
+            else
+              {
+              E += m->GetYoungsModulus()->GetComponent(offset,0);
+              }
             nu += m->GetPoissonsRatio()->GetComponent(offset,0);
             }
           else
@@ -780,6 +869,10 @@ int vtkboneCoarsenModel::GenerateMaterials
         }
       n88_assert (count); // Must be at least one input element corresponding to output element
       E /= 8;
+      if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
+        {
+        E = from_homminga_density (E);
+        }
       nu /= count;
       isoMaterials->GetYoungsModulus()->SetComponent(oel,0,E);
       isoMaterials->GetPoissonsRatio()->SetComponent(oel,0,nu);
@@ -827,7 +920,14 @@ int vtkboneCoarsenModel::GenerateMaterialsSingleInputMaterial
     output->GetMaterialTable()->AddMaterial(1, anisoMaterials);
     for (unsigned int m=0; m<8; ++m)
       {
-      anisoMaterials->SetScaledItem (m, aniso_material, (m+1)/8.0);
+      if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
+        {
+        anisoMaterials->SetScaledItem (m, aniso_material, pow ((m+1)/8.0, homminga_exponent));
+        }
+      else
+        {
+        anisoMaterials->SetScaledItem (m, aniso_material, (m+1)/8.0);
+        }
       }
     }
 
@@ -839,7 +939,14 @@ int vtkboneCoarsenModel::GenerateMaterialsSingleInputMaterial
     output->GetMaterialTable()->AddMaterial(1, orthoMaterials);
     for (unsigned int m=0; m<8; ++m)
       {
-      orthoMaterials->SetScaledItem (m, ortho_material, (m+1)/8.0);
+      if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
+        {
+        orthoMaterials->SetScaledItem (m, ortho_material, pow ((m+1)/8.0, homminga_exponent));
+        }
+      else
+        {
+        orthoMaterials->SetScaledItem (m, ortho_material, (m+1)/8.0);
+        }
       }
     }
 
@@ -851,7 +958,14 @@ int vtkboneCoarsenModel::GenerateMaterialsSingleInputMaterial
     output->GetMaterialTable()->AddMaterial(1, isoMaterials);
     for (unsigned int m=0; m<8; ++m)
       {
-      isoMaterials->SetScaledItem (m, iso_material, (m+1)/8.0);
+      if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
+        {
+        isoMaterials->SetScaledItem (m, iso_material, pow ((m+1)/8.0, homminga_exponent));
+        }
+      else
+        {
+        isoMaterials->SetScaledItem (m, iso_material, (m+1)/8.0);
+        }
       }
     }
 

@@ -9,6 +9,7 @@ vtkStandardNewMacro (vtkboneLinearAnisotropicMaterialArray);
 vtkboneLinearAnisotropicMaterialArray::vtkboneLinearAnisotropicMaterialArray()
   {
   this->StressStrainMatrixUpperTriangular = vtkFloatArray::New();
+  this->StressStrainMatrixUpperTriangular->SetNumberOfComponents(21);
   }
 
 //----------------------------------------------------------------------------
@@ -106,7 +107,7 @@ void vtkboneLinearAnisotropicMaterialArray::SetScaledItemUpperTriangular
 float* vtkboneLinearAnisotropicMaterialArray::GetItemUpperTriangular
   (vtkIdType k)
   {
-  return (float*)(this->StressStrainMatrixUpperTriangular->WriteVoidPointer(21,0));
+  return (float*)(this->StressStrainMatrixUpperTriangular->WriteVoidPointer(k*21,21));
   }
 
 //----------------------------------------------------------------------------
