@@ -11,6 +11,7 @@
 #include "vtkboneConstraintCollection.h"
 #include "vtkboneSolverParameters.h"
 #include "vtkboneStressStrainMatrix.h"
+#include "vtkboneVersion.h"
 #include "vtkDataArrayCollection.h"
 #include "vtkCell.h"
 #include "vtkCellData.h"
@@ -24,6 +25,7 @@
 #include "vtkInformationStringVectorKey.h"
 #include "vtkInformationDoubleVectorKey.h"
 #include "n88util/const_array.hpp"
+#include <sstream>
 #include <map>
 #include <set>
 #include <cmath>
@@ -133,8 +135,19 @@ int vtkboneCoarsenModel::RequestData(
 void vtkboneCoarsenModel::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
+  this->PrintParameters(os,indent);
 }
 
+//----------------------------------------------------------------------------
+void vtkboneCoarsenModel::PrintParameters (ostream& os, vtkIndent indent)
+  {
+  os << indent << "MaterialAveragingMethod: ";
+  if (this->MaterialAveragingMethod == LINEAR)
+    { os << "LINEAR"; }
+  else if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
+    { os << "HOMMINGA_DENSITY"; }
+  os << "\n";
+  }
 
 //----------------------------------------------------------------------------
 int vtkboneCoarsenModel::SimpleExecute(
@@ -1198,7 +1211,7 @@ int vtkboneCoarsenModel::GenerateAdditionalInformation
       {
       const char* setName = postProcessingNodeSetsKey->Get(inputInfo,n);
       vtkboneSolverParameters::POST_PROCESSING_NODE_SETS()->Append(outputInfo, setName);
-      }    
+      }
     }
   vtkInformationStringVectorKey* postProcessingElementSetsKey = 
                          vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS();
@@ -1219,6 +1232,16 @@ int vtkboneCoarsenModel::GenerateAdditionalInformation
     vtkboneSolverParameters::ROTATION_CENTER()->Set(outputInfo,
         vtkboneSolverParameters::ROTATION_CENTER()->Get(inputInfo), 3);
     }
+
+  std::string history = std::string("Model created by vtkboneCoarsenModel version ")
+      + vtkboneVersion::GetVTKBONEVersion();
+  output->AppendHistory(history.c_str());
+
+  std::ostringstream comments;
+  comments << "vtkboneCoarsenModel settings:\n";
+  vtkIndent indent;
+  this->PrintParameters(comments, indent);
+  output->AppendLog(comments.str().c_str());
 
   return 1;
   }

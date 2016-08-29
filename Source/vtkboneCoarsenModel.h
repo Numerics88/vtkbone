@@ -57,6 +57,8 @@ public:
   vtkTypeMacro(vtkboneCoarsenModel,vtkboneFiniteElementModelAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent);
 
+  void PrintParameters(ostream& os, vtkIndent indent);
+
   enum MaterialAveragingMethod_t {
     LINEAR,
     HOMMINGA_DENSITY,
