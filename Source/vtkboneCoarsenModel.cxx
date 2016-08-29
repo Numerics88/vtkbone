@@ -22,6 +22,7 @@
 #include "vtkInformationVector.h"
 #include "vtkInformation.h"
 #include "vtkInformationStringVectorKey.h"
+#include "vtkInformationDoubleVectorKey.h"
 #include "n88util/const_array.hpp"
 #include <map>
 #include <set>
@@ -1209,6 +1210,14 @@ int vtkboneCoarsenModel::GenerateAdditionalInformation
       const char* setName = postProcessingElementSetsKey->Get(inputInfo,n);
       vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS()->Append(outputInfo, setName);
       }    
+    }
+
+  vtkInformationDoubleVectorKey* rotationCenterKey = 
+                         vtkboneSolverParameters::ROTATION_CENTER();
+  if (rotationCenterKey->Has(inputInfo))
+    {
+    vtkboneSolverParameters::ROTATION_CENTER()->Set(outputInfo,
+        vtkboneSolverParameters::ROTATION_CENTER()->Get(inputInfo), 3);
     }
 
   return 1;
