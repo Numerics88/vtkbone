@@ -183,6 +183,12 @@ int vtkboneInterpolateCoarseSolution::RequestData
     (size_t)(round((reduced_bounds[1]-reduced_bounds[0])/reduced_spacing[0]) + 1),
     3);
   n88::array<4,float> reduced_grid (grid_dims);
+  // Set all to EMPTY in order to trap incorrect indices
+  float EMPTY = std::numeric_limits<float>::max();
+  for (size_t i=0; i<reduced_grid.size(); ++i)
+    {
+    reduced_grid[i] = EMPTY;
+    }
 
   for (vtkIdType p=0; p<reduced_model->GetNumberOfPoints(); ++p)
     {
@@ -202,89 +208,130 @@ int vtkboneInterpolateCoarseSolution::RequestData
   full_data->SetNumberOfTuples(full_model->GetNumberOfPoints());
   full_data->SetName("Displacement");
 
-  for (vtkIdType p=0; p<full_model->GetNumberOfPoints(); ++p)
+  // Trap attempts to index nodes that do not exist in the reduced input.
+  // This will avoid generating garbage in case the two inputs do not
+  // correspond.
+  try
+  {
+
+    for (vtkIdType p=0; p<full_model->GetNumberOfPoints(); ++p)
+      {
+      double* coords = full_model->GetPoint(p);
+      size_t index[3];
+      index[0] = size_t(round((coords[0] - full_bounds[0])/full_spacing[0]));
+      index[1] = size_t(round((coords[1] - full_bounds[2])/full_spacing[1]));
+      index[2] = size_t(round((coords[2] - full_bounds[4])/full_spacing[2]));
+      size_t odd[3];
+      odd[0] = index[0] % 2;
+      odd[1] = index[1] % 2;
+      odd[2] = index[2] % 2;
+      index[0] /= 2;
+      index[1] /= 2;
+      index[2] /= 2;
+      n88_assert (index[0] < reduced_grid.dims()[2]);
+      n88_assert (index[1] < reduced_grid.dims()[1]);
+      n88_assert (index[2] < reduced_grid.dims()[0]);
+      if (!odd[0] && !odd[1] && !odd[2])
+        {
+        for (size_t i=0; i<3; ++i) {
+          n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
+          full_data->SetComponent(p,i,reduced_grid(index[2],index[1],index[0],i)); }
+        }
+      else if (odd[0] && !odd[1] && !odd[2])
+        {
+        for (size_t i=0; i<3; ++i) {
+          n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1],index[0]+1,i) != EMPTY);
+          full_data->SetComponent(p,i,
+            (reduced_grid(index[2],index[1],index[0]  ,i) +
+             reduced_grid(index[2],index[1],index[0]+1,i))/2); }
+        }
+      else if (!odd[0] && odd[1] && !odd[2])
+        {
+        for (size_t i=0; i<3; ++i) {
+          n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1]+1,index[0],i) != EMPTY);
+          full_data->SetComponent(p,i,
+            (reduced_grid(index[2],index[1]  ,index[0],i) +
+             reduced_grid(index[2],index[1]+1,index[0],i))/2); }
+        }
+      else if (!odd[0] && !odd[1] && odd[2])
+        {
+        for (size_t i=0; i<3; ++i) {
+          n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2]+1,index[1],index[0],i) != EMPTY);
+          full_data->SetComponent(p,i,
+            (reduced_grid(index[2]  ,index[1],index[0],i) +
+             reduced_grid(index[2]+1,index[1],index[0],i))/2); }
+        }
+      else if (!odd[0] && odd[1] && odd[2])
+        {
+        for (size_t i=0; i<3; ++i) {
+          n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1]+1,index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2]+1,index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2]+1,index[1]+1,index[0],i) != EMPTY);
+          full_data->SetComponent(p,i,
+            (reduced_grid(index[2]  ,index[1]  ,index[0],i) +
+             reduced_grid(index[2]  ,index[1]+1,index[0],i) +
+             reduced_grid(index[2]+1,index[1]  ,index[0],i) +
+             reduced_grid(index[2]+1,index[1]+1,index[0],i))/4); }
+        }
+      else if (odd[0] && !odd[1] && odd[2])
+        {
+        for (size_t i=0; i<3; ++i) {
+          n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1],index[0]+1,i) != EMPTY);
+          n88_assert (reduced_grid(index[2]+1,index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2]+1,index[1],index[0]+1,i) != EMPTY);
+          full_data->SetComponent(p,i,
+            (reduced_grid(index[2]  ,index[1],index[0]  ,i) +
+             reduced_grid(index[2]  ,index[1],index[0]+1,i) +
+             reduced_grid(index[2]+1,index[1],index[0]  ,i) +
+             reduced_grid(index[2]+1,index[1],index[0]+1,i))/4); }
+        }
+      else if (odd[0] && odd[1] && !odd[2])
+        {
+        for (size_t i=0; i<3; ++i) {
+          n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1],index[0]+1,i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1]+1,index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1]+1,index[0]+1,i) != EMPTY);
+          full_data->SetComponent(p,i,
+            (reduced_grid(index[2],index[1]  ,index[0]  ,i) +
+             reduced_grid(index[2],index[1]  ,index[0]+1,i) +
+             reduced_grid(index[2],index[1]+1,index[0]  ,i) +
+             reduced_grid(index[2],index[1]+1,index[0]+1,i))/4); }
+        }
+      else // all odd
+        {
+        for (size_t i=0; i<3; ++i) {
+          n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1],index[0]+1,i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1]+1,index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2],index[1]+1,index[0]+1,i) != EMPTY);
+          n88_assert (reduced_grid(index[2]+1,index[1],index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2]+1,index[1],index[0]+1,i) != EMPTY);
+          n88_assert (reduced_grid(index[2]+1,index[1]+1,index[0],i) != EMPTY);
+          n88_assert (reduced_grid(index[2]+1,index[1]+1,index[0]+1,i) != EMPTY);
+          full_data->SetComponent(p,i,
+            (reduced_grid(index[2]  ,index[1]  ,index[0]  ,i) +
+             reduced_grid(index[2]  ,index[1]  ,index[0]+1,i) +
+             reduced_grid(index[2]  ,index[1]+1,index[0]  ,i) +
+             reduced_grid(index[2]  ,index[1]+1,index[0]+1,i) +
+             reduced_grid(index[2]+1,index[1]  ,index[0]  ,i) +
+             reduced_grid(index[2]+1,index[1]  ,index[0]+1,i) +
+             reduced_grid(index[2]+1,index[1]+1,index[0]  ,i) +
+             reduced_grid(index[2]+1,index[1]+1,index[0]+1,i))/8); }
+        }
+      }
+    }
+  catch (n88::n88_exception e)
     {
-    double* coords = full_model->GetPoint(p);
-    size_t index[3];
-    index[0] = size_t(round((coords[0] - full_bounds[0])/full_spacing[0]));
-    index[1] = size_t(round((coords[1] - full_bounds[2])/full_spacing[1]));
-    index[2] = size_t(round((coords[2] - full_bounds[4])/full_spacing[2]));
-    size_t odd[3];
-    odd[0] = index[0] % 2;
-    odd[1] = index[1] % 2;
-    odd[2] = index[2] % 2;
-    index[0] /= 2;
-    index[1] /= 2;
-    index[2] /= 2;
-    n88_assert (index[0] < reduced_grid.dims()[2]);
-    n88_assert (index[1] < reduced_grid.dims()[1]);
-    n88_assert (index[2] < reduced_grid.dims()[0]);
-    if (!odd[0] && !odd[1] && !odd[2])
-      {
-      for (size_t i=0; i<3; ++i) {
-        full_data->SetComponent(p,i,reduced_grid(index[2],index[1],index[0],i)); }
-      }
-    else if (odd[0] && !odd[1] && !odd[2])
-      {
-      for (size_t i=0; i<3; ++i) {
-        full_data->SetComponent(p,i,
-          (reduced_grid(index[2],index[1],index[0]  ,i) +
-           reduced_grid(index[2],index[1],index[0]+1,i))/2); }
-      }
-    else if (!odd[0] && odd[1] && !odd[2])
-      {
-      for (size_t i=0; i<3; ++i) {
-        full_data->SetComponent(p,i,
-          (reduced_grid(index[2],index[1]  ,index[0],i) +
-           reduced_grid(index[2],index[1]+1,index[0],i))/2); }
-      }
-    else if (!odd[0] && !odd[1] && odd[2])
-      {
-      for (size_t i=0; i<3; ++i) {
-        full_data->SetComponent(p,i,
-          (reduced_grid(index[2]  ,index[1],index[0],i) +
-           reduced_grid(index[2]+1,index[1],index[0],i))/2); }
-      }
-    else if (!odd[0] && odd[1] && odd[2])
-      {
-      for (size_t i=0; i<3; ++i) {
-        full_data->SetComponent(p,i,
-          (reduced_grid(index[2]  ,index[1]  ,index[0],i) +
-           reduced_grid(index[2]  ,index[1]+1,index[0],i) +
-           reduced_grid(index[2]+1,index[1]  ,index[0],i) +
-           reduced_grid(index[2]+1,index[1]+1,index[0],i))/4); }
-      }
-    else if (odd[0] && !odd[1] && odd[2])
-      {
-      for (size_t i=0; i<3; ++i) {
-        full_data->SetComponent(p,i,
-          (reduced_grid(index[2]  ,index[1],index[0]  ,i) +
-           reduced_grid(index[2]  ,index[1],index[0]+1,i) +
-           reduced_grid(index[2]+1,index[1],index[0]  ,i) +
-           reduced_grid(index[2]+1,index[1],index[0]+1,i))/4); }
-      }
-    else if (odd[0] && odd[1] && !odd[2])
-      {
-      for (size_t i=0; i<3; ++i) {
-        full_data->SetComponent(p,i,
-          (reduced_grid(index[2],index[1]  ,index[0]  ,i) +
-           reduced_grid(index[2],index[1]  ,index[0]+1,i) +
-           reduced_grid(index[2],index[1]+1,index[0]  ,i) +
-           reduced_grid(index[2],index[1]+1,index[0]+1,i))/4); }
-      }
-    else // all odd
-      {
-      for (size_t i=0; i<3; ++i) {
-        full_data->SetComponent(p,i,
-          (reduced_grid(index[2]  ,index[1]  ,index[0]  ,i) +
-           reduced_grid(index[2]  ,index[1]  ,index[0]+1,i) +
-           reduced_grid(index[2]  ,index[1]+1,index[0]  ,i) +
-           reduced_grid(index[2]  ,index[1]+1,index[0]+1,i) +
-           reduced_grid(index[2]+1,index[1]  ,index[0]  ,i) +
-           reduced_grid(index[2]+1,index[1]  ,index[0]+1,i) +
-           reduced_grid(index[2]+1,index[1]+1,index[0]  ,i) +
-           reduced_grid(index[2]+1,index[1]+1,index[0]+1,i))/8); }
-      }
+    vtkErrorMacro(<<"Exception: " << e.what()
+                  << " FILE: " << e.file()
+                  << " LINE: " << e.line());
+    return VTK_ERROR;
     }
 
   if (this->SolutionArray) { this->SolutionArray->Delete(); }
