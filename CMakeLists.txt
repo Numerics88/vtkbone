@@ -6,7 +6,7 @@ project (vtkbone)
 set(VTKBONE_MAJOR_VERSION 1)
 set(VTKBONE_MINOR_VERSION 0)
 set(VTKBONE_PATCH_VERSION 0)
-set (VTKBONE_VERSION_TAG "devel")
+set (VTKBONE_VERSION_TAG "beta1")
 
 # This is the version for CMake purposes, which must be of the form x.y.z
 set(VTKBONE_VERSION
