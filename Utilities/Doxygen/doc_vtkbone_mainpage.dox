@@ -4,11 +4,12 @@
 
   @par Overview
   vtkbone is a library of VTK classes that provide functionality
-  for manipulating Finite Element models and data.
+  for manipulating finite element models and data.
   
   @par Useful links:
-  @li Numerics88 website: http://www.numerics88.com/
-  @li Numerics88 Manual: <a href="../../manual/html/index.html">../../manual/html/index.html</a>
+  @li Numerics88 website: http://numerics88.com/
+  @li vtkbone source code: https://github.com/Numerics88/vtkbone
+  @li Faim Manual version 8: http:/numerics88.com/documentation/faim/manual/8.0/
   @li Numerics88 email: info@numerics88.com
   @li VTK Home: http://www.vtk.org/
   @li VTK Wiki: http://www.vtk.org/Wiki/
