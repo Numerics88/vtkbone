@@ -32,7 +32,7 @@
 
 vtkStandardNewMacro(vtkboneCoarsenModel);
 
-const float homminga_exponent = 1.7;
+const double homminga_exponent = 1.7;
 
 const unsigned int EMPTY = std::numeric_limits<unsigned int>::max();
 
@@ -798,7 +798,7 @@ int vtkboneCoarsenModel::GenerateMaterials
             {
             throw_n88_exception ("Internal error.");
             }
-          stressStrain->GetUpperTriangularPacked(D.data());
+          stressStrain->GetUpperTriangularPacked(&(D[0]));
           if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
             {
             for (unsigned int k=0; k<21; ++k)
@@ -817,7 +817,7 @@ int vtkboneCoarsenModel::GenerateMaterials
           }
         }
       n88_assert (count); // Must be at least one input element corresponding to output element
-      anisoMaterials->SetScaledItemUpperTriangular (oel,sum_D.data(), 1.0/8.0);
+      anisoMaterials->SetScaledItemUpperTriangular (oel,&(sum_D[0]), 1.0/8.0);
       if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
         {
         from_homminga_density_inplace (anisoMaterials->GetItemUpperTriangular(oel), 21);
