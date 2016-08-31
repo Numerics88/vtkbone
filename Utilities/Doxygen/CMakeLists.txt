@@ -26,16 +26,20 @@ IF (BUILD_DOCUMENTATION)
     SET (VTK_SOURCE_DIR "NOT_FOUND" CACHE PATH "For building documentation. Can no longer determine automatically.")
   ENDIF()
 
-  CONFIGURE_FILE(
-    ${VTKBONE_SOURCE_DIR}/Utilities/Doxygen/doxyfile.in
-    ${VTKBONE_BINARY_DIR}/Utilities/Doxygen/doxyfile)
+  # Need to be set for doc_makeall.sh
+  SET (VTKBONE_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
+  SET (VTKBONE_BINARY_DIR "${CMAKE_BINARY_DIR}")
 
   CONFIGURE_FILE(
-    ${VTKBONE_SOURCE_DIR}/Utilities/Doxygen/doc_makeall.sh.in
-    ${VTKBONE_BINARY_DIR}/Utilities/Doxygen/doc_makeall.sh)
+    ${CMAKE_SOURCE_DIR}/Utilities/Doxygen/doxyfile.in
+    ${CMAKE_BINARY_DIR}/Utilities/Doxygen/doxyfile)
+
+  CONFIGURE_FILE(
+    ${CMAKE_SOURCE_DIR}/Utilities/Doxygen/doc_makeall.sh.in
+    ${CMAKE_BINARY_DIR}/Utilities/Doxygen/doc_makeall.sh)
 
   ADD_CUSTOM_TARGET(vtkboneDoxygenDoc
     ${BASH}
-    ${VTKBONE_BINARY_DIR}/Utilities/Doxygen/doc_makeall.sh)
+    ${CMAKE_BINARY_DIR}/Utilities/Doxygen/doc_makeall.sh)
 
 ENDIF (BUILD_DOCUMENTATION)
