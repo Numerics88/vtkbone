@@ -25,11 +25,14 @@ configure_file (
     "${PROJECT_SOURCE_DIR}/vtkbone_version.h.in"
     "${PROJECT_BINARY_DIR}/vtkbone_version.h")
 
+# Ensure that CMake behaves predictably
+set (CMAKE_EXPORT_NO_PACKAGE_REGISTRY ON)
+set (CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY ON)
+set (CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY ON)
 
 # === Hide a lot of complication in CMakeOptions file.
 
 include (${PROJECT_SOURCE_DIR}/CMakeOptions.cmake)
-
 
 # === Source code files
 
