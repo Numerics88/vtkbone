@@ -168,11 +168,16 @@ set (VTKBONE_DISTRIBUTED_INCLUDE_FILES
 include_directories (${PROJECT_BINARY_DIR})
 include_directories (${PROJECT_SOURCE_DIR})
 include_directories (${PROJECT_SOURCE_DIR}/Source)
-include_directories (${Boost_INCLUDE_DIR})
-include_directories (${CMAKE_SOURCE_DIR}/Utilities)
 include_directories (${CMAKE_SOURCE_DIR}/HelperCode)
+include_directories (${Boost_INCLUDE_DIR})
+include_directories (${AIMIO_INCLUDE_DIRS})
+if (NOT VTKBONE_USE_VTKNETCDF)
+    include_directories (${netCDF_INCLUDE_DIR})
+endif()
 include_directories (${N88UTIL_INCLUDE_DIRS})
-
+if (VTKBONE_WRAP_PYTHON)
+    include_directories(${PYTHON_INCLUDE_DIRS})
+endif()
 
 # === Create the vtkbone C++ library
 

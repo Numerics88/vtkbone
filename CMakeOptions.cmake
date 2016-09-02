@@ -33,12 +33,10 @@ find_package (Boost 1.59.0 COMPONENTS date_time filesystem system REQUIRED)
 # Requires n88util
 find_package (n88util 2.0 REQUIRED)
 mark_as_advanced (n88util_DIR)
-include_directories (${N88UTIL_INCLUDE_DIRS})
 
 # Requires AimIO
 find_package (AimIO 1.0 REQUIRED)
 mark_as_advanced (AimIO_DIR)
-include_directories (${AIMIO_INCLUDE_DIRS})
 
 add_subdirectory (Utilities)
 
@@ -93,7 +91,6 @@ else ()
           set (netCDF_LIBRARIES "${netCDF_LIBRARY};${HDF5_HL_LIBRARY};${HDF5_LIBRARY};${ZLIB_LIBRARIES}")
         endif()
     endif()
-    include_directories (${netCDF_INCLUDE_DIR})
 endif ()
 
 # Build shared libs ?
@@ -136,7 +133,6 @@ if (VTK_WRAP_PYTHON)
           OUTPUT_STRIP_TRAILING_WHITESPACE)
         set (PYTHON_SITE_PACKAGES "${PYTHON_SITE_PACKAGES_DEFAULT}" CACHE PATH
           "Local installation location of python packages")
-        include_directories(${PYTHON_INCLUDE_DIRS})
       endif ()
 
 else ()
