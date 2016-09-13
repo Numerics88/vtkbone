@@ -30,18 +30,22 @@ public:
   // Description:
   // Return a string identifier of the version of vtkbone.
   static const char *GetVTKBONEVersion();
+  static const char *GetvtkboneVersion();
 
   // Description:
   // Return the major version of vtkbone.
   static int GetVTKBONEMajorVersion();
+  static int GetvtkboneMajorVersion();
 
   // Description:
   // Return the minor version of vtkbone.
   static int GetVTKBONEMinorVersion();
+  static int GetvtkboneMinorVersion();
 
   // Description:
   // Return the minor minor version of vtkbone.
   static int GetVTKBONEMinorMinorVersion();
+  static int GetvtkboneMinorMinorVersion();
   
 protected:
   vtkboneVersion() {};
