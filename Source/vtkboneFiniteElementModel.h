@@ -310,6 +310,7 @@ public:
   // from it. For example, for a constraint on displacements, a
   // convergence set of force will be generated.
   virtual int ConvergenceSetFromConstraint(vtkboneConstraint* constraint);
+  virtual int ConvergenceSetFromConstraint(const char* constraintName);
 
   // Description:
   // Return a Dataset consisting of the nodes or cells associated with

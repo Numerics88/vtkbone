@@ -239,8 +239,7 @@ int vtkboneApplyCompressionTest::AddConvergenceSet
   vtkboneFiniteElementModel* model
   )
   {
-  return model->ConvergenceSetFromConstraint(
-           model->GetConstraints()->GetItem("top_displacement"));
+  return model->ConvergenceSetFromConstraint("top_displacement");
   }
 
 //----------------------------------------------------------------------------

@@ -283,8 +283,7 @@ int vtkboneApplySymmetricShearTest::AddConvergenceSet
   vtkboneFiniteElementModel* model
   )
   {
-  return model->ConvergenceSetFromConstraint(
-           model->GetConstraints()->GetItem("face_y0_lateral"));
+  return model->ConvergenceSetFromConstraint("face_y0_lateral");
   }
 
 //----------------------------------------------------------------------------

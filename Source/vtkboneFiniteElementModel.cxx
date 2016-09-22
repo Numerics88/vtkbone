@@ -894,6 +894,14 @@ int vtkboneFiniteElementModel::ConvergenceSetFromConstraint(vtkboneConstraint* i
 
 
 //----------------------------------------------------------------------------
+int vtkboneFiniteElementModel::ConvergenceSetFromConstraint(const char* constraintName)
+  {
+  return this->ConvergenceSetFromConstraint(
+           this->GetConstraints()->GetItem(constraintName));
+  }
+
+
+//----------------------------------------------------------------------------
 int vtkboneFiniteElementModel::DataSetFromConstraint(
   vtkboneConstraint* constraint,
   vtkUnstructuredGrid* data)
