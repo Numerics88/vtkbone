@@ -120,6 +120,7 @@ void vtkboneAIMWriter::WriteData()
       vtkErrorMacro(<<"An output filename must be specified.");
       return;
     }
+  writer.filename = this->FileName;
 
   // Do this again - they may have changed.
   input->GetDimensions(dimension);
