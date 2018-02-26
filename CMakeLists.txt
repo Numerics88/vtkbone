@@ -5,7 +5,7 @@ project (vtkbone)
 
 set(VTKBONE_MAJOR_VERSION 1)
 set(VTKBONE_MINOR_VERSION 0)
-set(VTKBONE_PATCH_VERSION 1)
+set(VTKBONE_PATCH_VERSION 2)
 set (VTKBONE_VERSION_TAG "devel")
 
 # This is the version for CMake purposes, which must be of the form x.y.z
@@ -84,6 +84,7 @@ set (VTKBONE_WRAPPED_SRCS
     Source/vtkboneN88ModelWriter.cxx
     Source/vtkboneNodeSetsByGeometry.cxx
     Source/vtkboneOrientationFilter.cxx
+    Source/vtkbonepQCTReader.cxx
     Source/vtkboneReorderDataArray.cxx
     Source/vtkboneSelectionUtilities.cxx
     Source/vtkboneSelectVisiblePoints.cxx
@@ -153,6 +154,7 @@ set (VTKBONE_DISTRIBUTED_INCLUDE_FILES
     Source/vtkboneN88ModelWriter.h
     Source/vtkboneNodeSetsByGeometry.h
     Source/vtkboneOrientationFilter.h
+    Source/vtkbonepQCTReader.h
     Source/vtkbonePrettyReports.h
     Source/vtkboneReorderDataArray.h
     Source/vtkboneSelectionUtilities.h
@@ -174,6 +176,7 @@ include_directories (${PROJECT_SOURCE_DIR}/Source)
 include_directories (${CMAKE_SOURCE_DIR}/HelperCode)
 include_directories (${Boost_INCLUDE_DIR})
 include_directories (${AIMIO_INCLUDE_DIRS})
+include_directories (${PQCTIO_INCLUDE_DIRS})
 if (NOT VTKBONE_USE_VTKNETCDF)
     include_directories (${netCDF_INCLUDE_DIR})
 endif()
@@ -188,6 +191,7 @@ add_library (vtkbone ${VTKBONE_SRCS})
 target_link_libraries (vtkbone
     ${VTK_LIBRARIES}
     AimIO
+    pQCTIO
     n88util
     ${Boost_DATE_TIME_LIBRARY}
     ${Boost_FILESYSTEM_LIBRARY}

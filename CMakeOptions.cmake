@@ -38,6 +38,10 @@ mark_as_advanced (n88util_DIR)
 find_package (AimIO 1.0 REQUIRED)
 mark_as_advanced (AimIO_DIR)
 
+# Requires pQCT
+find_package (pQCTIO 1.0 REQUIRED)
+mark_as_advanced (pQCTIO_Dir)
+
 add_subdirectory (Utilities)
 
 find_package (VTK COMPONENTS

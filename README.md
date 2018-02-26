@@ -18,6 +18,7 @@ vtkbone requires the following:
   * Boost: www.boost.org
   * n88util: https://github.com/Numerics88/n88util
   * AimIO: https://github.com/Numerics88/AimIO
+  * pQCTIO: https://github.com/Numerics88/pQCTIO
   * Google test: https://github.com/google/googletest
 
 To build and run the tests with cmake, on linux or macOS, something like the
