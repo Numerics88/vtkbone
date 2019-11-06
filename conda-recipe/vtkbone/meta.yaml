@@ -1,0 +1,37 @@
+
+package:
+  name: vtkbone
+  version: {{ GIT_DESCRIBE_TAG | lower | replace("v","") }}
+
+source:
+  path: ./../../
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - cmake >=3.1.0
+    - ninja
+    - gtest
+    - boost >=1.59
+    - libnetcdf
+    - pqctio
+    - aimio
+    - vtk =6.3
+  run:
+    - boost >=1.59
+    - libnetcdf
+    - pqctio
+    - aimio
+    - vtk =6.3
+
+about:
+  home: https://github.com/Numerics88/vtkbone
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: 'VTK classes for bone FEA'
+  description: |
+    VTK classes for processing of finite element models derived from micro-CT. vtkbone was formerly vtkn88.
+  dev_url: https://github.com/Numerics88/vtkbone
