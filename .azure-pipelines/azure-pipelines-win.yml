@@ -1,0 +1,28 @@
+
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - powershell: |
+        Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+    displayName: Add conda to path
+  - script: |
+        conda create -y -n n88 python=2 conda-build
+    displayName: Setup conda
+  - script: |
+        call activate n88
+        conda-build -c Numerics88 -c anaconda conda-recipe/vtkbone/
+    displayName: Conda build
+  - task: CopyFiles@2
+    inputs:
+        sourceFolder: C:\Miniconda\envs\n88\conda-bld\win-64\
+        contents: '*.tar.bz2'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: Copy conda build
+  - task: PublishBuildArtifacts@1
+    inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: vtkbone-Windows
+    displayName: Publish artifact
+

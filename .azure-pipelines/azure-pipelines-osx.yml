@@ -1,0 +1,29 @@
+
+jobs:
+- job: macOS
+  pool:
+    vmImage: 'macOS-latest'
+  steps:
+  - bash: |
+        echo "##vso[task.prependpath]$CONDA/bin"
+        sudo chown -R $USER $CONDA
+    displayName: Add conda to path
+  - script: |
+        conda create -y -n n88 python=2 conda-build
+    displayName: Setup conda
+  - script: |
+        source activate n88
+        conda-build -c Numerics88 -c anaconda --python=2.7 conda-recipe/vtkbone/
+    displayName: Conda build
+  - task: CopyFiles@2
+    inputs:
+        sourceFolder: /usr/local/miniconda/envs/n88/conda-bld/osx-64/
+        contents: '*.tar.bz2'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: Copy conda build
+  - task: PublishBuildArtifacts@1
+    inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: vtkbone-macOS
+    displayName: Publish artifact
+

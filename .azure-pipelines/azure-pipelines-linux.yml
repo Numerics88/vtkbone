@@ -1,0 +1,28 @@
+
+jobs:
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - bash: |
+        echo "##vso[task.prependpath]$CONDA/bin"
+    displayName: Add conda to path, change permissions
+  - script: |
+        conda create -y -n n88 python=2 conda-build
+    displayName: Setup conda
+  - script: |
+        source activate n88
+        conda-build -c Numerics88 -c anaconda --python=2.7 conda-recipe/vtkbone/
+    displayName: Conda build
+  - task: CopyFiles@2
+    inputs:
+        sourceFolder: /usr/share/miniconda/envs/n88/conda-bld/linux-64/
+        contents: '*.tar.bz2'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: Copy conda build
+  - task: PublishBuildArtifacts@1
+    inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: vtkbone-Linux
+    displayName: Publish artifact
+
