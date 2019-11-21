@@ -4,11 +4,9 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - powershell: |
-        Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
     displayName: Add conda to path
-  - script: |
-        conda create -y -n n88 python=2 conda-build
+  - script: conda create -y -n n88 python=2 conda-build
     displayName: Setup conda
   - script: |
         call activate n88

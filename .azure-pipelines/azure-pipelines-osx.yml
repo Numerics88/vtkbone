@@ -8,8 +8,7 @@ jobs:
         echo "##vso[task.prependpath]$CONDA/bin"
         sudo chown -R $USER $CONDA
     displayName: Add conda to path
-  - script: |
-        conda create -y -n n88 python=2 conda-build
+  - script: conda create -y -n n88 python=2 conda-build
     displayName: Setup conda
   - script: |
         source activate n88

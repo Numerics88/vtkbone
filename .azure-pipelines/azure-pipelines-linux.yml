@@ -4,11 +4,9 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - bash: |
-        echo "##vso[task.prependpath]$CONDA/bin"
-    displayName: Add conda to path, change permissions
-  - script: |
-        conda create -y -n n88 python=2 conda-build
+  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+    displayName: Add conda to path
+  - script: conda create -y -n n88 python=2 conda-build
     displayName: Setup conda
   - script: |
         source activate n88
