@@ -1,3 +1,4 @@
+set -x
 
 # Create build directory
 mkdir build

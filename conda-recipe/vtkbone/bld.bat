@@ -1,3 +1,4 @@
+@echo on
 
 :: Create build directory
 mkdir build
