@@ -1,0 +1,14 @@
+c_compiler:
+  - gcc                        # [linux]
+  - clang                      # [osx]
+  - vs2015                     # [win]
+cxx_compiler:
+  - gxx                        # [linux]
+  - clangxx                    # [osx]
+  - vs2015                     # [win]
+macos_min_version:             # [osx]
+  - 10.9                       # [osx]
+MACOSX_DEPLOYMENT_TARGET:      # [osx]
+  - 10.9                       # [osx]
+CONDA_BUILD_SYSROOT:
+  - /opt/MacOSX10.9.sdk        # [osx]

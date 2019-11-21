@@ -12,6 +12,7 @@ build:
 # Note, boost has an upperbound right now to hanlde cmake correctly
 requirements:
   build:
+    - {{ compiler('cxx') }}
     - cmake >=3.1.0
     - ninja
     - gtest

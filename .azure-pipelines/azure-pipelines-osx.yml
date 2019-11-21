@@ -8,6 +8,12 @@ jobs:
         echo "##vso[task.prependpath]$CONDA/bin"
         sudo chown -R $USER $CONDA
     displayName: Add conda to path
+  - bash: |
+      sudo mkdir -p /opt/
+      sudo chown -R $USER /opt/
+      curl  -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz -o MacOSX10.9.sdk.tar.xz
+      tar -xJf MacOSX10.9.sdk.tar.xz -C /opt/
+    displayName: Download OSX SDK
   - script: conda create -y -n n88 python=2 conda-build
     displayName: Setup conda
   - script: |
