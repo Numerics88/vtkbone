@@ -28,7 +28,7 @@ endif ()
 
 # Requires Boost
 # set (Boost_USE_STATIC_LIBS ON)
-find_package (Boost 1.59.0 COMPONENTS date_time filesystem system REQUIRED)
+find_package (Boost 1.61.0 COMPONENTS date_time filesystem system REQUIRED)
 
 # Requires n88util
 find_package (n88util 2.0 REQUIRED)
@@ -43,6 +43,9 @@ find_package (pQCTIO 1.0 REQUIRED)
 mark_as_advanced (pQCTIO_Dir)
 
 add_subdirectory (Utilities)
+
+# We need to include TBB untill VTK fixes their CMake exports
+find_package(tbb REQUIRED)
 
 find_package (VTK COMPONENTS
     vtkFiltersExtraction

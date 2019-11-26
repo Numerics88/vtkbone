@@ -186,19 +186,21 @@ include_directories (${N88UTIL_INCLUDE_DIRS})
 if (VTKBONE_WRAP_PYTHON)
     include_directories(${PYTHON_INCLUDE_DIRS})
 endif()
+# We need to include TBB untill VTK fixes their CMake exports
+include_directories (${TBB_INCLUDE_DIRS})
 
 # === Create the vtkbone C++ library
 
 add_library (vtkbone ${VTKBONE_SRCS})
 target_link_libraries (vtkbone
     ${VTK_LIBRARIES}
-    AimIO
-    pQCTIO
-    n88util
-    ${Boost_DATE_TIME_LIBRARY}
-    ${Boost_FILESYSTEM_LIBRARY}
-    ${Boost_SYSTEM_LIBRARY}
+    AimIO::AimIO
+    pQCTIO::pQCTIO
+    n88util::n88util
+	Boost::date_time Boost::filesystem Boost::system
+		TBB::tbb
     )
+# We need to include TBB untill VTK fixes their CMake exports
 
 if (VTKBONE_USE_VTKNETCDF)
     target_link_libraries (vtkbone
@@ -240,7 +242,7 @@ if (VTK_WRAP_PYTHON AND VTKBONE_WRAP_PYTHON)
     include_directories (${VTK_CMAKE_DIR}/../Wrapping/Python)
     include_directories (${VTK_CMAKE_DIR}/../Wrapping/PythonCore)
     include_directories (${VTK_CMAKE_DIR}/../Utilities/Python)
-    vtk_wrap_python3 (vtkbonePython vtkbonePython_SRCS "${VTKBONE_WRAPPED_SRCS_ABSPATH}")
+    vtk_wrap_python (vtkbonePython vtkbonePython_SRCS "${VTKBONE_WRAPPED_SRCS_ABSPATH}")
     add_library (vtkbonePythonD ${vtkbonePython_SRCS})
     add_library (vtkbonePython MODULE vtkbonePythonInit.cxx)
     # The following is a horrible hack and probably not the way to
