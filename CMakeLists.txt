@@ -91,6 +91,7 @@ set (VTKBONE_WRAPPED_SRCS
     Source/vtkboneSolverParameters.cxx
     Source/vtkboneStressStrainMatrix.cxx
     Source/vtkboneTensorOfInertia.cxx
+    Source/vtkboneTensor.cxx
     Source/vtkboneVerifyUnstructuredGrid.cxx
     Source/vtkboneVersion.cxx
     Source/vtkboneVonMisesIsotropicMaterial.cxx
@@ -162,7 +163,8 @@ set (VTKBONE_DISTRIBUTED_INCLUDE_FILES
     Source/vtkboneSolverParameters.h
     Source/vtkboneStressStrainMatrix.h
     Source/vtkboneTensorOfInertia.h
-    Source/vtkboneVerifyUnstructuredGrid.h    
+    Source/vtkboneTensor.h
+    Source/vtkboneVerifyUnstructuredGrid.h
     Source/vtkboneVersion.h
     Source/vtkboneVonMisesIsotropicMaterial.h
     Source/vtkboneWin32Header.h

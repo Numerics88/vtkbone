@@ -28,9 +28,9 @@
 #include "vtkImageData.h"
 #include "vtkUnstructuredGrid.h"
 #include "vtkboneWin32Header.h"
+#include "vtkboneTensor.h"
 
 // forward declarations
-class vtkTensor;
 class vtkMatrix3x3;
 
 class VTKBONE_EXPORT vtkboneTensorOfInertia : public vtkAlgorithm
@@ -48,7 +48,7 @@ public:
   // Will be delegated to  RequestData
   virtual int ProcessRequest(vtkInformation*,
                              vtkInformationVector**,
-                             vtkInformationVector*);
+                             vtkInformationVector*) override;
 
   // Description:
   // Assign a data object as input.
@@ -111,11 +111,11 @@ public:
 
   // Description:
   // Compute and return the tensor of inertia about the center of mass.
-  void GetTensorOfInertia(vtkTensor* MOI);
+  void GetTensorOfInertia(vtkboneTensor* MOI);
 
   // Description:
   // Compute and return the tensor of inertia about the origin.
-  void GetTensorOfInertiaAboutOrigin(vtkTensor* MOI);
+  void GetTensorOfInertiaAboutOrigin(vtkboneTensor* MOI);
 
   // Description:
   // Get the eigenvectors of the tensor of inertia.  The principal axes
@@ -145,30 +145,30 @@ public:
   // with mass m, calculate the tensor of inertia B about the point r.
   // Note: Invariant under r -> -r, which can be handy.
   static void TranslateTensorOfInertiaFromCOM(
-      vtkTensor* T0,
+      vtkboneTensor* T0,
       double mass,
       double r[3],
-      vtkTensor* T);
+      vtkboneTensor* T);
 
   // Description:
   // Given a tensor of inertia T about some point r of a body with mass m,
   // calculates the tensor of inertia B about the center of mass.
   // Note: Invariant under r -> -r, which can be handy.
   static void TranslateTensorOfInertiaToCOM(
-      vtkTensor* T,
+      vtkboneTensor* T,
       double mass,
       double r[3],
-      vtkTensor* T0);
+      vtkboneTensor* T0);
 
   // Description:
   // Given a tensor of inertia T1 about some point r1 of a body with mass m,
   // calculate the tensor of inertia T2 about some other point r2.
   static void TranslateTensorOfInertia(
-      vtkTensor* T1,
+      vtkboneTensor* T1,
       double r1[3],
       double mass,
       double r2[3],
-      vtkTensor* T2);
+      vtkboneTensor* T2);
 
 protected:
   vtkboneTensorOfInertia();
@@ -182,7 +182,7 @@ protected:
 
   virtual int ProcessUnstructuredGrid(vtkUnstructuredGrid* grid);
 
-  virtual int FillInputPortInformation(int port, vtkInformation* info);
+  virtual int FillInputPortInformation(int port, vtkInformation* info) override;
 
   // Settings
   int           UseSpecificValue;
@@ -192,15 +192,15 @@ protected:
   double        UpperThreshold;
 
   // Results
-  vtkIdType     Count;
-  double        Volume;
-  double        Mass;
-  double        CenterOfMass[3];
-  vtkTensor*    TensorOfInertiaAboutOrigin;
-  vtkTensor*    TensorOfInertia;
-  vtkMatrix3x3* Eigenvectors;
-  double        PrincipalMoments[3];
-  double        PrincipalAxisClosestToX[3];
+  vtkIdType     	Count;
+  double        	Volume;
+  double        	Mass;
+  double        	CenterOfMass[3];
+  vtkboneTensor*  TensorOfInertiaAboutOrigin;
+  vtkboneTensor*  TensorOfInertia;
+  vtkMatrix3x3* 	Eigenvectors;
+  double        	PrincipalMoments[3];
+  double        	PrincipalAxisClosestToX[3];
   double        PrincipalAxisClosestToY[3];
   double        PrincipalAxisClosestToZ[3];
 

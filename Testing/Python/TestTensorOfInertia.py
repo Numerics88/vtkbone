@@ -45,7 +45,7 @@ def tensor_of_inertia_standard_analysis(toi, I_ref, COM_ref, count_ref, mass_ref
 
     # Check the tensor of inertia about the origin.
     #
-    I_vtk = vtk.vtkTensor()
+    I_vtk = vtkbone.vtkboneTensor()
     toi.GetTensorOfInertiaAboutOrigin(I_vtk)
     I = zeros((3,3), float)
     for i,j in itertools.product(range(3),range(3)):
@@ -54,7 +54,7 @@ def tensor_of_inertia_standard_analysis(toi, I_ref, COM_ref, count_ref, mass_ref
     
     # Check the tensor of inertia about the center of mass.
     #
-    I_center_vtk = vtk.vtkTensor()
+    I_center_vtk = vtkbone.vtkboneTensor()
     toi.GetTensorOfInertia(I_center_vtk)
     I_center = zeros((3,3), float)
     for i,j in itertools.product(range(3),range(3)):
