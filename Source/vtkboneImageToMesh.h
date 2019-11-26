@@ -64,7 +64,7 @@ class VTKBONE_EXPORT vtkboneImageToMesh : public vtkUnstructuredGridAlgorithm
 public:
   static vtkboneImageToMesh* New();
   vtkTypeMacro(vtkboneImageToMesh, vtkUnstructuredGridAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void Report(ostream& s);
 
 protected:

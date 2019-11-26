@@ -53,7 +53,7 @@ public:
 
   static vtkboneAbaqusInputReader* New();
   vtkTypeMacro(vtkboneAbaqusInputReader,vtkboneFiniteElementModelAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/get the file name of the ABAQUS Input file to read.

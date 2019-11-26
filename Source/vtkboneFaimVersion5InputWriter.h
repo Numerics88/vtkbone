@@ -62,7 +62,7 @@ class VTKBONE_EXPORT vtkboneFaimVersion5InputWriter : public vtkWriter
 public:
   static vtkboneFaimVersion5InputWriter *New();
   vtkTypeMacro(vtkboneFaimVersion5InputWriter, vtkWriter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Specify file name of file to write.

@@ -39,7 +39,7 @@ class VTKBONE_EXPORT vtkboneMaximumPrincipalStrainIsotropicMaterial : public vtk
   public:
     static vtkboneMaximumPrincipalStrainIsotropicMaterial* New();
     vtkTypeMacro(vtkboneMaximumPrincipalStrainIsotropicMaterial, vtkboneLinearIsotropicMaterial);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Set the yield strains in tension and compression.

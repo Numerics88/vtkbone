@@ -40,7 +40,7 @@ class VTKBONE_EXPORT vtkboneStressStrainMatrix : public vtkObject
 public:
   static vtkboneStressStrainMatrix *New();
   vtkTypeMacro(vtkboneStressStrainMatrix,vtkObject);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set the stress-strain matrix using isotropic parameters.

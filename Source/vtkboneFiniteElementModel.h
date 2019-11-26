@@ -87,7 +87,7 @@ class VTKBONE_EXPORT vtkboneFiniteElementModel : public vtkUnstructuredGrid
 public:
   static vtkboneFiniteElementModel* New();
   vtkTypeMacro(vtkboneFiniteElementModel, vtkUnstructuredGrid);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Add a node set.

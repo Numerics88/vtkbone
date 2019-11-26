@@ -53,7 +53,7 @@ class VTKBONE_EXPORT vtkboneAIMReader : public vtkImageAlgorithm
 public:
   static vtkboneAIMReader *New();
   vtkTypeMacro(vtkboneAIMReader, vtkImageAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/Get the name of the file to read.

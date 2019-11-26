@@ -40,7 +40,7 @@ class VTKBONE_EXPORT vtkboneVerifyUnstructuredGrid : public vtkUnstructuredGridA
 public:
   static vtkboneVerifyUnstructuredGrid* New();
   vtkTypeMacro(vtkboneVerifyUnstructuredGrid, vtkUnstructuredGridAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/Get the point coordinate tolerance distance.  This tolerance is

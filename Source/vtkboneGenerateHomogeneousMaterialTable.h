@@ -41,7 +41,7 @@ class VTKBONE_EXPORT vtkboneGenerateHomogeneousMaterialTable : public vtkboneMat
 public:
   static vtkboneGenerateHomogeneousMaterialTable *New();
   vtkTypeMacro(vtkboneGenerateHomogeneousMaterialTable, vtkboneMaterialTableAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set the material. This object can be any kind of derived class of

@@ -49,7 +49,7 @@ class VTKBONE_EXPORT vtkboneN88ModelWriter : public vtkWriter
 public:
   static vtkboneN88ModelWriter *New();
   vtkTypeMacro(vtkboneN88ModelWriter, vtkWriter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Specify file name of file to write.

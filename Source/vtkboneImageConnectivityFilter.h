@@ -40,7 +40,7 @@ public:
   static vtkboneImageConnectivityFilter* New();
   vtkTypeMacro(vtkboneImageConnectivityFilter,
                        vtkSimpleImageToImageFilter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // These match the defines in vtkConnectivityFilter
   enum ExtractionMode_t {

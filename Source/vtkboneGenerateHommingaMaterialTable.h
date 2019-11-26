@@ -55,7 +55,7 @@ class VTKBONE_EXPORT vtkboneGenerateHommingaMaterialTable : public vtkboneMateri
 public:
   static vtkboneGenerateHommingaMaterialTable *New();
   vtkTypeMacro(vtkboneGenerateHommingaMaterialTable, vtkboneMaterialTableAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/Get the material ID equal for the first material definition in the sequence.

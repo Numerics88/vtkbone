@@ -62,7 +62,7 @@ class VTKBONE_EXPORT vtkboneApplyBendingTest : public vtkboneApplyTestBase
 public:
   static vtkboneApplyBendingTest *New();
   vtkTypeMacro(vtkboneApplyBendingTest, vtkboneApplyTestBase);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void PrintParameters(ostream& os, vtkIndent indent);
 
   // Description:

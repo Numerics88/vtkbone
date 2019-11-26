@@ -61,7 +61,7 @@ class VTKBONE_EXPORT vtkboneApplyCompressionTest : public vtkboneApplyTestBase
 public:
   static vtkboneApplyCompressionTest *New();
   vtkTypeMacro(vtkboneApplyCompressionTest, vtkboneApplyTestBase);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void PrintParameters(ostream& os, vtkIndent indent);
 
   // Description:

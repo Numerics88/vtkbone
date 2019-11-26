@@ -37,7 +37,7 @@ class VTKBONE_EXPORT vtkboneN88ModelReader : public vtkboneFiniteElementModelAlg
 public:
   static vtkboneN88ModelReader *New();
   vtkTypeMacro(vtkboneN88ModelReader, vtkboneFiniteElementModelAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/get the file name of the file to read.

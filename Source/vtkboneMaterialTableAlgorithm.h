@@ -29,7 +29,7 @@ class VTKBONE_EXPORT vtkboneMaterialTableAlgorithm : public vtkAlgorithm
 public:
   static vtkboneMaterialTableAlgorithm *New();
   vtkTypeMacro(vtkboneMaterialTableAlgorithm,vtkAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Get the output data object for a port on this algorithm.

@@ -36,7 +36,7 @@ class VTKBONE_EXPORT vtkboneMaterialArray : public vtkboneMaterial
   public:
     static vtkboneMaterialArray* New();
     vtkTypeMacro(vtkboneMaterialArray, vtkObject);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Destructively re-sizes the arrays.

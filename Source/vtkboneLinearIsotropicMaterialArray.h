@@ -33,7 +33,7 @@ class VTKBONE_EXPORT vtkboneLinearIsotropicMaterialArray : public vtkboneMateria
   public:
     static vtkboneLinearIsotropicMaterialArray* New();
     vtkTypeMacro(vtkboneLinearIsotropicMaterialArray, vtkboneMaterialArray);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Destructively re-sizes the arrays.

@@ -130,7 +130,7 @@ class VTKBONE_EXPORT vtkboneConstraint : public vtkObject
 public:
   static vtkboneConstraint* New();
   vtkTypeMacro(vtkboneConstraint, vtkObject);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   void Initialize();
 

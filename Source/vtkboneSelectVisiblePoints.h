@@ -38,7 +38,7 @@ class VTKBONE_EXPORT vtkboneSelectVisiblePoints : public vtkPolyDataAlgorithm
 public:
   static vtkboneSelectVisiblePoints* New();
   vtkTypeMacro(vtkboneSelectVisiblePoints, vtkPolyDataAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Sets the tolerance for calculating intersection.  If any polygon

@@ -53,7 +53,7 @@ class VTKBONE_EXPORT vtkbonepQCTReader : public vtkImageAlgorithm
 public:
   static vtkbonepQCTReader *New();
   vtkTypeMacro(vtkbonepQCTReader, vtkImageAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/Get the name of the file to read.

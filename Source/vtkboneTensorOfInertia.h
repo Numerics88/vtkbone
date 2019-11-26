@@ -41,7 +41,7 @@ public:
   static vtkboneTensorOfInertia *New();
 
   vtkTypeMacro(vtkboneTensorOfInertia,vtkAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
    // Description:
   // Process a request from the executive.

@@ -38,7 +38,7 @@ class VTKBONE_EXPORT vtkboneVonMisesIsotropicMaterial : public vtkboneLinearIsot
   public:
     static vtkboneVonMisesIsotropicMaterial* New();
     vtkTypeMacro(vtkboneVonMisesIsotropicMaterial, vtkboneLinearIsotropicMaterial);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Set Yield Strength.

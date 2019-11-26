@@ -29,7 +29,7 @@ class VTKBONE_EXPORT vtkboneFiniteElementModelAlgorithm : public vtkUnstructured
 public:
   static vtkboneFiniteElementModelAlgorithm *New();
   vtkTypeMacro(vtkboneFiniteElementModelAlgorithm,vtkUnstructuredGridAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Get the output data object for a port on this algorithm.

@@ -39,7 +39,7 @@ class VTKBONE_EXPORT vtkboneAIMWriter : public vtkWriter
 public:
   static vtkboneAIMWriter *New();
   vtkTypeMacro(vtkboneAIMWriter, vtkWriter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Get the input to this writer.

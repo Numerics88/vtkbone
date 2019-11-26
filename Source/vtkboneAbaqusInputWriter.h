@@ -39,7 +39,7 @@ class VTKBONE_EXPORT vtkboneAbaqusInputWriter : public vtkWriter
 public:
   static vtkboneAbaqusInputWriter *New();
   vtkTypeMacro(vtkboneAbaqusInputWriter, vtkWriter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Specify file name of file to write.

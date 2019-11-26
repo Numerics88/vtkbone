@@ -31,7 +31,7 @@ class VTKBONE_EXPORT vtkboneFaimVersion5OutputReader : public vtkboneFiniteEleme
 public:
   static vtkboneFaimVersion5OutputReader *New();
   vtkTypeMacro(vtkboneFaimVersion5OutputReader, vtkboneFiniteElementModelAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/get the file name of the FAIM output file to read.

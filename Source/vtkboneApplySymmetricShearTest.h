@@ -68,7 +68,7 @@ class VTKBONE_EXPORT vtkboneApplySymmetricShearTest : public vtkboneApplyTestBas
 public:
   static vtkboneApplySymmetricShearTest *New();
   vtkTypeMacro(vtkboneApplySymmetricShearTest, vtkboneApplyTestBase);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void PrintParameters(ostream& os, vtkIndent indent);
 
   // Description:

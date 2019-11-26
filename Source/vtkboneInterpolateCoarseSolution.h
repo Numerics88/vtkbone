@@ -34,9 +34,9 @@ class VTKBONE_EXPORT vtkboneInterpolateCoarseSolution : public vtkboneFiniteElem
 public:
   static vtkboneInterpolateCoarseSolution *New();
   vtkTypeMacro(vtkboneInterpolateCoarseSolution,vtkboneFiniteElementModelAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  vtkGetObjectMacro(SolutionArray, vtkDataArray);  
+  vtkGetObjectMacro(SolutionArray, vtkDataArray);
 
 protected:
   vtkboneInterpolateCoarseSolution();

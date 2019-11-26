@@ -50,7 +50,7 @@ class VTKBONE_EXPORT vtkboneFiniteElementModelGenerator : public vtkboneFiniteEl
 public:
   static vtkboneFiniteElementModelGenerator *New();
   vtkTypeMacro(vtkboneFiniteElementModelGenerator, vtkboneFiniteElementModelAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Sets whether PedigreeIds arraysare

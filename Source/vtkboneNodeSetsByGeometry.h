@@ -44,7 +44,7 @@ class VTKBONE_EXPORT vtkboneNodeSetsByGeometry : public vtkObject
 public:
   static vtkboneNodeSetsByGeometry *New();
   vtkTypeMacro(vtkboneNodeSetsByGeometry,vtkObject);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Determine the bounds of model, either for the whole model, or for the 

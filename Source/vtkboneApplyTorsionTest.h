@@ -58,7 +58,7 @@ class VTKBONE_EXPORT vtkboneApplyTorsionTest : public vtkboneApplyTestBase
 public:
   static vtkboneApplyTorsionTest *New();
   vtkTypeMacro(vtkboneApplyTorsionTest, vtkboneApplyTestBase);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void PrintParameters(ostream& os, vtkIndent indent);
 
   // Description:

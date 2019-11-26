@@ -91,7 +91,7 @@ class VTKBONE_EXPORT vtkboneApplyTestBase : public vtkboneFiniteElementModelGene
 public:
   static vtkboneApplyTestBase *New();
   vtkTypeMacro(vtkboneApplyTestBase, vtkboneFiniteElementModelGenerator);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void PrintParameters(ostream& os, vtkIndent indent);
 
   enum TestAxis_t {

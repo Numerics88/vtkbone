@@ -42,7 +42,7 @@ class VTKBONE_EXPORT vtkboneDecimateImage : public vtkImageAlgorithm
 public:
   static vtkboneDecimateImage *New();
   vtkTypeMacro(vtkboneDecimateImage,vtkImageAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
 protected:
 

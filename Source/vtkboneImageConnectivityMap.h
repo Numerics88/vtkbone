@@ -40,7 +40,7 @@ public:
   static vtkboneImageConnectivityMap* New();
   vtkTypeMacro(vtkboneImageConnectivityMap,
                        vtkSimpleImageToImageFilter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Return the number of identified regions.

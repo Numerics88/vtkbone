@@ -40,7 +40,7 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterial : public vtkboneMaterial
   public:
     static vtkboneLinearAnisotropicMaterial* New();
     vtkTypeMacro(vtkboneLinearAnisotropicMaterial, vtkboneMaterial);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Sets the stress-strain matrix. Arguement should be 36 values,

@@ -55,8 +55,7 @@ class VTKBONE_EXPORT vtkboneCoarsenModel : public vtkboneFiniteElementModelAlgor
 public:
   static vtkboneCoarsenModel *New();
   vtkTypeMacro(vtkboneCoarsenModel,vtkboneFiniteElementModelAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
-
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void PrintParameters(ostream& os, vtkIndent indent);
 
   enum MaterialAveragingMethod_t {

@@ -37,7 +37,7 @@ class VTKBONE_EXPORT vtkboneLinearOrthotropicMaterial : public vtkboneMaterial
   public:
     static vtkboneLinearOrthotropicMaterial* New();
     vtkTypeMacro(vtkboneLinearOrthotropicMaterial, vtkboneMaterial);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Set/get the Young's modulus (Ex, Ey, Ez).
