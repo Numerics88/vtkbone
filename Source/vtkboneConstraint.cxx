@@ -81,12 +81,12 @@ void vtkboneConstraint::Initialize ()
 }
 
 //----------------------------------------------------------------------------
-unsigned long int vtkboneConstraint::GetMTime()
+vtkMTimeType vtkboneConstraint::GetMTime()
 {
-  unsigned long mtime = this->Attributes->GetMTime();
+  vtkMTimeType mtime = this->Attributes->GetMTime();
   if (this->Indices)
     {
-    unsigned long mtime1 = this->Indices->GetMTime();
+    vtkMTimeType mtime1 = this->Indices->GetMTime();
     mtime = std::max(mtime, mtime1);
     }
   return mtime;

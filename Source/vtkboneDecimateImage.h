@@ -50,11 +50,11 @@ protected:
   ~vtkboneDecimateImage() {}
 
   virtual int RequestInformation(vtkInformation *, vtkInformationVector **,
-                                 vtkInformationVector *);
+                                 vtkInformationVector *) override;
   virtual int RequestUpdateExtent(vtkInformation *, vtkInformationVector **,
-                                  vtkInformationVector *);
+                                  vtkInformationVector *) override;
   virtual int RequestData(vtkInformation *, vtkInformationVector **,
-                          vtkInformationVector *);
+                          vtkInformationVector *) override;
 
   virtual int SimpleExecute(vtkImageData* input, vtkImageData* output);
 

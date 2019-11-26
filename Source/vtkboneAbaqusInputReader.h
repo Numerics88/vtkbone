@@ -72,7 +72,7 @@ protected:
 
   int RequestData (vtkInformation *,
                    vtkInformationVector **,
-                   vtkInformationVector *);
+                   vtkInformationVector *) override;
 
   char *FileName;
 

@@ -80,9 +80,9 @@ protected:
   vtkboneFaimVersion5InputWriter();
   ~vtkboneFaimVersion5InputWriter();
 
-  void WriteData();
+  void WriteData() override;
 
-  virtual int FillInputPortInformation(int port, vtkInformation *info);
+  virtual int FillInputPortInformation(int port, vtkInformation *info) override;
 
   int WriteNodes(ostream *fp, vtkboneFiniteElementModel* model);
   int WriteElements(ostream *fp, vtkboneFiniteElementModel* model);

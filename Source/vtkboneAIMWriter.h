@@ -76,14 +76,14 @@ protected:
 
   // Description:
   // Writes the AIM.
-  void WriteData();
+  void WriteData() override;
 
   char *FileName;
   char *ProcessingLog;
   int CompressData;
   int NewProcessingLog;
 
-  virtual int FillInputPortInformation(int port, vtkInformation *info);
+  virtual int FillInputPortInformation(int port, vtkInformation *info) override;
 
 private:
   // Prevent compiler from making default versions of these.

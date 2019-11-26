@@ -71,9 +71,9 @@ protected:
   vtkboneImageToMesh();
   ~vtkboneImageToMesh();
 
-  virtual int FillInputPortInformation(int port, vtkInformation* info);
+  virtual int FillInputPortInformation(int port, vtkInformation* info) override;
 
-  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *) override;
 
   // Description:
   // Returns the input if the input has the scalar data on the points; otherwise

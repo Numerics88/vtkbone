@@ -187,7 +187,7 @@ public:
 
   // Description:
   // Datasets are composite objects and need to check each part for MTime
-  unsigned long int GetMTime();
+  vtkMTimeType GetMTime() override;
 
   // Description:
   // Set/Get whether constraints are applied to nodes or to elements.

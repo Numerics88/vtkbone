@@ -52,13 +52,13 @@ protected:
 
   virtual int RequestInformation(vtkInformation* request,
                                  vtkInformationVector** inputVector,
-                                 vtkInformationVector* outputVector);
+                                 vtkInformationVector* outputVector) override;
 
   virtual int RequestData(vtkInformation *,
                           vtkInformationVector **,
-                          vtkInformationVector *);
+                          vtkInformationVector *) override;
 
-  virtual void SimpleExecute(vtkImageData*, vtkImageData*);
+  virtual void SimpleExecute(vtkImageData*, vtkImageData*) override;
 
   //BTX
   template <typename TArray>

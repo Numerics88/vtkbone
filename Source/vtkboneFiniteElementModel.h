@@ -380,8 +380,8 @@ public:
 
   // Description:
   // Shallow and Deep copy.
-  virtual void ShallowCopy(vtkDataObject *src);
-  virtual void DeepCopy(vtkDataObject *src);
+  virtual void ShallowCopy(vtkDataObject *src) override;
+  virtual void DeepCopy(vtkDataObject *src) override;
 
 protected:
   vtkboneFiniteElementModel();

@@ -66,9 +66,9 @@ protected:
   vtkboneN88ModelWriter();
   ~vtkboneN88ModelWriter();
 
-  void WriteData();
+  void WriteData() override;
 
-  virtual int FillInputPortInformation(int port, vtkInformation *info);
+  virtual int FillInputPortInformation(int port, vtkInformation *info) override;
 
   int DefineNetCDFFile(int ncid, vtkboneFiniteElementModel* model);
   int DefineMaterialDefinitions(int ncid, vtkboneFiniteElementModel* model);

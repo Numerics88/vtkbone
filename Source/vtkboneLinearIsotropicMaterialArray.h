@@ -37,11 +37,11 @@ class VTKBONE_EXPORT vtkboneLinearIsotropicMaterialArray : public vtkboneMateria
 
     // Description:
     // Destructively re-sizes the arrays.
-    virtual void Resize(vtkIdType size);
+    virtual void Resize(vtkIdType size) override;
 
     // Description:
     // Get the size of the material array (the number of materials).
-    virtual vtkIdType GetSize();
+    virtual vtkIdType GetSize() override;
 
     // Description:
     // Get the array for Young's modulus (E).
@@ -79,14 +79,14 @@ class VTKBONE_EXPORT vtkboneLinearIsotropicMaterialArray : public vtkboneMateria
     // Description:
     // Creates a copy of this object.
     // You should almost certainly give the copy or the original a new name.
-    virtual vtkboneMaterial* Copy();
+    virtual vtkboneMaterial* Copy() override;
 
     // Description:
     // Creates a copy of this object, with all the modulii scaled by
     // factor.
     // You should almost certainly give the copy or the original a new name.
     // Note that you will have to delete the pointer when finished with it.
-    virtual vtkboneMaterial* ScaledCopy(double factor);
+    virtual vtkboneMaterial* ScaledCopy(double factor) override;
 
   protected:
     vtkboneLinearIsotropicMaterialArray();

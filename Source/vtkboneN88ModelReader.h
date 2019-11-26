@@ -70,7 +70,7 @@ protected:
 
   virtual int RequestData(vtkInformation *,
                           vtkInformationVector **,
-                          vtkInformationVector *);
+                          vtkInformationVector *) override;
 
   int ReadDataFromNetCDFFile(int ncid, vtkboneFiniteElementModel* model);
   int ReadProblem(int ncid, vtkboneFiniteElementModel* model);

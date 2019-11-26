@@ -94,7 +94,7 @@ protected:
 
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
   virtual int AddTopAndBottomConstraints(vtkboneFiniteElementModel* model);
   virtual int AddConvergenceSet(vtkboneFiniteElementModel* model);

@@ -103,7 +103,7 @@ protected:
 
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
   virtual int AddSideConstraints(vtkboneFiniteElementModel* model);
   virtual int AddTopAndBottomConstraints(vtkboneFiniteElementModel* model);

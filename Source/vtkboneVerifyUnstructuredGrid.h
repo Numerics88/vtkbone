@@ -54,7 +54,7 @@ protected:
 
   virtual int RequestData(vtkInformation *request,
                           vtkInformationVector **inputVector,
-                          vtkInformationVector *outputVector);
+                          vtkInformationVector *outputVector) override;
 
   int CheckVoxelTopology(vtkUnstructuredGrid* ug, vtkIdType cellId);
 

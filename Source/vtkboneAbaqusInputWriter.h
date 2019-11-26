@@ -50,9 +50,9 @@ protected:
   vtkboneAbaqusInputWriter();
   ~vtkboneAbaqusInputWriter();
 
-  virtual int FillInputPortInformation (int port, vtkInformation *info);
+  virtual int FillInputPortInformation (int port, vtkInformation *info) override;
 
-  virtual void WriteData();
+  virtual void WriteData() override;
 
   //BTX
   virtual int WriteHeading (std::ostream& f, vtkboneFiniteElementModel* model);

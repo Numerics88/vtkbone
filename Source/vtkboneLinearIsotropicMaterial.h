@@ -60,14 +60,14 @@ class VTKBONE_EXPORT vtkboneLinearIsotropicMaterial : public vtkboneMaterial
     // Description:
     // Creates a copy of this object.
     // You should almost certainly give the copy or the original a new name.
-    virtual vtkboneMaterial* Copy();
+    virtual vtkboneMaterial* Copy() override;
 
     // Description:
     // Creates a copy of this object, with all the modulii scaled by
     // factor.
     // You should almost certainly give the copy or the original a new name.
     // Note that you will have to delete the pointer when finished with it.
-    virtual vtkboneMaterial* ScaledCopy(double factor);
+    virtual vtkboneMaterial* ScaledCopy(double factor) override;
 
   protected:
     vtkboneLinearIsotropicMaterial();

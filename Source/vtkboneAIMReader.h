@@ -96,10 +96,10 @@ protected:
 
   int RequestInformation(vtkInformation* request,
                          vtkInformationVector** inputVector,
-                         vtkInformationVector* outputVector);
+                         vtkInformationVector* outputVector) override;
   int RequestData(vtkInformation*,
                   vtkInformationVector**,
-                  vtkInformationVector*);
+                  vtkInformationVector*) override;
 
   char *FileName;
   int DataOnCells;  // Flag to put data on cells instead of points.

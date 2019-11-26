@@ -118,9 +118,9 @@ protected:
 
   virtual int RequestData(vtkInformation *,
                           vtkInformationVector **,
-                          vtkInformationVector *);
+                          vtkInformationVector *) override;
 
-  virtual void SimpleExecute(vtkImageData*, vtkImageData*);
+  virtual void SimpleExecute(vtkImageData*, vtkImageData*) override;
 
   int CalculateRegionSizes(
     vtkUnsignedIntArray* cmap_data,
