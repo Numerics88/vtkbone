@@ -23,6 +23,7 @@
 
 #include "vtkCommand.h"
 #include "vtkboneWin32Header.h"
+#include "vtkboneMacros.h"
 
 class VTKBONE_EXPORT vtkboneErrorWarningObserver : public vtkCommand
 {
@@ -37,14 +38,14 @@ public:
 
   // Description:
   // Set/Get error descriptions.
-  vtkSetStringMacro(ErrorDescriptions);
-  vtkGetStringMacro(ErrorDescriptions);
+  vtkboneSetStringMacro(ErrorDescriptions);
+  vtkboneGetStringMacro(ErrorDescriptions);
   virtual void AppendErrorDescriptions(const char* newMsg);
 
   // Description:
   // Set/Get warning descriptions.
-  vtkSetStringMacro(WarningDescriptions);
-  vtkGetStringMacro(WarningDescriptions);
+  vtkboneSetStringMacro(WarningDescriptions);
+  vtkboneGetStringMacro(WarningDescriptions);
   virtual void AppendWarningDescriptions(const char* newMsg);
 
   // Description:
