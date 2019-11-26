@@ -77,7 +77,7 @@ void vtkboneFaimVersion5InputWriter::WriteData()
   if (input == NULL)
     {
     vtkErrorMacro(<<"No input data");
-    return;   
+    return;
     }
 
   // Checks and setup.
@@ -142,7 +142,7 @@ int vtkboneFaimVersion5InputWriter::WriteElements
   int hexahedronTransform[8] = {0,4,5,1,3,7,6,2};
   int voxelTransform[8] = {0,4,5,1,2,6,7,3};
   int tetrahedronTransform[4] = {0,1,2,3};
-  
+
   int ncells = model->GetNumberOfCells();
   for (vtkIdType id=0; id<ncells; id++)
     {
@@ -319,7 +319,7 @@ int vtkboneFaimVersion5InputWriter::WriteMeshOutput
   this->WriteDisplacementConstraints (fp, model);
 
   *fp << "\n# Node and element sets\n";
-  
+
   // Write node sets
   vtkInformationStringVectorKey* postProcessingNodeSetsKey = vtkboneSolverParameters::POST_PROCESSING_NODE_SETS();
   if (postProcessingNodeSetsKey->Has(info) == 0)
@@ -336,7 +336,7 @@ int vtkboneFaimVersion5InputWriter::WriteMeshOutput
       this->WriteNodeSet (fp, model, nodeSetName);
       }
     }
-    
+
   // Write elements sets
   // Here we actually get the same node sets, but write the element Ids
   // of all elements that contain a node from the node set.
@@ -354,7 +354,7 @@ int vtkboneFaimVersion5InputWriter::WriteMeshOutput
       this->WriteContainingElementSet (fp, model, nodeSetName);
       }
     }
-    
+
   return 1;
 }
 
@@ -441,7 +441,7 @@ int vtkboneFaimVersion5InputWriter::WriteDisplacementConstraints (ostream *fp, v
     {
     *fp << "\n";
     }
-  
+
   return 1;
 }
 
@@ -478,7 +478,7 @@ int vtkboneFaimVersion5InputWriter::WriteForceConstraints (ostream *fp, vtkboneF
     {
     *fp << "\n";
     }
-  
+
   return 1;
 }
 

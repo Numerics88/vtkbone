@@ -64,7 +64,7 @@ int vtkboneApplyBendingTest::RequestData
   )
   {
   vtkboneApplyTestBase::RequestData(request, inputVector, outputVector);
-  
+
   // Only need output object: vtkboneApplyTestBase has already copied the input
   // object to the output object (and added stuff).
   vtkInformation *outInfo = outputVector->GetInformationObject(0);
@@ -182,7 +182,7 @@ int vtkboneApplyBendingTest::AddTopAndBottomConstraints
       }
     model->ApplyBoundaryCondition(nodes, senses, values, "bottom_displacement");
     } // scope
-  
+
   return VTK_OK;
   }
 
@@ -231,7 +231,7 @@ int vtkboneApplyBendingTest::AddInformation
   )
   {
 	std::string history = std::string("Model created by vtkboneApplyBendingTest version ")
-      + vtkboneVersion::GetVTKBONEVersion() + " .";	   
+      + vtkboneVersion::GetVTKBONEVersion() + " .";
   model->AppendHistory(history.c_str());
 
   std::ostringstream comments;
@@ -240,7 +240,7 @@ int vtkboneApplyBendingTest::AddInformation
   vtkboneApplyTestBase::PrintParameters(comments, indent);
   this->PrintParameters(comments, indent);
   model->AppendLog(comments.str().c_str());
-  
+
   return VTK_OK;
   }
 

@@ -186,7 +186,7 @@ int vtkboneN88ModelReader::ReadAttributes
       {
       vtkErrorMacro(<< "Error reading History attribute in NetCDF file.");
       return VTK_ERROR;
-      }    
+      }
     model->SetHistory(buffer.c_str());
     }
 
@@ -199,7 +199,7 @@ int vtkboneN88ModelReader::ReadAttributes
       {
       vtkErrorMacro(<< "Error reading Comments attribute in NetCDF file.");
       return VTK_ERROR;
-      }    
+      }
     model->SetLog(buffer.c_str());
     }
   if (nc_inq_attlen(ncid, NC_GLOBAL, "Log", &att_len) == NC_NOERR)
@@ -235,7 +235,7 @@ int vtkboneN88ModelReader::ReadAttributes
       {
       vtkErrorMacro(<< "Error reading ActiveSolution attribute in NetCDF file.");
       return VTK_ERROR;
-      }    
+      }
     this->SetActiveSolution(buffer.c_str());
     // Get ActiveProblem from Solution
     int solutions_ncid;
@@ -254,13 +254,13 @@ int vtkboneN88ModelReader::ReadAttributes
       {
       vtkErrorMacro(<< "Problem attribute not found for specified ActiveSolution.");
       return VTK_ERROR;
-      }    
+      }
     buffer.resize(att_len);
     if (nc_get_att_text (activeSolution_ncid, NC_GLOBAL, "Problem", &buffer[0]) != NC_NOERR)
       {
       vtkErrorMacro(<< "Error reading Problem in ActiveSolution group " << this->ActiveSolution << ".");
       return VTK_ERROR;
-      }    
+      }
     this->SetActiveProblem(buffer.c_str());
     }
   else
@@ -270,13 +270,13 @@ int vtkboneN88ModelReader::ReadAttributes
       {
       vtkErrorMacro(<< "Neither ActiveSolution nor ActiveProblem attribute not found in NetCDF file.");
       return VTK_ERROR;
-      }    
+      }
     buffer.resize(att_len);
     if (nc_get_att_text (ncid, NC_GLOBAL, "ActiveProblem", &buffer[0]) != NC_NOERR)
       {
       vtkErrorMacro(<< "Error reading ActiveProblem attribute in NetCDF file.");
       return VTK_ERROR;
-      }    
+      }
     this->SetActiveProblem(buffer.c_str());
     }
 
@@ -285,15 +285,15 @@ int vtkboneN88ModelReader::ReadAttributes
     {
     vtkErrorMacro(<< "Dimensionality dimension not found in NetCDF file.");
     return VTK_ERROR;
-    }    
+    }
   size_t dimensions = 0;
   NC_SAFE_CALL( nc_inq_dimlen(ncid, dimid, &dimensions) );
   if (dimensions != 3)
     {
     vtkErrorMacro(<< "Only dimensionality of 3 currently supported.");
     return VTK_ERROR;
-    }    
-  
+    }
+
   return VTK_OK;
 }
 
@@ -324,7 +324,7 @@ int vtkboneN88ModelReader::ReadProblem
     {
     vtkErrorMacro(<< "Part attribute not found in NetCDF file.");
     return VTK_ERROR;
-    }    
+    }
   buffer.resize(att_len);
   if (nc_get_att_text (activeProblem_ncid, NC_GLOBAL, "Part", &buffer[0]) != NC_NOERR)
     {
@@ -369,7 +369,7 @@ int vtkboneN88ModelReader::ReadProblem
       {
       vtkboneSolverParameters::POST_PROCESSING_NODE_SETS()->Append (info, tokens[c].c_str());
       }
-    }    
+    }
 
   if (nc_inq_attlen  (activeProblem_ncid, NC_GLOBAL, "PostProcessingElementSets", &att_len) == NC_NOERR)
     {
@@ -384,7 +384,7 @@ int vtkboneN88ModelReader::ReadProblem
       {
       vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS()->Append (info, tokens[c].c_str());
       }
-    }    
+    }
 
   if (nc_inq_attlen (activeProblem_ncid, NC_GLOBAL, "RotationCenter", &att_len) == NC_NOERR)
     {
@@ -475,7 +475,7 @@ int vtkboneN88ModelReader::ReadMaterialTable
 {
   // -------------------------------------------------------------------
   // Read the MaterialDefinitions: store in a map
-  
+
   int materialDefinitions_ncid;
   if (nc_inq_ncid(ncid, "MaterialDefinitions", &materialDefinitions_ncid) != NC_NOERR)
     {
@@ -499,7 +499,7 @@ int vtkboneN88ModelReader::ReadMaterialTable
       {
       vtkErrorMacro(<< "Type attribute not found for material " << &name[0] << ".");
       return VTK_ERROR;
-      }    
+      }
     std::string type;
     type.resize(att_len);
     NC_SAFE_CALL (nc_get_att_text (ncids[i], NC_GLOBAL, "Type", &type[0]));
@@ -950,7 +950,7 @@ int vtkboneN88ModelReader::ReadMaterialTable
       {
       vtkErrorMacro(<< "Material " << &name[0] << " has unrecognized type " << type << ".");
       return VTK_ERROR;
-      }    
+      }
     }
 
   // -------------------------------------------------------------------
@@ -1030,7 +1030,7 @@ int vtkboneN88ModelReader::ReadMaterialTable
   memset(input_names, 0, matname_len*sizeof(char**));   // not really necessary
   NC_SAFE_CALL (nc_get_var_string(materialTable_ncid, matname_varid, input_names));
 
-  vtkSmartPointer<vtkboneMaterialTable> materialTable = 
+  vtkSmartPointer<vtkboneMaterialTable> materialTable =
                                 vtkSmartPointer<vtkboneMaterialTable>::New();
   model->SetMaterialTable(materialTable);
 
@@ -1143,7 +1143,7 @@ int vtkboneN88ModelReader::ReadElements
     {
     vtkErrorMacro (<< "NodeNumbers variable must have second dimension size of 8 in Hexahedrons.");
     return VTK_ERROR;
-    }  
+    }
   size_t nodeNumbers_len = 0;
   NC_SAFE_CALL (nc_inq_dimlen(hexahedrons_ncid, dimid[0], &nodeNumbers_len));
   if (nodeNumbers_len != elementNumber_len)
@@ -1162,7 +1162,7 @@ int vtkboneN88ModelReader::ReadElements
   // The following allocation is exact
   cells->Allocate(cells->EstimateSize(nodeNumbers_len, nodesPerElement));
   vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
-  pointIds->SetNumberOfIds(nodesPerElement);    
+  pointIds->SetNumberOfIds(nodesPerElement);
   for (vtkIdType newCellId=0; newCellId < nodeNumbers_len; ++newCellId)
     {
     // Convert from 1-indexed to 0-indexed.
@@ -1229,7 +1229,7 @@ int vtkboneN88ModelReader::ReadConstraint
     {
     vtkErrorMacro(<< "Type attribute not found in Constraint group " << name << ".");
     return VTK_ERROR;
-    }    
+    }
   type.resize(att_len);
   NC_SAFE_CALL (nc_get_att_text (constraint_ncid, NC_GLOBAL, "Type", &type[0]));
 
@@ -1280,13 +1280,13 @@ int vtkboneN88ModelReader::ReadConstraint
     {
     vtkErrorMacro(<< "Sense and NodeNumber variables in Constraint group must have same length.");
     return VTK_ERROR;
-    }    
+    }
   vtkSmartPointer<vtkCharArray> senses = vtkSmartPointer<vtkCharArray>::New();
   senses->SetName("SENSE");
   senses->SetNumberOfValues(len);
 // The following call crashes on Linux with netCDF 4.2.  No idea why.
 // The nc_get_vara variation seems to be OK though.
-//     NC_SAFE_CALL (nc_get_var_schar(constraint_ncid, varid, 
+//     NC_SAFE_CALL (nc_get_var_schar(constraint_ncid, varid,
 //                                    reinterpret_cast<signed char*>(senses->GetPointer(0))));
   count[0] = len;
   NC_SAFE_CALL (nc_get_vara_schar(constraint_ncid, varid, start, count,
@@ -1294,7 +1294,7 @@ int vtkboneN88ModelReader::ReadConstraint
   // Convert to 0-indexed
   for (vtkIdType i=0; i<len; ++i)
     { --*(senses->GetPointer(i)); }
-  
+
   if (nc_inq_varid (constraint_ncid, "Value", &varid) != NC_NOERR)
     {
     vtkErrorMacro (<< "Unable to find variable Value for Constraint group " << name << ".");
@@ -1312,7 +1312,7 @@ int vtkboneN88ModelReader::ReadConstraint
     {
     vtkErrorMacro(<< "Value and NodeNumber variables in Constraint group must have same length.");
     return VTK_ERROR;
-    }    
+    }
   vtkSmartPointer<vtkFloatArray> values = vtkSmartPointer<vtkFloatArray>::New();
   values->SetName("VALUE");
   values->SetNumberOfValues(len);
@@ -1339,7 +1339,7 @@ int vtkboneN88ModelReader::ReadConstraint
     {
     vtkErrorMacro(<< "Unable to read constraint of type " << type << ".");
     return VTK_ERROR;
-    }    
+    }
   constraint->GetAttributes()->AddArray(senses);
   constraint->GetAttributes()->AddArray(values);
   return VTK_OK;
@@ -1364,7 +1364,7 @@ int vtkboneN88ModelReader::ReadConstraints
     {
     vtkWarningMacro(<< "Constraints attribute not found in ActiveProblem group " << this->ActiveProblem << ".");
     return VTK_OK;
-    }    
+    }
   std::string buffer;
   buffer.resize(att_len);
   NC_SAFE_CALL (nc_get_att_text (activeProblem_ncid, NC_GLOBAL, "Constraints", &buffer[0]));
@@ -1418,7 +1418,7 @@ int vtkboneN88ModelReader::ReadConvergenceSet
     {
     // Just return if isn't defined.
     return VTK_OK;
-    }    
+    }
   std::string name;
   name.resize(att_len);
   NC_SAFE_CALL (nc_get_att_text (activeProblem_ncid, NC_GLOBAL, "ConvergenceSet", &name[0]));

@@ -57,7 +57,7 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneApplyBendingTest : public vtkboneApplyTestBase 
+class VTKBONE_EXPORT vtkboneApplyBendingTest : public vtkboneApplyTestBase
 {
 public:
   static vtkboneApplyBendingTest *New();
@@ -100,7 +100,7 @@ protected:
   virtual int AddConvergenceSet(vtkboneFiniteElementModel* model);
   virtual int AddPostProcessingSets(vtkboneFiniteElementModel* model);
   virtual int AddInformation(vtkboneFiniteElementModel* model);
-  
+
 private:
   vtkboneApplyBendingTest(const vtkboneApplyBendingTest&); // Not implemented
   void operator=(const vtkboneApplyBendingTest&); // Not implemented

@@ -53,7 +53,7 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneApplyTorsionTest : public vtkboneApplyTestBase 
+class VTKBONE_EXPORT vtkboneApplyTorsionTest : public vtkboneApplyTestBase
 {
 public:
   static vtkboneApplyTorsionTest *New();
@@ -88,7 +88,7 @@ protected:
   virtual int AddConvergenceSet(vtkboneFiniteElementModel* model);
   virtual int AddPostProcessingSets(vtkboneFiniteElementModel* model);
   virtual int AddInformation(vtkboneFiniteElementModel* model);
-  
+
 private:
   vtkboneApplyTorsionTest(const vtkboneApplyTorsionTest&); // Not implemented
   void operator=(const vtkboneApplyTorsionTest&); // Not implemented

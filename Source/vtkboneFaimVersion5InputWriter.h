@@ -57,7 +57,7 @@ class vtkIdTypeArray;
 class vtkCharArray;
 class vtkboneConstraint;
 
-class VTKBONE_EXPORT vtkboneFaimVersion5InputWriter : public vtkWriter 
+class VTKBONE_EXPORT vtkboneFaimVersion5InputWriter : public vtkWriter
 {
 public:
   static vtkboneFaimVersion5InputWriter *New();

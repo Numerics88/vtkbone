@@ -52,7 +52,7 @@ vtkboneTensorOfInertia::vtkboneTensorOfInertia()
   this->PrincipalAxisClosestToZ[0] = 0;
   this->PrincipalAxisClosestToZ[1] = 0;
   this->PrincipalAxisClosestToZ[2] = 0;
-  
+
   this->SetNumberOfInputPorts(1);
   this->SetNumberOfOutputPorts(0);
 }

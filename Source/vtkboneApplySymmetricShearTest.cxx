@@ -59,7 +59,7 @@ int vtkboneApplySymmetricShearTest::RequestData
   )
   {
   vtkboneApplyTestBase::RequestData(request, inputVector, outputVector);
-  
+
   // Only need output object: vtkboneApplyTestBase has already copied the input
   // object to the output object (and added stuff).
   vtkInformation *outInfo = outputVector->GetInformationObject(0);
@@ -93,7 +93,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
   // face 00
   {  // scope
     vtkIdTypeArray* singleIds = model->GetNodeSet("face_x0");
-    vtkIdType n = singleIds->GetNumberOfTuples();    
+    vtkIdType n = singleIds->GetNumberOfTuples();
     vtkSmartPointer<vtkIdTypeArray> doubledIds = vtkSmartPointer<vtkIdTypeArray>::New();
     doubledIds->SetNumberOfValues(2*n);
     vtkSmartPointer<vtkCharArray> senses = vtkSmartPointer<vtkCharArray>::New();
@@ -131,7 +131,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
   // face 01
   {  // scope
     vtkIdTypeArray* singleIds = model->GetNodeSet("face_x1");
-    vtkIdType n = singleIds->GetNumberOfTuples();    
+    vtkIdType n = singleIds->GetNumberOfTuples();
     vtkSmartPointer<vtkIdTypeArray> doubledIds = vtkSmartPointer<vtkIdTypeArray>::New();
     doubledIds->SetNumberOfValues(2*n);
     vtkSmartPointer<vtkCharArray> senses = vtkSmartPointer<vtkCharArray>::New();
@@ -171,7 +171,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
   // face 10
   {  // scope
     vtkIdTypeArray* singleIds = model->GetNodeSet("face_y0");
-    vtkIdType n = singleIds->GetNumberOfTuples();    
+    vtkIdType n = singleIds->GetNumberOfTuples();
     vtkSmartPointer<vtkIdTypeArray> doubledIds = vtkSmartPointer<vtkIdTypeArray>::New();
     doubledIds->SetNumberOfValues(2*n);
     vtkSmartPointer<vtkCharArray> senses = vtkSmartPointer<vtkCharArray>::New();
@@ -209,7 +209,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
   // face 11
   {  // scope
     vtkIdTypeArray* singleIds = model->GetNodeSet("face_y1");
-    vtkIdType n = singleIds->GetNumberOfTuples();    
+    vtkIdType n = singleIds->GetNumberOfTuples();
     vtkSmartPointer<vtkIdTypeArray> doubledIds = vtkSmartPointer<vtkIdTypeArray>::New();
     doubledIds->SetNumberOfValues(2*n);
     vtkSmartPointer<vtkCharArray> senses = vtkSmartPointer<vtkCharArray>::New();
@@ -255,7 +255,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
     model->ApplyBoundaryCondition(
       "face_y0", this->DataFrameSense(2), 0, "face_y0_vertical");
     model->ApplyBoundaryCondition(
-      "face_y1", this->DataFrameSense(2), 0, "face_y1_vertical");    
+      "face_y1", this->DataFrameSense(2), 0, "face_y1_vertical");
     }
 
   return VTK_OK;
@@ -321,7 +321,7 @@ int vtkboneApplySymmetricShearTest::AddInformation
   vtkboneApplyTestBase::PrintParameters(comments, indent);
   this->PrintParameters(comments, indent);
   model->AppendLog(comments.str().c_str());
-  
+
   return VTK_OK;
   }
 

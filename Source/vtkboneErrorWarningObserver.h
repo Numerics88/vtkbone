@@ -40,7 +40,7 @@ public:
   vtkSetStringMacro(ErrorDescriptions);
   vtkGetStringMacro(ErrorDescriptions);
   virtual void AppendErrorDescriptions(const char* newMsg);
-  
+
   // Description:
   // Set/Get warning descriptions.
   vtkSetStringMacro(WarningDescriptions);

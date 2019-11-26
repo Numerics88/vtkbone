@@ -158,7 +158,7 @@ void vtkboneFiniteElementModel::AppendHistory(const char* s)
     }
   boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
   newHistory << now << " " << s;
-  this->SetHistory(newHistory.str().c_str());  
+  this->SetHistory(newHistory.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -179,7 +179,7 @@ void vtkboneFiniteElementModel::AppendLog(const char* s)
     }
   boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
   newLog << now << "\n" << s;
-  this->SetLog(newLog.str().c_str());  
+  this->SetLog(newLog.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -421,7 +421,7 @@ int vtkboneFiniteElementModel::GetElementType()
     return N88_UNKNOWN;
     }
   else if (cellTypes->GetNumberOfTypes() == 1)   // single type
-    { 
+    {
     if (cellTypes->IsType(VTK_TETRA))
       {
       return N88_TETRAHEDRON;
@@ -513,7 +513,7 @@ int vtkboneFiniteElementModel::ApplyBoundaryCondition
   vtkSmartPointer<vtkboneConstraint> newConstraint =
       vtkSmartPointer<vtkboneConstraint>::Take(
         vtkboneConstraintUtilities::CreateBoundaryCondition(ids,senses,displacements,constraintName));
-  
+
   if (this->GetConstraints()->GetItem(constraintName))
     {
     vtkboneConstraint* constraint = this->GetConstraints()->GetItem(constraintName);
@@ -555,7 +555,7 @@ int vtkboneFiniteElementModel::ApplyBoundaryCondition
     {
     displacements->SetValue(i, displacement);
     }
-  
+
   return this->ApplyBoundaryCondition(ids, senses, displacements, constraintName);
 }
 
@@ -577,7 +577,7 @@ int vtkboneFiniteElementModel::ApplyBoundaryCondition
   vtkSmartPointer<vtkDoubleArray> displacements = vtkSmartPointer<vtkDoubleArray>::New();
   displacements->SetNumberOfValues(1);
   displacements->SetValue(0, displacement);
-  
+
   return this->ApplyBoundaryCondition(ids, senses, displacements, constraintName);
 }
 
@@ -664,7 +664,7 @@ int vtkboneFiniteElementModel::FixNodes
   vtkSmartPointer<vtkIdTypeArray> ids = vtkSmartPointer<vtkIdTypeArray>::New();
   ids->SetNumberOfValues(1);
   ids->SetValue(0, id);
-  
+
   return this->FixNodes(ids, constraintName);
 }
 

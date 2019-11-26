@@ -81,7 +81,7 @@ protected:
   // points.
   int GetInputAsCellScalars(vtkImageData* input,
                             vtkImageData* inputAsPointScalars);
-  
+
   int GenerateHexahedrons(vtkImageData* input,
                           vtkUnstructuredGrid* output);
 

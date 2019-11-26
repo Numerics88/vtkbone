@@ -154,7 +154,7 @@ int vtkboneApplyTestBase::AddDataFrameZFacesSets
   {
   double bounds[6];
   model->GetBounds(bounds);
-  
+
   if (this->UnevenBottomSurface)
     {
     double direction[3] = {0.0, 0.0, 0.0};  // normal vector of surface
@@ -276,7 +276,7 @@ int vtkboneApplyTestBase::AddDataFrameXFacesSets
   double bounds[6];
   model->GetBounds(bounds);
 
-  int ok = 
+  int ok =
   (vtkboneNodeSetsByGeometry::AddNodesAndElementsOnPlane(
           this->DataFrameSense(0),
           this->TestFrameBound(bounds,0,0),
@@ -302,7 +302,7 @@ int vtkboneApplyTestBase::AddDataFrameYFacesSets
   double bounds[6];
   model->GetBounds(bounds);
 
-  int ok = 
+  int ok =
   (vtkboneNodeSetsByGeometry::AddNodesAndElementsOnPlane(
           this->DataFrameSense(1),
           this->TestFrameBound(bounds,1,0),
@@ -328,7 +328,7 @@ int vtkboneApplyTestBase::RequestData
 )
 {
   vtkboneFiniteElementModelGenerator::RequestData(request, inputVector, outputVector);
-  
+
   // Only need output object: vtkboneFiniteElementModelGenerator has already copied the input
   // object to the output object (and added stuff).
   vtkInformation *outInfo = outputVector->GetInformationObject(0);

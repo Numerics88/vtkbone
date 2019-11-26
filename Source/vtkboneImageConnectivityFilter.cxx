@@ -28,27 +28,27 @@ template <typename T> T sqr(const T x) {return x*x;}
 //-----------------------------------------------------------------------
 const char *vtkboneImageConnectivityFilter::GetExtractionModeAsString()
 {
-  if ( this->ExtractionMode == EXTRACT_SEEDED_REGIONS ) 
+  if ( this->ExtractionMode == EXTRACT_SEEDED_REGIONS )
     {
     return "ExtractSeededRegions";
     }
-  else if ( this->ExtractionMode == EXTRACT_SPECIFIED_REGIONS ) 
+  else if ( this->ExtractionMode == EXTRACT_SPECIFIED_REGIONS )
     {
     return "ExtractSpecifiedRegions";
     }
-  else if ( this->ExtractionMode == EXTRACT_ALL_REGIONS ) 
+  else if ( this->ExtractionMode == EXTRACT_ALL_REGIONS )
     {
     return "ExtractAllRegions";
     }
-  else if ( this->ExtractionMode == EXTRACT_CLOSEST_POINT_REGION ) 
+  else if ( this->ExtractionMode == EXTRACT_CLOSEST_POINT_REGION )
     {
     return "ExtractClosestPointRegion";
     }
-  else if ( this->ExtractionMode == EXTRACT_REGIONS_OF_SPECIFIED_SIZE ) 
+  else if ( this->ExtractionMode == EXTRACT_REGIONS_OF_SPECIFIED_SIZE )
     {
     return "ExtractRegionsOfSpecifiedSize";
     }
-  else if ( this->ExtractionMode == EXTRACT_LARGEST_REGION ) 
+  else if ( this->ExtractionMode == EXTRACT_LARGEST_REGION )
     {
     return "ExtractLargestRegion";
     }
@@ -87,9 +87,9 @@ void vtkboneImageConnectivityFilter::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "Extraction Mode: ";
   os << this->GetExtractionModeAsString() << "\n";
 
-  os << indent << "Closest Point: (" << this->ClosestPoint[0] << ", " 
+  os << indent << "Closest Point: (" << this->ClosestPoint[0] << ", "
      << this->ClosestPoint[1] << ", " << this->ClosestPoint[2] << ")\n";
-     
+
   os << indent << "MinimumRegionSize: " << this->MinimumRegionSize << "\n";
 }
 
@@ -149,7 +149,7 @@ int vtkboneImageConnectivityFilter::RequestData(
   vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
   vtkImageData *input = vtkImageData::SafeDownCast(
     inInfo->Get(vtkDataObject::DATA_OBJECT()));
-  
+
   int inExt[6];
   input->GetExtent(inExt);
   // if the input extent is empty then exit
@@ -159,7 +159,7 @@ int vtkboneImageConnectivityFilter::RequestData(
     {
     return 1;
     }
-  
+
   // Set the extent of the output and allocate memory.
   output->SetExtent(
     outInfo->Get(vtkStreamingDemandDrivenPipeline::WHOLE_EXTENT()));
@@ -244,7 +244,7 @@ void vtkboneImageConnectivityFilter::SimpleExecute
   for (vtkIdType i=0; i<numPts; ++i)
     {
     out_data->SetTuple1 (i, 0);
-    }    
+    }
 
   vtkSmartPointer<vtkboneImageConnectivityMap> connectivityMapper =
                         vtkSmartPointer<vtkboneImageConnectivityMap>::New();
@@ -348,7 +348,7 @@ void vtkboneImageConnectivityFilter::SimpleExecute
         for (int i=0; i<dims[0]; ++i)
           {
           if (cmap_data->GetValue(index) != 0)
-            {              
+            {
             double dist2 = sqr(x[0]) + sqr(x[1]) + sqr(x[2]);
             if (dist2 < closestDistance2)
               {

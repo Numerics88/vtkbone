@@ -97,7 +97,7 @@ public:
   void DeleteSpecifiedRegion(int id);
 
   // Description:
-  // Use to specify x-y-z point coordinates when extracting the region 
+  // Use to specify x-y-z point coordinates when extracting the region
   // closest to a specified point.
   vtkSetVector3Macro(ClosestPoint,double);
   vtkGetVectorMacro(ClosestPoint,double,3);
@@ -116,8 +116,8 @@ protected:
   vtkboneImageConnectivityFilter();
   ~vtkboneImageConnectivityFilter();
 
-  virtual int RequestData(vtkInformation *, 
-                          vtkInformationVector **, 
+  virtual int RequestData(vtkInformation *,
+                          vtkInformationVector **,
                           vtkInformationVector *);
 
   virtual void SimpleExecute(vtkImageData*, vtkImageData*);

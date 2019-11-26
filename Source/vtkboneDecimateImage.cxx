@@ -262,9 +262,9 @@ int vtkboneDecimateImage::SimpleExecute(vtkImageData* input, vtkImageData* outpu
       break;
     default:
       vtkErrorMacro("Unhandled data type in vtkboneDecimateImage.");
-      return 0;    
+      return 0;
       break;
-    }  
+    }
 
   return 1;
   }

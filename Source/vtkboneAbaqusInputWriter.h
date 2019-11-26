@@ -34,7 +34,7 @@ class vtkIdTypeArray;
 class vtkCharArray;
 class vtkboneConstraint;
 
-class VTKBONE_EXPORT vtkboneAbaqusInputWriter : public vtkWriter 
+class VTKBONE_EXPORT vtkboneAbaqusInputWriter : public vtkWriter
 {
 public:
   static vtkboneAbaqusInputWriter *New();

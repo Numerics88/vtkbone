@@ -66,7 +66,7 @@ class VTKBONE_EXPORT vtkboneLinearOrthotropicMaterial : public vtkboneMaterial
     double GetPoissonsRatioZY();
     double GetPoissonsRatioXZ();
     double GetPoissonsRatioYX();
-    
+
     // Description:
     // Get/get the orthotropic shear modulus (G_yz, G_zx, G_xy).
     // Default is 2626.5 MPa.

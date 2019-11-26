@@ -19,7 +19,7 @@
 // corresponding to a directional shear test.  In a directional shear test, the Bottom surface is
 // fixed in all directions, while the top surface is contrained in the z
 // direction, and shifted in the x,y plane by an amount given by ShearVector
-// (optionally scaled by the model height, as determined by 
+// (optionally scaled by the model height, as determined by
 // ScaleShearToHeight).
 //
 // Refer to vtkboneApplyTestBase for details regarding the orientation of the
@@ -48,7 +48,7 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneApplyDirectionalShearTest : public vtkboneApplyTestBase 
+class VTKBONE_EXPORT vtkboneApplyDirectionalShearTest : public vtkboneApplyTestBase
 {
 public:
   static vtkboneApplyDirectionalShearTest *New();
@@ -86,7 +86,7 @@ protected:
   virtual int AddConvergenceSet(vtkboneFiniteElementModel* model);
   virtual int AddPostProcessingSets(vtkboneFiniteElementModel* model);
   virtual int AddInformation(vtkboneFiniteElementModel* model);
-  
+
 private:
   vtkboneApplyDirectionalShearTest(const vtkboneApplyDirectionalShearTest&); // Not implemented
   void operator=(const vtkboneApplyDirectionalShearTest&); // Not implemented

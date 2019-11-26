@@ -78,7 +78,7 @@ int vtkboneImageConnectivityMap::RequestData(
   vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
   vtkImageData *input = vtkImageData::SafeDownCast(
     inInfo->Get(vtkDataObject::DATA_OBJECT()));
-  
+
   int inExt[6];
   input->GetExtent(inExt);
   // if the input extent is empty then exit
@@ -88,7 +88,7 @@ int vtkboneImageConnectivityMap::RequestData(
     {
     return 1;
     }
-  
+
   // Set the extent of the output and allocate memory.
   output->SetExtent(
     outInfo->Get(vtkStreamingDemandDrivenPipeline::WHOLE_EXTENT()));
@@ -145,7 +145,7 @@ void vtkboneImageConnectivityMap::SimpleExecute
     vtkErrorMacro(<< "Internal error in vtkboneImageConnectivityMap");
     return;
     }
-  
+
   int returnVal;
   switch (in_data->GetDataType())
     {
@@ -262,7 +262,7 @@ int vtkboneImageConnectivityMap::MarkComponent
   wave2->Allocate(numPts/4+1,numPts);
   vtkIdList* newWave = wave1;
   vtkIdList* oldWave = wave2;
-  
+
   oldWave->InsertNextId (index);
   vtkIdType dims01 = dims[0]*dims[1];
   do

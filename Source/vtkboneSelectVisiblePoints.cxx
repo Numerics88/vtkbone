@@ -63,7 +63,7 @@ int vtkboneSelectVisiblePoints::FillInputPortInformation
 {
   if (port==0)
     {
-    info->Set (vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkPolyData"); 
+    info->Set (vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkPolyData");
     }
   else
     {
@@ -84,7 +84,7 @@ int vtkboneSelectVisiblePoints::RequestData(
   vtkPolyData* surface = vtkPolyData::SafeDownCast (inInfo0->Get (vtkDataObject::DATA_OBJECT()));
   vtkDataSet* pointDataSet = vtkDataSet::SafeDownCast (inInfo1->Get (vtkDataObject::DATA_OBJECT()));
   vtkPolyData* output = vtkPolyData::SafeDownCast (outInfo->Get (vtkDataObject::DATA_OBJECT()));
-  
+
   if (!surface || !pointDataSet || !output)
     {
     vtkErrorMacro (<<"Wrong or not enough inputs/outputs");
@@ -178,7 +178,7 @@ int vtkboneSelectVisiblePoints::RequestData(
   visibleLinesWriter->SetInput(visibleLines);
   cout << "FindVisiblePoints: Writing visible lines to " << visibleLinesFile << "\n";
   visibleLinesWriter->Write();
-  
+
   vtkSmartPointer<vtkPolyData> hiddenLines = vtkSmartPointer<vtkPolyData>::New();
   hiddenLines->SetPoints(hiddenIntersectionLineEnds);
   hiddenLines->SetLines(hiddenLinesCells);
@@ -200,13 +200,13 @@ int vtkboneSelectVisiblePoints::RequestData(
   extractor->SetInputData (0, pointDataSet);
   extractor->SetInputData (1, selection);
   extractor->Update();
-  
+
   // We need this because the output of vtkExtractSelection is vtkUnstructuredGrid,
   // however, we need to return a vtkPolyData.
   vtkSmartPointer<vtkGeometryFilter> geometryFilter = vtkSmartPointer<vtkGeometryFilter>::New();
   geometryFilter->SetInputData (extractor->GetOutput());
   geometryFilter->Update();
-  
+
   output->ShallowCopy (geometryFilter->GetOutput());
 
   vtkPointData* pointData = output->GetPointData();

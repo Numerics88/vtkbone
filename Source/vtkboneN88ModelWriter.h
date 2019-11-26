@@ -44,7 +44,7 @@ class vtkDataArrayCollection;
 class vtkboneConstraint;
 class vtkDataSetAttributes;
 
-class VTKBONE_EXPORT vtkboneN88ModelWriter : public vtkWriter 
+class VTKBONE_EXPORT vtkboneN88ModelWriter : public vtkWriter
 {
 public:
   static vtkboneN88ModelWriter *New();

@@ -71,7 +71,7 @@ int vtkboneApplyCompressionTest::RequestData
   )
   {
   vtkboneApplyTestBase::RequestData(request, inputVector, outputVector);
-  
+
   // Only need output object: vtkboneApplyTestBase has already copied the input
   // object to the output object (and added stuff).
   vtkInformation *outInfo = outputVector->GetInformationObject(0);
@@ -114,7 +114,7 @@ int vtkboneApplyCompressionTest::PinElement
       0,
       "pinned_nodes");
   // Point 1 of cell 0, which is along the x axis in the Test Frame,
-  // is constrained to no motion in y direction (in the Test Frame) 
+  // is constrained to no motion in y direction (in the Test Frame)
   // to prevent rotation.
   model->ApplyBoundaryCondition(
       cell0PointList->GetId(this->GetVoxelLocalId(1)),
@@ -229,7 +229,7 @@ int vtkboneApplyCompressionTest::AddSideConstraints
       "face_y0", this->DataFrameSense(1), 0, "face_y0_fixed");
   model->ApplyBoundaryCondition(
       "face_y1", this->DataFrameSense(1), 0, "face_y1_fixed");
-  
+
   return VTK_OK;
   }
 
@@ -273,7 +273,7 @@ int vtkboneApplyCompressionTest::AddInformation
   vtkboneApplyTestBase::PrintParameters(comments, indent);
   this->PrintParameters(comments, indent);
   model->AppendLog(comments.str().c_str());
-  
+
   return VTK_OK;
   }
 

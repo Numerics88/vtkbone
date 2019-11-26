@@ -46,7 +46,7 @@ public:
   // Return the minor minor version of vtkbone.
   static int GetVTKBONEMinorMinorVersion();
   static int GetvtkboneMinorMinorVersion();
-  
+
 protected:
   vtkboneVersion() {};
   ~vtkboneVersion() {};
@@ -55,4 +55,4 @@ private:
   void operator=(const vtkboneVersion&);  // Not implemented.
 };
 
-#endif 
+#endif

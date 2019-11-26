@@ -13,7 +13,7 @@
 
 // .NAME vtkboneAbaqusInputReader - A class to read Abaqus input files.
 // .SECTION Description
-// 
+//
 // The data will be written in a VTK object of type vtkboneFiniteElementModel.
 //
 // This object supports only a limited subset of Abaqus features.  The

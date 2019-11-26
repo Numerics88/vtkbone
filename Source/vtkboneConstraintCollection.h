@@ -39,12 +39,12 @@ public:
 
   // Description:
   // Get the next dataset in the list.
-  vtkboneConstraint *GetNextItem() { 
+  vtkboneConstraint *GetNextItem() {
     return static_cast<vtkboneConstraint *>(this->GetNextItemAsObject());};
 
   // Description:
   // Get the ith dataset in the list.
-  vtkboneConstraint *GetItem(int i) { 
+  vtkboneConstraint *GetItem(int i) {
     return static_cast<vtkboneConstraint *>(this->GetItemAsObject(i));};
 
   // Description:
@@ -58,15 +58,15 @@ public:
   void RemoveItem(const char* name)
     { this->vtkCollection::RemoveItem(this->GetItem(name)); }
 
-  // Description: 
-  // Get next object in collection. 
+  // Description:
+  // Get next object in collection.
   vtkboneConstraint *GetNextConstraint() {
     return static_cast<vtkboneConstraint *>(this->GetNextItemAsObject());};
 
   //BTX
-  // Description: 
+  // Description:
   // Reentrant safe way to get an object in a collection. Just pass the
-  // same cookie back and forth. 
+  // same cookie back and forth.
   vtkboneConstraint *GetNextConstraint(vtkCollectionSimpleIterator &cookie) {
     return static_cast<vtkboneConstraint *>(this->GetNextItemAsObject(cookie));};
   //ETX

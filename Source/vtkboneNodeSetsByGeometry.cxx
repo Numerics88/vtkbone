@@ -46,7 +46,7 @@ void vtkboneNodeSetsByGeometry::DetermineMaterialBounds
 )
 {
   using std::numeric_limits;
-  
+
   if (specificMaterial == -1)
     {
     geometry->GetBounds(bounds);
@@ -124,13 +124,13 @@ int vtkboneNodeSetsByGeometry::FindNodesOnPlane
 (
   int axis,
   float val,
-  vtkIdTypeArray *ids, 
+  vtkIdTypeArray *ids,
   vtkUnstructuredGrid *ug,
   int specificMaterial
 )
 {
   bonelabMisc::SanityCheck();
-  
+
   vtkSmartPointer<vtkIdList> cellIds = vtkSmartPointer<vtkIdList>::New();
 
   for (vtkIdType i=0; i<ug->GetNumberOfPoints(); i++) {
@@ -199,7 +199,7 @@ int vtkboneNodeSetsByGeometry::FindNodesIntersectingTwoPlanes
   float val1,
   int axis2,
   float val2,
-  vtkIdTypeArray *ids, 
+  vtkIdTypeArray *ids,
   vtkUnstructuredGrid *ug,
   int specificMaterial
 )
@@ -209,7 +209,7 @@ int vtkboneNodeSetsByGeometry::FindNodesIntersectingTwoPlanes
   vtkSmartPointer<vtkIdList> cellIds = vtkSmartPointer<vtkIdList>::New();
 
   for (vtkIdType i=0; i<ug->GetNumberOfPoints(); i++) {
-    if (bonelabMisc::ApproximatelyEqual(ug->GetPoint(i)[axis1], val1)) { 
+    if (bonelabMisc::ApproximatelyEqual(ug->GetPoint(i)[axis1], val1)) {
       if (bonelabMisc::ApproximatelyEqual(ug->GetPoint(i)[axis2], val2)) {
         if (specificMaterial == -1) {
           ids->InsertNextValue(i);
@@ -277,7 +277,7 @@ int vtkboneNodeSetsByGeometry::FindNodesIntersectingThreePlanes
   int axisA,
   float valA,
   int axisB,
-  float valB, 
+  float valB,
   int axisC,
   float valC,
   vtkIdTypeArray *ids,
@@ -290,7 +290,7 @@ int vtkboneNodeSetsByGeometry::FindNodesIntersectingThreePlanes
   vtkSmartPointer<vtkIdList> cellIds = vtkSmartPointer<vtkIdList>::New();
 
   for (vtkIdType i=0; i<ug->GetNumberOfPoints(); i++) {
-    if (bonelabMisc::ApproximatelyEqual(ug->GetPoint(i)[axisA], valA)) { 
+    if (bonelabMisc::ApproximatelyEqual(ug->GetPoint(i)[axisA], valA)) {
       if (bonelabMisc::ApproximatelyEqual(ug->GetPoint(i)[axisB], valB)) {
         if (bonelabMisc::ApproximatelyEqual(ug->GetPoint(i)[axisC], valC)) {
           if (specificMaterial == -1) {
@@ -381,20 +381,20 @@ int vtkboneNodeSetsByGeometry::FindNodesOnVisibleSurface
   surfaceExtractor->MergingOff();
   surfaceExtractor->Update ();
   vtkPolyData* exteriorPolys = surfaceExtractor->GetOutput();
-  
+
   // {
   // vtkSmartPointer<vtkXMLPolyDataWriter> writer = vtkSmartPointer<vtkXMLPolyDataWriter>::New();
   // writer->SetInput (exteriorPolys);
   // writer->SetFileName ("exteriorPolys.vtp");
   // writer->Write();
   // }
-  
+
   vtkSmartPointer<vtkboneOrientationFilter> orientationFilter = vtkSmartPointer<vtkboneOrientationFilter>::New();
   orientationFilter->SetInputData (exteriorPolys);
   orientationFilter->SetNormalVector (normalVector);
   orientationFilter->Update();
   vtkPolyData* exteriorOrientedPolys = orientationFilter->GetOutput();
-  
+
   // {
   // vtkSmartPointer<vtkXMLPolyDataWriter> writer = vtkSmartPointer<vtkXMLPolyDataWriter>::New();
   // writer->SetInput (exteriorOrientedPolys);
@@ -472,7 +472,7 @@ int vtkboneNodeSetsByGeometry::AddNodesOnVisibleSurface
     {
     return VTK_ERROR;
     }
-  
+
   model->AddNodeSet (visibleNodesIds);
   return VTK_OK;
 }

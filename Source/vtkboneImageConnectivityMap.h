@@ -54,8 +54,8 @@ protected:
                                  vtkInformationVector** inputVector,
                                  vtkInformationVector* outputVector);
 
-  virtual int RequestData(vtkInformation *, 
-                          vtkInformationVector **, 
+  virtual int RequestData(vtkInformation *,
+                          vtkInformationVector **,
                           vtkInformationVector *);
 
   virtual void SimpleExecute(vtkImageData*, vtkImageData*);

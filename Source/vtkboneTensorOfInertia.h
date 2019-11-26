@@ -49,7 +49,7 @@ public:
   virtual int ProcessRequest(vtkInformation*,
                              vtkInformationVector**,
                              vtkInformationVector*);
- 
+
   // Description:
   // Assign a data object as input.
   void SetInputData(vtkDataObject *);
@@ -128,7 +128,7 @@ public:
   vtkGetVector3Macro(PrincipalAxisClosestToX, double);
   vtkGetVector3Macro(PrincipalAxisClosestToY, double);
   vtkGetVector3Macro(PrincipalAxisClosestToZ, double);
-  
+
   // Description:
   // Get the principal moments of inertia.  These are ordered the same as
   // the principal axes of inertia.
@@ -190,7 +190,7 @@ protected:
   int           SpecificValue;
   double        LowerThreshold;
   double        UpperThreshold;
-  
+
   // Results
   vtkIdType     Count;
   double        Volume;

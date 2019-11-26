@@ -57,7 +57,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateBoundaryCondition
     {
     return NULL;
     }
-  
+
   vtkboneConstraint* constraint = vtkboneConstraint::New();
   constraint->SetName(name);
   // Make copy so that we don't possibly stomp on node sets.
@@ -96,7 +96,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateBoundaryCondition
     {
     displacements->SetValue(i, displacement);
     }
-  
+
   return CreateBoundaryCondition(ids, senses, displacements, name);
 }
 
@@ -118,7 +118,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateBoundaryCondition
   vtkSmartPointer<vtkDoubleArray> displacements = vtkSmartPointer<vtkDoubleArray>::New();
   displacements->SetNumberOfValues(1);
   displacements->SetValue(0, displacement);
-  
+
   return CreateBoundaryCondition(ids, senses, displacements, name);
 }
 
@@ -187,7 +187,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateFixedNodes
   vtkSmartPointer<vtkIdTypeArray> ids = vtkSmartPointer<vtkIdTypeArray>::New();
   ids->SetNumberOfValues(1);
   ids->SetValue(0, id);
-  
+
   return CreateFixedNodes(ids, name);
 }
 
@@ -348,13 +348,13 @@ namespace vtkboneConstraintUtilitiesHelper
     std::string description;
   };
 
-  typedef std::map<NodeKey,double,NodeKeyCompare> constraint_nodes_t;  
+  typedef std::map<NodeKey,double,NodeKeyCompare> constraint_nodes_t;
 
   // Create a of list of constrained nodes.  We will step through the nodes
   // and add items to the list; later items will replace earlier ones.
   void GenerateDisplacementConstrainedNodeList
     (
-    vtkboneConstraint* constraint, 
+    vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes
     )
     {
@@ -370,7 +370,7 @@ namespace vtkboneConstraintUtilitiesHelper
         senses->GetNumberOfTuples() != N ||
         values->GetNumberOfTuples() != N)
       throw vtkboneexception("Incorrectly sized attribute array for constraint.");
-  
+
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
       {
@@ -386,7 +386,7 @@ namespace vtkboneConstraintUtilitiesHelper
   // and add items to the list; later items will replace earlier ones.
   void GenerateZeroValuedDisplacementConstrainedNodeList
     (
-    vtkboneConstraint* constraint, 
+    vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes,
     double tol
     )
@@ -403,7 +403,7 @@ namespace vtkboneConstraintUtilitiesHelper
         senses->GetNumberOfTuples() != N ||
         values->GetNumberOfTuples() != N)
       throw vtkboneexception("Incorrectly sized attribute array for constraint.");
-  
+
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
       {
@@ -417,12 +417,12 @@ namespace vtkboneConstraintUtilitiesHelper
         }
       }
     }
-    
+
   // Create a of list of constrained nodes.  We will step through the nodes
   // and add items to the list; later items will replace earlier ones.
   void GenerateNonzeroDisplacementConstrainedNodeList
     (
-    vtkboneConstraint* constraint, 
+    vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes,
     double tol
     )
@@ -439,7 +439,7 @@ namespace vtkboneConstraintUtilitiesHelper
         senses->GetNumberOfTuples() != N ||
         values->GetNumberOfTuples() != N)
       throw vtkboneexception("Incorrectly sized attribute array for constraint.");
-  
+
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
       {
@@ -453,13 +453,13 @@ namespace vtkboneConstraintUtilitiesHelper
         }
       }
     }
-    
+
   // Create a of list of constrained nodes.  We will step through the nodes
   // and add items to the list, or add contributions to existing items
   // as required.
   void GenerateConstrainedNodeListFromNodes
     (
-    vtkboneConstraint* constraint, 
+    vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes
     )
     {
@@ -475,7 +475,7 @@ namespace vtkboneConstraintUtilitiesHelper
         senses->GetNumberOfTuples() != N ||
         values->GetNumberOfTuples() != N)
       throw vtkboneexception("Incorrectly sized attribute array for constraint.");
-  
+
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
       {
@@ -500,7 +500,7 @@ namespace vtkboneConstraintUtilitiesHelper
   void GenerateConstrainedNodeListFromElements
     (
     vtkUnstructuredGrid* geometry,
-    vtkboneConstraint* constraint, 
+    vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes
     )
     {
@@ -520,7 +520,7 @@ namespace vtkboneConstraintUtilitiesHelper
         distributions->GetNumberOfTuples() != N ||
         values->GetNumberOfTuples() != N)
       throw vtkboneexception("Incorrectly sized attribute array for constraint.");
-  
+
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
       {
@@ -606,7 +606,7 @@ namespace vtkboneConstraintUtilitiesHelper
   void GenerateConstrainedNodeList
     (
     vtkUnstructuredGrid* geometry,
-    vtkboneConstraint* constraint, 
+    vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes
     )
     {
@@ -672,7 +672,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherDisplacementConstraints
     // Not a displacement constraint - Just return empty vtkboneConstraint
     return vtkboneConstraint::New();
     }
-  
+
   constraint_nodes_t constrained_nodes;
   try
     {
@@ -682,7 +682,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherDisplacementConstraints
     {
     return NULL;
     }
-  
+
   vtkboneConstraint* sortedConstraint = NULL;
   try
     {
@@ -762,7 +762,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConst
     // Not a displacement constraint - Just return empty vtkboneConstraint
     return vtkboneConstraint::New();
     }
-  
+
   constraint_nodes_t constrained_nodes;
   try
     {
@@ -772,7 +772,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConst
     {
     return NULL;
     }
-  
+
   vtkboneConstraint* sortedConstraint = NULL;
   try
     {
@@ -797,7 +797,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConst
   )
   {
   using namespace vtkboneConstraintUtilitiesHelper;
-  
+
   constraint_nodes_t constrained_nodes;
   for (int i=0; i<constraints->GetNumberOfItems(); ++i)
     {
@@ -814,7 +814,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConst
         }
       }
     }
-  
+
   vtkboneConstraint* sortedConstraint = NULL;
   try
     {
@@ -854,7 +854,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstrai
     // Not a displacement constraint - Just return empty vtkboneConstraint
     return vtkboneConstraint::New();
     }
-  
+
   constraint_nodes_t constrained_nodes;
   try
     {
@@ -864,7 +864,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstrai
     {
     return NULL;
     }
-  
+
   vtkboneConstraint* sortedConstraint = NULL;
   try
     {
@@ -889,7 +889,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstrai
   )
   {
   using namespace vtkboneConstraintUtilitiesHelper;
-  
+
   constraint_nodes_t constrained_nodes;
   for (int i=0; i<constraints->GetNumberOfItems(); ++i)
     {
@@ -906,7 +906,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstrai
         }
       }
     }
-  
+
   vtkboneConstraint* sortedConstraint = NULL;
   try
     {
@@ -941,7 +941,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::DistributeConstraintToNodes
   )
   {
   using namespace vtkboneConstraintUtilitiesHelper;
-  
+
   constraint_nodes_t constrained_nodes;
   try
     {
@@ -951,7 +951,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::DistributeConstraintToNodes
     {
     return NULL;
     }
-  
+
   vtkboneConstraint* constraintOnNodes = NULL;
   try
     {
@@ -976,7 +976,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::DistributeForceConstraintsToNodes
   )
   {
   using namespace vtkboneConstraintUtilitiesHelper;
-  
+
   constraint_nodes_t constrained_nodes;
   for (int i=0; i<constraints->GetNumberOfItems(); ++i)
     {
@@ -993,7 +993,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::DistributeForceConstraintsToNodes
         }
       }
     }
-  
+
   vtkboneConstraint* constraintOnNodes = NULL;
   try
     {

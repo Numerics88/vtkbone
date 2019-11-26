@@ -22,7 +22,7 @@
 //  Contains a vtkIdTypeArray 'Indices' that specifies the list of node or
 //  element IDs.
 //
-//  This class contains a vtkDataSetAttributes object, accessed with the 
+//  This class contains a vtkDataSetAttributes object, accessed with the
 //  method GetAttributes, that can store scalars and vectors.
 //
 //  Constraints on nodes, which may be either Displacement or Force
@@ -97,7 +97,7 @@
 //    distributions->SetName("DISTRIBUTION");
 //    distributions->SetNumberOfValues(2);
 //    // FACE_Z1_DISTRIBUTION is the top Z face.
-//    distributions->SetValue(0, vtkboneConstraint::FACE_Z1_DISTRIBUTION); 
+//    distributions->SetValue(0, vtkboneConstraint::FACE_Z1_DISTRIBUTION);
 //    distributions->SetValue(1, vtkboneConstraint::FACE_Z1_DISTRIBUTION);
 //    // Create Constraint
 //    vtkSmartPointer<vtkboneConstraint> constraint = vtkSmartPointer<vtkboneConstraint>::New();

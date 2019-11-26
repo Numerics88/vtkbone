@@ -36,7 +36,7 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneGenerateHomogeneousMaterialTable : public vtkboneMaterialTableAlgorithm 
+class VTKBONE_EXPORT vtkboneGenerateHomogeneousMaterialTable : public vtkboneMaterialTableAlgorithm
 {
 public:
   static vtkboneGenerateHomogeneousMaterialTable *New();

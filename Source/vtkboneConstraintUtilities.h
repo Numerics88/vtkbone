@@ -17,7 +17,7 @@
 // .SECTION See Also
 // vtkboneConstraint vtkboneConstraintCollection
 // vtkboneFiniteElementModel
-// 
+//
 
 #ifndef __vtkboneConstraintUtilities_h
 #define __vtkboneConstraintUtilities_h

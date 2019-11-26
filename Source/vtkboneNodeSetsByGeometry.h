@@ -39,7 +39,7 @@ class vtkPolyData;
 class vtkIdList;
 class vtkPoints;
 
-class VTKBONE_EXPORT vtkboneNodeSetsByGeometry : public vtkObject 
+class VTKBONE_EXPORT vtkboneNodeSetsByGeometry : public vtkObject
 {
 public:
   static vtkboneNodeSetsByGeometry *New();
@@ -47,7 +47,7 @@ public:
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
-  // Determine the bounds of model, either for the whole model, or for the 
+  // Determine the bounds of model, either for the whole model, or for the
   // SpecificMaterial defined (i.e., representing endcaps).
   static void DetermineMaterialBounds(vtkUnstructuredGrid *geometry,
                                       double bounds[6],
@@ -96,7 +96,7 @@ public:
 
   // Description:
   // Function returns the node ids of all points in the unstructured grid that
-  // lie on the defined straight line. This algorithm is a modification of 
+  // lie on the defined straight line. This algorithm is a modification of
   // vtkboneNodeSetsByGeometry::FindNodesOnPlane. It is based on two planes
   // intersecting each other.
   static int FindNodesIntersectingTwoPlanes(
@@ -133,7 +133,7 @@ public:
 
   // Description:
   // Function returns the node ids of all points in the unstructured grid that
-  // lie on the defined point. This algorithm is a modification of 
+  // lie on the defined point. This algorithm is a modification of
   // vtkboneNodeSetsByGeometry::FindNodesOnPlane. It is based on three planes
   // intersecting each other.
   static int FindNodesIntersectingThreePlanes(

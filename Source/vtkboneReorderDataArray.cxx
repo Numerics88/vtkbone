@@ -36,7 +36,7 @@ int vtkboneReorderDataArray::GenerateClosedLoopsList
 #endif
 
   if (N==0) return 1;
-  
+
   vtkSmartPointer<vtkSignedCharArray> used = vtkSmartPointer<vtkSignedCharArray>::New();
   used->SetNumberOfValues (N);
   for (int i=0; i<N; i++)

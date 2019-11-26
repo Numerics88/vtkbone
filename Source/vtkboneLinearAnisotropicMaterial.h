@@ -85,7 +85,7 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterial : public vtkboneMaterial
   protected:
     vtkboneLinearAnisotropicMaterial();
     ~vtkboneLinearAnisotropicMaterial();
-    
+
     double StressStrainMatrix[6*6];
 
   private:

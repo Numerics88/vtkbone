@@ -147,7 +147,7 @@ void vtkboneAIMWriter::WriteData()
   // if (fabs(conversionError[0]) > 0.000001 ||
   //     fabs(conversionError[1]) > 0.000001 ||
   //     fabs(conversionError[2]) > 0.000001) {
-  // 
+  //
   //       vtkWarningMacro(<<"\n  Possible error when calculating AIM position from image origin."
   //                         "\n  SPACING * POSITION - ORIGIN = ERROR"
   //                         "\n    X: "
@@ -186,7 +186,7 @@ void vtkboneAIMWriter::WriteData()
     newLog << "!-------------------------------------------------------------------------------\n";
     newLog << "Created by                    vtkboneAIMWriter\n";
     newLog << format("%-30s%-50s\n") % "Time" % asctime(timeinfo);
-    newLog << "Original file                 DK0:[MICROCT.DATA.00000062.00001080]C0001021.ISQ\n";  
+    newLog << "Original file                 DK0:[MICROCT.DATA.00000062.00001080]C0001021.ISQ\n";
     newLog << "!-------------------------------------------------------------------------------\n";
     newLog << "Site                                                1\n";
     newLog << "Scanner ID                                       5001\n";
@@ -259,7 +259,7 @@ void vtkboneAIMWriter::WriteData()
 
   // Write the image
   vtkDataArray* data = input->GetPointData()->GetScalars();
-  switch (data->GetDataType()) 
+  switch (data->GetDataType())
     {
     case VTK_CHAR:
       writer.WriteImageData ((char*)(data->WriteVoidPointer(0,0)));

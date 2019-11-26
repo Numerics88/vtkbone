@@ -21,7 +21,7 @@
 // The upper triangular packed form of a 6x6 symmetric matrix is:
 //   K11, K12, K22, K13, K23, K33, K14, K24, K34, K44, K15, K25, K35, K45, K55, K16, K26, K36, K46, K56, K66
 // Due to symmetry, this is equivalent to
-//   K11, K21, K22, K31, K32, K33, K41, K42, K43, K44, K51, K52, K53, K54, K55, K61, K62, K63, K64, K65, K66     
+//   K11, K21, K22, K31, K32, K33, K41, K42, K43, K44, K51, K52, K53, K54, K55, K61, K62, K63, K64, K65, K66
 //
 // .SECTION See Also
 // vtkboneLinearIsotropicMaterial

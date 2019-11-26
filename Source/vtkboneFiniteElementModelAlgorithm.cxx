@@ -169,7 +169,7 @@ int vtkboneFiniteElementModelAlgorithm::RequestData(
   // output is requesting the data, and pass that into ExecuteData
 
   // which output port did the request come from
-  int outputPort = 
+  int outputPort =
     request->Get(vtkDemandDrivenPipeline::FROM_OUTPUT_PORT());
 
   // if output port is negative then that means this filter is calling the
@@ -178,9 +178,9 @@ int vtkboneFiniteElementModelAlgorithm::RequestData(
       {
       outputPort = 0;
       }
-  
+
   // get the data object
-  vtkInformation *outInfo = 
+  vtkInformation *outInfo =
     outputVector->GetInformationObject(outputPort);
   // call ExecuteData
   this->ExecuteData( outInfo->Get(vtkDataObject::DATA_OBJECT()) );
@@ -189,7 +189,7 @@ int vtkboneFiniteElementModelAlgorithm::RequestData(
 }
 
 //----------------------------------------------------------------------------
-// Assume that any source that implements ExecuteData 
+// Assume that any source that implements ExecuteData
 // can handle an empty extent.
 void vtkboneFiniteElementModelAlgorithm::ExecuteData(vtkDataObject *output)
 {

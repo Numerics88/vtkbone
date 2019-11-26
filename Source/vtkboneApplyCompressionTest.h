@@ -56,7 +56,7 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneApplyCompressionTest : public vtkboneApplyTestBase 
+class VTKBONE_EXPORT vtkboneApplyCompressionTest : public vtkboneApplyTestBase
 {
 public:
   static vtkboneApplyCompressionTest *New();
@@ -145,7 +145,7 @@ protected:
   virtual vtkIdType GetCellClosestToXYCenter(vtkboneFiniteElementModel* model);
   virtual int PinElement(vtkboneFiniteElementModel* model);
   virtual int AddInformation(vtkboneFiniteElementModel* model);
-  
+
   int UsePressureBoundaryConditions;
   double AppliedStrain;
   double AppliedDisplacement;

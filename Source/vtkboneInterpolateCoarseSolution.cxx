@@ -58,7 +58,7 @@ int vtkboneInterpolateCoarseSolution::FillInputPortInformation(int port, vtkInfo
   else
     {
     return 0;
-    }  
+    }
   return 1;
   }
 
@@ -172,7 +172,7 @@ int vtkboneInterpolateCoarseSolution::RequestData
   if (!reduced_data)
     {
     vtkErrorMacro(<<"Solution not found in reduced model.");
-    return VTK_ERROR;    
+    return VTK_ERROR;
     }
 
   // To easily index the values of the reduced model, we will put on a regular grid.

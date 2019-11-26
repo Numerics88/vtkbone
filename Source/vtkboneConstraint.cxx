@@ -13,7 +13,7 @@ const char* const ConstraintAppliedTo_s[] = {
     "NODES",
     "ELEMENTS"};
 vtkboneGetAsStringMacro (vtkboneConstraint, ConstraintAppliedTo);
-  
+
 const char* const ConstraintType_s[] = {
     "FORCE",
     "DISPLACEMENT"};
@@ -149,22 +149,22 @@ int vtkboneConstraint::CheckAttributes()
         }
       if (numTuples < numPts)
         {
-        vtkErrorMacro("Array " << name << " with " 
+        vtkErrorMacro("Array " << name << " with "
                       << array->GetNumberOfComponents()
-                      << " components, only has " << numTuples << " tuples but there are " 
+                      << " components, only has " << numTuples << " tuples but there are "
                       << numPts << " points");
         return 1;
         }
       if (numTuples > numPts)
         {
-        vtkWarningMacro("Array " << name << " with " 
+        vtkWarningMacro("Array " << name << " with "
                         << array->GetNumberOfComponents()
-                        << " components, has " << numTuples << " tuples but there are only " 
+                        << " components, has " << numTuples << " tuples but there are only "
                         << numPts << " points");
         }
       }
     }
-  
+
   return 0;
 }
 

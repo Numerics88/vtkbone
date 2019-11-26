@@ -50,7 +50,7 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneGenerateHommingaMaterialTable : public vtkboneMaterialTableAlgorithm 
+class VTKBONE_EXPORT vtkboneGenerateHommingaMaterialTable : public vtkboneMaterialTableAlgorithm
 {
 public:
   static vtkboneGenerateHommingaMaterialTable *New();

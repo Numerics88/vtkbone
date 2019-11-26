@@ -209,7 +209,7 @@ public:
   // A convenience function that returns all cell points in one array.
   // This is usually only useful if all cells are of the same type.
   // The second version returns NULL if no element set with the specified name exists.
-  // You are responsible for deleting the returned object.  
+  // You are responsible for deleting the returned object.
   virtual void GetAllCellPoints (vtkIdTypeArray* allCellPoints);
   virtual vtkIdTypeArray* GetAllCellPoints ();
 

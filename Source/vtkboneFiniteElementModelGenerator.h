@@ -45,7 +45,7 @@
 #include "vtkboneConstraint.h"   // Needed for enum definitions.
 
 
-class VTKBONE_EXPORT vtkboneFiniteElementModelGenerator : public vtkboneFiniteElementModelAlgorithm 
+class VTKBONE_EXPORT vtkboneFiniteElementModelGenerator : public vtkboneFiniteElementModelAlgorithm
 {
 public:
   static vtkboneFiniteElementModelGenerator *New();
@@ -78,7 +78,7 @@ protected:
                           vtkInformationVector* outputVector);
 
   virtual int FillInputPortInformation(int port, vtkInformation *info);
-  
+
   int AddPedigreeIdArrays;
 
 private:

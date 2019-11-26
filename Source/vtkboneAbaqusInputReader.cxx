@@ -88,7 +88,7 @@ int vtkboneAbaqusInputReader::RequestData(
                   << "\n" << reader.GetErrorMsg());
     return VTK_ERROR;
     }
-  
+
   std::ostringstream history;
   history << "Model read from Abaqus input file \"" << this->FileName << "\" using vtkbone version " << VTKBONE_VERSION;
   output->AppendHistory(history.str().c_str());
@@ -97,7 +97,7 @@ int vtkboneAbaqusInputReader::RequestData(
 }
 
 //------------------------------------------------------------------------------
-// Copied and modified from vtkDebugWithObjectMacro in vtkSetGet.h 
+// Copied and modified from vtkDebugWithObjectMacro in vtkSetGet.h
 void vtkboneAbaqusInputReader::DebugMessage (vtkObject* self, const std::string& msg)
 {
   if (self->GetDebug() && vtkObject::GetGlobalWarningDisplay())
@@ -111,7 +111,7 @@ void vtkboneAbaqusInputReader::DebugMessage (vtkObject* self, const std::string&
 }
 
 //------------------------------------------------------------------------------
-// Copied and modified from vtkWarningWithObjectMacro in vtkSetGet.h 
+// Copied and modified from vtkWarningWithObjectMacro in vtkSetGet.h
 void vtkboneAbaqusInputReader::WarningMessage (vtkObject* self, const std::string& msg)
 {
   if (vtkObject::GetGlobalWarningDisplay())

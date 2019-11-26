@@ -86,7 +86,7 @@
 #include "vtkboneConstraint.h"   // Needed for enum definitions.
 
 
-class VTKBONE_EXPORT vtkboneApplyTestBase : public vtkboneFiniteElementModelGenerator 
+class VTKBONE_EXPORT vtkboneApplyTestBase : public vtkboneFiniteElementModelGenerator
 {
 public:
   static vtkboneApplyTestBase *New();
@@ -118,7 +118,7 @@ public:
   // In cases where the surface to which force or displacement
   // boundary conditions are on an uneven surface, setting this
   // option on will search for all nodes on the uneven surface.
-  // The default, without this setting turned on, will only 
+  // The default, without this setting turned on, will only
   // find nodes that intersect the plane defined by the WholeExtent.
   // Default is off.
   vtkSetMacro(UnevenTopSurface, int);
@@ -144,7 +144,7 @@ public:
   // In cases where the surface to which force or displacement
   // boundary conditions are on an uneven surface, setting this
   // option on will search for all nodes on the uneven surface.
-  // The default, without this setting turned on, will only 
+  // The default, without this setting turned on, will only
   // find nodes that intersect the plane defined by the WholeExtent.
   // Default is off.
   vtkSetMacro(UnevenBottomSurface, int);
@@ -186,18 +186,18 @@ public:
   // Given an sense (i.e. an axis direction) in the Test Frame and a
   // polarity (0=negative, 1=positive), return the polarity flag in the Data Frame.
   int DataFramePolarity(int testFrameSense, int polarity);
-  
+
   // Description:
   // Given bounds in the Data Frame, a sense (i.e. an axis direction) in the
   // Test Frame and a polarity in the Test Frame (0=negative, 1=postive),
   // return the value of the indicated bound.
   double TestFrameBound(double bounds[6], int testFrameSense, int polarity);
-  
+
   // Description:
   // Given a VTK local point Id for a voxel in the Test Frame (in the range
   // 0 to 7), return the point Id in the Data Frame.
   int GetVoxelLocalId(int testFrameLocalId);
-  
+
 protected:
   vtkboneApplyTestBase();
   ~vtkboneApplyTestBase();

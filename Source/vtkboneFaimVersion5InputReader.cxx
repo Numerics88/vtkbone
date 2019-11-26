@@ -102,7 +102,7 @@ string FAIMInputReaderHelper::GetNextLine()
       }
     if (in.fail())
       {
-      throw ios_base::failure((format("IO Error reading %s at line %d") 
+      throw ios_base::failure((format("IO Error reading %s at line %d")
                                % this->FileName % this->line_count).str());
       }
     if (!this->IsIgnorable(l))
@@ -118,7 +118,7 @@ string& FAIMInputReaderHelper::GetLine()
 {
   if (this->UnusedTokens.size() > 0)
     {
-    throw ios_base::failure((format("Left over values at end of line %d") 
+    throw ios_base::failure((format("Left over values at end of line %d")
                               % this->line_count).str());
     }
   if (this->line_count == -1)
@@ -128,7 +128,7 @@ string& FAIMInputReaderHelper::GetLine()
   this->line = this->next_line;
   if (this->line.empty())
     {
-    throw ios_base::failure((format("Unexpected end of file at line %d") 
+    throw ios_base::failure((format("Unexpected end of file at line %d")
                             % this->line_count).str());
     }
   this->next_line = this->GetNextLine();
@@ -160,7 +160,7 @@ void FAIMInputReaderHelper::GetLineAndParse(
   this->SplitLine(this->line, tokens);
   if (N != -1 && tokens.size() != N)
     {
-    throw ios_base::failure((format("Unexpected number of tokens at line %d") 
+    throw ios_base::failure((format("Unexpected number of tokens at line %d")
                              % this->line_count).str());
     }
 }
@@ -174,7 +174,7 @@ string FAIMInputReaderHelper::GetNextToken()
     this->SplitLine(this->line, this->UnusedTokens);
     if (this->UnusedTokens.size() == 0)
       {
-      throw ios_base::failure((format("Insufficient number of values at line %d") 
+      throw ios_base::failure((format("Insufficient number of values at line %d")
                               % this->line_count).str());
       }
     }
@@ -191,7 +191,7 @@ void FAIMInputReaderHelper::GetNTokens(int N, std::vector<string>& tokens)
     {
     tokens.push_back(this->GetNextToken());
     }
-}  
+}
 
 //-----------------------------------------------------------------------
 template <typename T>
@@ -221,7 +221,7 @@ void vtkboneFaimVersion5InputReader::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
   os << indent << "File Name: "
-     << (this->FileName ? this->FileName : "(none)") << "\n";  
+     << (this->FileName ? this->FileName : "(none)") << "\n";
 }
 
 //----------------------------------------------------------------------------
@@ -273,7 +273,7 @@ int vtkboneFaimVersion5InputReader::RequestData(
 
   try
     {
-    
+
     // --------------------------------------------------------------
     // Read Model Parameters
 
@@ -301,7 +301,7 @@ int vtkboneFaimVersion5InputReader::RequestData(
       vtkErrorMacro("Unsupported number of dimensions in " << this->FileName);
       return 0;
       }
-    
+
     reader.GetLineAndParse(3, tokens);
     for (int i=0; i<3; i++)
       {
@@ -319,8 +319,8 @@ int vtkboneFaimVersion5InputReader::RequestData(
 
     // --------------------------------------------------------------
     // Read Material Table
-    
-    vtkSmartPointer<vtkboneMaterialTable> materialTable = 
+
+    vtkSmartPointer<vtkboneMaterialTable> materialTable =
                                vtkSmartPointer<vtkboneMaterialTable>::New();
     for (int i=0; i<numberOfMaterials; i++)
       {
@@ -374,16 +374,16 @@ int vtkboneFaimVersion5InputReader::RequestData(
 
     // --------------------------------------------------------------
     // Read Solver Parameters
-    
+
     reader.GetLineAndParse(6, tokens);
     double convergenceTolerance = lexical_cast<double>(tokens[0]);
     vtkboneSolverParameters::CONVERGENCE_TOLERANCE()->Set (info, convergenceTolerance);
     int iterationLimit = lexical_cast<int>(tokens[1]);
     vtkboneSolverParameters::MAXIMUM_ITERATIONS()->Set (info, iterationLimit);
-    
+
     // --------------------------------------------------------------
     // Read Nodes (Points)
-    
+
     vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
     points->SetDataTypeToFloat();
     points->SetNumberOfPoints(numberOfNodes);
@@ -393,14 +393,14 @@ int vtkboneFaimVersion5InputReader::RequestData(
 
     // --------------------------------------------------------------
     // Read Elements (Cells)
-    
+
     vtkSmartPointer<vtkCellArray> cells = vtkSmartPointer<vtkCellArray>::New();
     // The following allocation is exact
     const int pointsPerCell = 8;
     cells->Allocate(cells->EstimateSize(numberOfElements, pointsPerCell));
     {  // scope
     vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
-    pointIds->SetNumberOfIds(pointsPerCell);    
+    pointIds->SetNumberOfIds(pointsPerCell);
     for (vtkIdType newCellId=0; newCellId < numberOfElements; newCellId++)
       {
       reader.GetLineAndParse(pointsPerCell, tokens);
@@ -421,13 +421,13 @@ int vtkboneFaimVersion5InputReader::RequestData(
 
     // --------------------------------------------------------------
     // Read Material Indices (Cell Scalars)
-    
+
     vtkSmartPointer<vtkIntArray> scalars = vtkSmartPointer<vtkIntArray>::New();
     scalars->SetNumberOfTuples(numberOfElements);
     reader.ReadArray(numberOfElements,
                      reinterpret_cast<int*>(scalars->GetVoidPointer(0)));
     output->GetCellData()->SetScalars(scalars);
-    
+
     // --------------------------------------------------------------
     // Read Fixed Nodes Constraint Set
 
