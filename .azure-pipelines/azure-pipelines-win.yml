@@ -10,7 +10,7 @@ jobs:
     displayName: Setup conda
   - script: |
         call activate n88
-        conda-build -c Numerics88 -c anaconda conda-recipe/vtkbone/
+        conda-build -c Numerics88 -c anaconda --python=2.7 conda-recipe/vtkbone/
     displayName: Conda build
   - task: CopyFiles@2
     inputs:

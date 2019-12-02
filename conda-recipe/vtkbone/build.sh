@@ -1,33 +1,36 @@
 set -x
 
 # Create build directory
-mkdir build
+mkdir -p build
 cd build
 BUILD_CONFIG=Release
 
 # Specify Python
+PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
+PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')
+
+# OS specifics
 case $(uname | tr '[:upper:]' '[:lower:]') in
   linux*)
-		export PYTHON_LIBRARY="${PREFIX}/lib/libpython${PY_VER}.so"
-		export PYTHON_INCLUDE_DIR="${PREFIX}/include/python${PY_VER}"
+		# See crazy vtk hacks here: https://github.com/conda-forge/vtk-feedstock/issues/86
+		sed -i '/vtkhdf5_LIBRARIES/d' $BUILD_PREFIX/lib/cmake/vtk-8.2/Modules/vtkhdf5.cmake
 
-		# CMAKE_PLATFORM_FLAGS+=(-DCMAKE_FIND_ROOT_PATH="${PREFIX};${BUILD_PREFIX}/${HOST}/sysroot")
+		# Environment variables for ctest
+		export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
+		#export PYTHONPATH="${PREFIX}/lib:${PYTHONPATH}"
+		export PYTHONPATH="${PREFIX}/lib/python2.7/site-packages/:${PYTHONPATH}"
     ;;
   darwin*)
-		export PYTHON_LIBRARY="${PREFIX}/lib/libpython${PY_VER}.dylib"
-		export PYTHON_INCLUDE_DIR="${PREFIX}/include/python${PY_VER}"
-
 		# Get the SDK
 		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT="${CONDA_BUILD_SYSROOT}")
-		export DYLD_FALLBACK_LIBRARY_PATH="${BUILD_PREFIX}/lib/:${DYLD_LIBRARY_PATH}"
+
+		# Environment variables for ctest
+		export DYLD_FALLBACK_LIBRARY_PATH="${PREFIX}/lib/:${DYLD_FALLBACK_LIBRARY_PATH}"
+		#export PYTHONPATH="${PREFIX}/lib:${PYTHONPATH}"
+		export PYTHONPATH="${PREFIX}/lib/python2.7/site-packages/:${PYTHONPATH}"
     ;;
   *)
 esac
-
-echo $LD_LIBRARY_PATH
-echo $PATH
-conda env list
-
 
 # CMake
 cmake .. \
@@ -38,8 +41,10 @@ cmake .. \
 	-DCMAKE_INSTALL_RPATH:PATH="${PREFIX}/lib" \
 	-DBUILD_SHARED_LIBS:BOOL=ON \
 	-DBOOST_ROOT:PATH="${PREFIX}" \
-	-DPYTHON_LIBRARY:FILEPATH="${PYTHON_LIBRARY}" \
+	-DPYTHON_LIBRARY:PATH="${PYTHON_LIBRARY}" \
 	-DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
+	-DVTKBONE_USE_VTKNETCDF:BOOl=OFF \
+	-DCMAKE_MODULE_PATH:PATH="${SRC_DIR}/cmake/modules" \
 	-DENABLE_TESTING:BOOL=ON \
 	"${CMAKE_PLATFORM_FLAGS[@]}"
 
@@ -47,4 +52,4 @@ cmake .. \
 ninja install -v
 
 # Run tests
-ctest -V
+nosetests ${SRC_DIR}/Testing/Python

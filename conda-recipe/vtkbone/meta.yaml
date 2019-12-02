@@ -10,29 +10,37 @@ build:
   number: 0
 
 # Note, boost has an upperbound right now to hanlde cmake correctly
+# and we need tbb-devel because of a CMake error upstream of VTK
 requirements:
   build:
     - {{ compiler('cxx') }}
     - cmake >=3.1.0
     - ninja
     - gtest
-    - boost >=1.59,<=1.67
+    - python
+    - boost >=1.61,<=1.67
     - libnetcdf
     - pqctio
     - aimio
-    - vtk =6.3
+    - vtk =8
+    - tbb-devel
+    - nose
   run:
-    - boost >=1.59
+    - python
+    - boost >=1.61
     - libnetcdf
     - pqctio
     - aimio
-    - vtk =6.3
+    - vtk =8
+
+test:
+  import:
+    - vtkbone
 
 about:
   home: https://github.com/Numerics88/vtkbone
   license: MIT
   license_family: MIT
-  license_file: LICENSE
   summary: 'VTK classes for bone FEA'
   description: |
     VTK classes for processing of finite element models derived from micro-CT. vtkbone was formerly vtkn88.
