@@ -23,7 +23,7 @@ set(VTKBONE_LIBRARIES vtkbone)
 # here we use a CMake bracket style argument, in which escape sequences
 # are not processed.
 set(VTK_DIR [=[@VTK_DIR@]=])
-string(REPLACE [=[\\]=] "/" VTK_DIR ${VTK_DIR})
-string(REPLACE [=[\]=] "/" VTK_DIR ${VTK_DIR})
+# string(REPLACE [=[\\]=] "/" VTK_DIR ${VTK_DIR})
+# string(REPLACE [=[\]=] "/" VTK_DIR ${VTK_DIR})
 
 set(VTKBONE_USE_VTKNETCDF "@VTKBONE_USE_VTKNETCDF@")
