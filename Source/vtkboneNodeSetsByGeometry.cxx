@@ -467,11 +467,11 @@ int vtkboneNodeSetsByGeometry::AddNodesOnVisibleSurface
 )
 {
   vtkSmartPointer<vtkIdTypeArray> visibleNodesIds = vtkSmartPointer<vtkIdTypeArray>::New();
-  visibleNodesIds->SetName (name);
   if (FindNodesOnVisibleSurface (visibleNodesIds, model, normalVector, specificMaterial) != VTK_OK)
     {
     return VTK_ERROR;
     }
+  visibleNodesIds->SetName (name);
 
   model->AddNodeSet (visibleNodesIds);
   return VTK_OK;
