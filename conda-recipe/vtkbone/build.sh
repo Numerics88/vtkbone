@@ -18,7 +18,7 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
 		# Environment variables for ctest
 		export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
 		#export PYTHONPATH="${PREFIX}/lib:${PYTHONPATH}"
-		export PYTHONPATH="${PREFIX}/lib/python2.7/site-packages/:${PYTHONPATH}"
+		export PYTHONPATH="${PREFIX}/lib/python${PY_VER}/site-packages/:${PYTHONPATH}"
     ;;
   darwin*)
 		# Get the SDK
@@ -27,7 +27,7 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
 		# Environment variables for ctest
 		export DYLD_FALLBACK_LIBRARY_PATH="${PREFIX}/lib/:${DYLD_FALLBACK_LIBRARY_PATH}"
 		#export PYTHONPATH="${PREFIX}/lib:${PYTHONPATH}"
-		export PYTHONPATH="${PREFIX}/lib/python2.7/site-packages/:${PYTHONPATH}"
+		export PYTHONPATH="${PREFIX}/lib/python${PY_VER}/site-packages/:${PYTHONPATH}"
     ;;
   *)
 esac

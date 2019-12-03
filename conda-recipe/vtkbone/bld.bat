@@ -21,5 +21,5 @@ ninja install
 if errorlevel 1 exit 1
 
 :: Run tests
-::ctest -V
-::if errorlevel 1 exit 1
+nosetests "%SRC_DIR%\Testing\Python"
+if errorlevel 1 exit 1

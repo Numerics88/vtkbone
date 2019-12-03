@@ -3,14 +3,24 @@ jobs:
 - job: Linux
   pool:
     vmImage: 'ubuntu-latest'
+  strategy:
+    matrix:
+      Python27:
+        python.version: '2.7'
+      Python36:
+        python.version: '3.6'
+      Python37:
+        python.version: '3.7'
+      Python38:
+        python.version: '3.8'
   steps:
   - bash: echo "##vso[task.prependpath]$CONDA/bin"
     displayName: Add conda to path
-  - script: conda create -y -n n88 python=2 conda-build
+  - script: conda create -y -n n88 conda-build
     displayName: Setup conda
   - script: |
         source activate n88
-        conda-build -c Numerics88 -c anaconda --python=2.7 conda-recipe/vtkbone/
+        conda-build -c Numerics88 -c conda-forge --python=$(python.version) conda-recipe/vtkbone/
     displayName: Conda build
   - task: CopyFiles@2
     inputs:
@@ -21,6 +31,6 @@ jobs:
   - task: PublishBuildArtifacts@1
     inputs:
         pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        artifactName: vtkbone-Linux
+        artifactName: vtkbone-Linux-$(python.version)
     displayName: Publish artifact
 

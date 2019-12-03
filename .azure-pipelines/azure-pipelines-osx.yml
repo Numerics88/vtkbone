@@ -3,6 +3,16 @@ jobs:
 - job: macOS
   pool:
     vmImage: 'macOS-latest'
+  strategy:
+    matrix:
+      Python27:
+        python.version: '2.7'
+      Python36:
+        python.version: '3.6'
+      Python37:
+        python.version: '3.7'
+      Python38:
+        python.version: '3.8'
   steps:
   - bash: |
         echo "##vso[task.prependpath]$CONDA/bin"
@@ -14,11 +24,11 @@ jobs:
       curl  -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz -o MacOSX10.9.sdk.tar.xz
       tar -xJf MacOSX10.9.sdk.tar.xz -C /opt/
     displayName: Download OSX SDK
-  - script: conda create -y -n n88 python=2 conda-build
+  - script: conda create -y -n n88 conda-build
     displayName: Setup conda
   - script: |
         source activate n88
-        conda-build -c Numerics88 -c anaconda --python=2.7 conda-recipe/vtkbone/
+        conda-build -c Numerics88 -c conda-forge --python=$(python.version) conda-recipe/vtkbone/
     displayName: Conda build
   - task: CopyFiles@2
     inputs:
@@ -29,6 +39,6 @@ jobs:
   - task: PublishBuildArtifacts@1
     inputs:
         pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        artifactName: vtkbone-macOS
+        artifactName: vtkbone-macOS-$(python.version)
     displayName: Publish artifact
 
