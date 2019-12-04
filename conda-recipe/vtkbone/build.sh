@@ -15,18 +15,19 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
 		# See crazy vtk hacks here: https://github.com/conda-forge/vtk-feedstock/issues/86
 		sed -i '/vtkhdf5_LIBRARIES/d' $BUILD_PREFIX/lib/cmake/vtk-8.2/Modules/vtkhdf5.cmake
 
-		# Environment variables for ctest
+		# Environment variables for nosetests
 		export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
-		#export PYTHONPATH="${PREFIX}/lib:${PYTHONPATH}"
 		export PYTHONPATH="${PREFIX}/lib/python${PY_VER}/site-packages/:${PYTHONPATH}"
     ;;
   darwin*)
 		# Get the SDK
 		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT="${CONDA_BUILD_SYSROOT}")
+		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_SKIP_BUILD_RPATH:BOOL=OFF)
+		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON)
+		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOl=ON)
 
-		# Environment variables for ctest
+		# Environment variables for nosetests
 		export DYLD_FALLBACK_LIBRARY_PATH="${PREFIX}/lib/:${DYLD_FALLBACK_LIBRARY_PATH}"
-		#export PYTHONPATH="${PREFIX}/lib:${PYTHONPATH}"
 		export PYTHONPATH="${PREFIX}/lib/python${PY_VER}/site-packages/:${PYTHONPATH}"
     ;;
   *)

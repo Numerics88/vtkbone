@@ -211,6 +211,16 @@ else ()
     endif()
 endif ()
 
+if (VTKBONE_USE_VTKNETCDF)
+    target_link_libraries (vtkbone
+        PRIVATE
+            ${vtknetcdf_LIBRARIES}
+            ${vtkhdf5_LIBRARIES})
+else ()
+    target_link_libraries (vtkbone
+        PRIVATE
+            ${netCDF_LIBRARIES})
+endif ()
 
 # Include all directories
 # We need to include TBB untill VTK fixes their CMake exports
@@ -251,18 +261,6 @@ target_link_libraries (vtkbone
         Boost::date_time Boost::filesystem Boost::system
         TBB::tbb
 )
-# message("${VTK_LIBRARIES}")
-
-if (VTKBONE_USE_VTKNETCDF)
-    target_link_libraries (vtkbone
-        PRIVATE
-            ${vtknetcdf_LIBRARIES}
-            ${vtkhdf5_LIBRARIES})
-else ()
-    target_link_libraries (vtkbone
-        PRIVATE
-            ${netCDF_LIBRARIES})
-endif ()
 
 if (BUILD_SHARED_LIBS)
     set_target_properties(vtkbone
