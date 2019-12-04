@@ -36,12 +36,12 @@ def compare_constraint (constraint, expected_indices, expected_senses,
     values = values[sort_indices]
 
     if debug:
-        print expected_indices
-        print expected_senses
-        print expected_values
-        print indices
-        print senses
-        print values
+        print(expected_indices)
+        print(expected_senses)
+        print(expected_values)
+        print(indices)
+        print(senses)
+        print(values)
 
     return (alltrue(indices == expected_indices) 
             and alltrue(senses == expected_senses) 
