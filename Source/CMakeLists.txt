@@ -156,6 +156,7 @@ mark_as_advanced (pQCTIO_Dir)
 # We need to include TBB untill VTK fixes their CMake exports
 find_package(TBB REQUIRED)
 
+# Requires VTK
 find_package (VTK COMPONENTS
     vtkFiltersExtraction
     vtkFiltersGeometry
@@ -163,64 +164,10 @@ find_package (VTK COMPONENTS
     vtkIOCore
     NO_MODULE
 )
-# vtknetcdf
 mark_as_advanced (VTK_DIR)
-include ("${VTK_USE_FILE}")
 
-# option (VTKBONE_USE_VTKNETCDF "Use VTK netcdf libraries instead of separate netcdf libraries." OFF)
-mark_as_advanced (VTKBONE_USE_VTKNETCDF)
-
-if (VTKBONE_USE_VTKNETCDF)
-    add_definitions (-DVTKBONE_USE_VTKNETCDF)
-else ()
-    # Requires NetCDF4
-    if (NOT VTKBONE_USE_VTKNETCDF)
-        option (N88_USE_NETCDF_CONFIG "Use netCDF config file" OFF)
-        mark_as_advanced (N88_USE_NETCDF_CONFIG)
-        if (N88_USE_NETCDF_CONFIG)
-          find_package (netCDF CONFIG REQUIRED)
-          mark_as_advanced (netCDF_DIR)
-        else()
-          # We manually find netCDF and everything that it depends on.
-          # Assume it is built with zlib but not szip.
-          if (DEFINED ENV{CONDA_PREFIX})
-            if (WIN32)
-               set (_nc_hints $ENV{CONDA_PREFIX}/Library/lib)
-             else()
-               set (_nc_hints $ENV{CONDA_PREFIX}/lib)
-             endif()
-          endif()
-          find_path (netCDF_INCLUDE_DIR NAMES netcdf.h
-                     HINTS ${_nc_hints})
-          mark_as_advanced (netCDF_INCLUDE_DIR)
-          find_library (netCDF_LIBRARY NAMES netcdf libnetcdf
-                        HINTS ${_nc_hints})
-          mark_as_advanced (netCDF_LIBRARY)
-          find_path (HDF5_INCLUDE_DIR NAMES netcdf.h
-                     HINTS ${_nc_hints})
-          mark_as_advanced (HDF5_INCLUDE_DIR)
-          find_library (HDF5_LIBRARY NAMES hdf5 libhdf5
-                        HINTS ${_nc_hints})
-          mark_as_advanced (HDF5_LIBRARY)
-          find_library (HDF5_HL_LIBRARY NAMES hdf5_hl libhdf5_hl
-                        HINTS ${_nc_hints})
-          mark_as_advanced (HDF5_HL_LIBRARY)
-          find_package (ZLIB REQUIRED)
-          set (netCDF_LIBRARIES "${netCDF_LIBRARY};${HDF5_HL_LIBRARY};${HDF5_LIBRARY};${ZLIB_LIBRARIES}")
-        endif()
-    endif()
-endif ()
-
-if (VTKBONE_USE_VTKNETCDF)
-    target_link_libraries (vtkbone
-        PRIVATE
-            ${vtknetcdf_LIBRARIES}
-            ${vtkhdf5_LIBRARIES})
-else ()
-    target_link_libraries (vtkbone
-        PRIVATE
-            ${netCDF_LIBRARIES})
-endif ()
+# Requires netCDF
+find_package(netCDF REQUIRED)
 
 # Include all directories
 # We need to include TBB untill VTK fixes their CMake exports
@@ -230,9 +177,8 @@ include_directories (${Boost_INCLUDE_DIR})
 include_directories (${N88UTIL_INCLUDE_DIRS})
 include_directories (${AIMIO_INCLUDE_DIRS})
 include_directories (${PQCTIO_INCLUDE_DIRS})
-if (NOT VTKBONE_USE_VTKNETCDF)
-    include_directories (${netCDF_INCLUDE_DIR})
-endif()
+include_directories (${NETCDF_INCLUDE_DIRS})
+include ("${VTK_USE_FILE}")
 
 # === Options around shared libraries
 
@@ -242,11 +188,6 @@ option (BUILD_SHARED_LIBS
         "Build shared libraries."
         ${VTK_BUILD_SHARED_LIBS})
 set (VTKBONE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
-# On Linux systems, need to build static libraries with -fPIC
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT BUILD_SHARED_LIBS)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-endif ()
 
 # === Create the vtkbone C++ library
 # We need to include TBB untill VTK fixes their CMake exports
@@ -260,7 +201,13 @@ target_link_libraries (vtkbone
         n88util::n88util
         Boost::date_time Boost::filesystem Boost::system
         TBB::tbb
+        ${netCDF_LIBRARIES}
 )
+
+# On Linux systems, need to build static libraries with -fPIC
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT BUILD_SHARED_LIBS)
+    target_compile_options(vtkbone PRIVATE -fPIC)
+endif ()
 
 if (BUILD_SHARED_LIBS)
     set_target_properties(vtkbone
