@@ -1,7 +1,7 @@
 
 set(VTKBONE_MAJOR_VERSION 1)
-set(VTKBONE_MINOR_VERSION 0)
-set(VTKBONE_PATCH_VERSION 1)
+set(VTKBONE_MINOR_VERSION 1)
+set(VTKBONE_PATCH_VERSION 0)
 set (VTKBONE_VERSION_TAG "devel")
 
 # This is the version for CMake purposes, which must be of the form x.y.z
