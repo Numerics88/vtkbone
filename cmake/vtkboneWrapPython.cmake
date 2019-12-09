@@ -54,9 +54,12 @@ macro(vtkbone_wrap_python library_name WRAP_SRCS)
         add_library (${library_name}PythonD ${PYTHON_SRCS})
         target_link_libraries(${library_name}PythonD
             ${library_name}
-            ${PYTHON_LIBRARIES}
             ${VTK_PYTHOND_LIBRARIES}
         )
+
+        if (APPLE)
+            set_target_properties(${library_name}PythonD PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+        endif (APPLE)
 
         # Create lib${library_name}Python
         add_library (${library_name}Python MODULE ${library_name}PythonInit.cxx)
