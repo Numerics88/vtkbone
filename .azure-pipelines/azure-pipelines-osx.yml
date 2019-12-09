@@ -26,7 +26,7 @@ jobs:
     displayName: Setup conda
   - script: |
         source activate n88
-        conda-build -c Numerics88 -c conda-forge --python=$(python.version) conda-recipe/vtkbone/
+        conda-build -c Numerics88 -c conda-forge conda-recipe/vtkbone/ --variants "{'python': ['$(python.version)']}"
     displayName: Conda build
   - task: CopyFiles@2
     inputs:
