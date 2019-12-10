@@ -272,7 +272,7 @@ if (VTKBONE_WRAP_PYTHON)
         "${PROJECT_BINARY_DIR}/Wrapping/Python/compile_all_vtk.py"
     )
     add_custom_command(
-        COMMAND "${PYTHON_EXECUTABLE}" "${PROJECT_BINARY_DIR}/Wrapping/Python/compile_all_vtk.py"
+        COMMAND "${Python_EXECUTABLE}" "${PROJECT_BINARY_DIR}/Wrapping/Python/compile_all_vtk.py"
         DEPENDS "${PROJECT_BINARY_DIR}/Wrapping/Python/compile_all_vtk.py"
         OUTPUT "${PROJECT_BINARY_DIR}/Wrapping/Python/vtk_compile_complete"
     )

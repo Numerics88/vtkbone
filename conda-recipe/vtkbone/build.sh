@@ -10,6 +10,7 @@ PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.ge
 PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')
 
 # OS specifics
+declare -a CMAKE_PLATFORM_FLAGS
 case $(uname | tr '[:upper:]' '[:lower:]') in
   linux*)
 		# See crazy vtk hacks here: https://github.com/conda-forge/vtk-feedstock/issues/86
@@ -21,7 +22,7 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
     ;;
   darwin*)
 		# Get the SDK
-		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT="${CONDA_BUILD_SYSROOT}")
+		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT:PATH="${CONDA_BUILD_SYSROOT}")
 		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_SKIP_BUILD_RPATH:BOOL=OFF)
 		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON)
 		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOl=ON)
@@ -44,6 +45,9 @@ cmake .. \
 	-DBOOST_ROOT:PATH="${PREFIX}" \
 	-DPYTHON_LIBRARY:PATH="${PYTHON_LIBRARY}" \
 	-DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
+	-DPython_ROOT_DIR:PATH="${PREFIX}" \
+	-DPython_FIND_STRATEGY="LOCATION" \
+	-DVTKBONE_PYTHON_VERSION:STRING="${PY_VER}" \
 	-DVTKBONE_USE_VTKNETCDF:BOOl=OFF \
 	-DCMAKE_MODULE_PATH:PATH="${SRC_DIR}/cmake/modules" \
 	-DENABLE_TESTING:BOOL=ON \
@@ -53,4 +57,5 @@ cmake .. \
 ninja install -v
 
 # Run tests
+python -c 'import vtkbone'
 nosetests ${SRC_DIR}/Testing/Python
