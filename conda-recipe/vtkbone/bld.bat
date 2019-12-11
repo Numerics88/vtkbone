@@ -30,5 +30,7 @@ set PATH=%PATH%;%PREFIX%\\Library\\lib;%PREFIX%\\Library\\bin
 set PYTHONPATH=%PYTHONPATH%;%PREFIX%\\Lib\\site-packages
 
 :: Run tests
-nosetests "%SRC_DIR%\Testing\Python"
+::    Note that for >=py3.8, DLL look up no longer goes through `PATH`.
+::    This is a hack to make nose run by adding dll's inside python
+python %RECIPE_DIR%/test_windows.py %SRC_DIR%/Testing/Python
 if errorlevel 1 exit 1
