@@ -1,18 +1,18 @@
 
 # Create version file
 configure_file (
-    "${PROJECT_SOURCE_DIR}/Config/vtkbone_version.h.in"
-    "${PROJECT_BINARY_DIR}/Config/vtkbone_version.h"
+    "${PROJECT_SOURCE_DIR}/Source/Config/vtkbone_version.h.in"
+    "${PROJECT_BINARY_DIR}/Source/Config/vtkbone_version.h"
 )
 
 # Create the vtkboneConfigure.h file.
 # To include this file in source,
-#   include_directories (${PROJECT_BINARY_DIR}/Config/)
+#   include_directories (${PROJECT_BINARY_DIR}/Source/Config/)
 configure_file (
-    "${PROJECT_SOURCE_DIR}/Config/vtkboneConfigure.h.in"
-    "${PROJECT_BINARY_DIR}/Config/vtkboneConfigure.h"
+    "${PROJECT_SOURCE_DIR}/Source/Config/vtkboneConfigure.h.in"
+    "${PROJECT_BINARY_DIR}/Source/Config/vtkboneConfigure.h"
 )
-install (FILES "${PROJECT_BINARY_DIR}/Config/vtkboneConfigure.h" DESTINATION include)
+install (FILES "${PROJECT_BINARY_DIR}/Source/Config/vtkboneConfigure.h" DESTINATION include)
 
 # Create the vtkboneConfig.cmake and vtkboneConfigVersion files
 file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"

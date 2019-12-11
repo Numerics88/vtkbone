@@ -135,6 +135,19 @@ set (VTKBONE_DISTRIBUTED_INCLUDE_FILES
     vtkboneWin32Header.h
     )
 
+# === Options around shared libraries
+
+# Build shared libs ?
+# Defaults to the same VTK setting.
+option (BUILD_SHARED_LIBS
+        "Build shared libraries."
+        ${VTK_BUILD_SHARED_LIBS})
+set (VTKBONE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+
+# === Configure the package
+
+add_subdirectory(Config)
+
 # === Find packages
 
 # Requires Boost
@@ -172,22 +185,13 @@ find_package(netCDF REQUIRED)
 # Include all directories
 # We need to include TBB untill VTK fixes their CMake exports
 include_directories (${TBB_INCLUDE_DIRS})
-include_directories (${PROJECT_BINARY_DIR}/Config/)
+include_directories (${PROJECT_BINARY_DIR}/Source/Config/)
 include_directories (${Boost_INCLUDE_DIR})
 include_directories (${N88UTIL_INCLUDE_DIRS})
 include_directories (${AIMIO_INCLUDE_DIRS})
 include_directories (${PQCTIO_INCLUDE_DIRS})
-include_directories (${NETCDF_INCLUDE_DIRS})
+include_directories (${netCDF_INCLUDE_DIRS})
 include ("${VTK_USE_FILE}")
-
-# === Options around shared libraries
-
-# Build shared libs ?
-# Defaults to the same VTK setting.
-option (BUILD_SHARED_LIBS
-        "Build shared libraries."
-        ${VTK_BUILD_SHARED_LIBS})
-set (VTKBONE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
 
 # === Create the vtkbone C++ library
 # We need to include TBB untill VTK fixes their CMake exports
@@ -201,7 +205,7 @@ target_link_libraries (vtkbone
         n88util::n88util
         Boost::date_time Boost::filesystem Boost::system
         TBB::tbb
-        ${netCDF_LIBRARIES}
+        netcdf
 )
 
 # On Linux systems, need to build static libraries with -fPIC
@@ -253,6 +257,7 @@ install(EXPORT vtkboneTargets
 )
 
 # === Wrap Python
+include (${PROJECT_SOURCE_DIR}/cmake/vtkboneWrapPython.cmake)
 if (VTKBONE_WRAP_PYTHON)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR})
     include_directories(${CMAKE_CURRENT_BINARY_DIR})

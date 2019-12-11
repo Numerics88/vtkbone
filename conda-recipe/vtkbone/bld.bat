@@ -12,13 +12,22 @@ cmake .. ^
 	-DCMAKE_INSTALL_PREFIX:PATH="%LIBRARY_PREFIX%" ^
 	-DBOOST_ROOT:PATH="%PREFIX%" ^
 	-DENABLE_TESTING:BOOL=ON ^
+    -DPYTHON_INCLUDE_PATH:PATH="%PREFIX%\\include" ^
+    -DPYTHON_LIBRARY:FILEPATH="%PREFIX%\\libs\\python%PY_VER%.lib" ^
+	-DPython_ROOT_DIR:PATH="${PREFIX}" ^
+	-DVTKBONE_PYTHON_VERSION:STRING="%PY_VER%" ^
 	-DCMAKE_MODULE_PATH:PATH="%SRC_DIR%\cmake\modules" ^
+	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
 	-DBUILD_SHARED_LIBS:BOOL=ON
 if errorlevel 1 exit 1
 
 :: Compile and install
-ninja install
+ninja install -v
 if errorlevel 1 exit 1
+
+:: Set environemnt variables for nosetests
+set PATH=%PATH%;%PREFIX%\\Library\\lib;%PREFIX%\\Library\\bin
+set PYTHONPATH=%PYTHONPATH%;%PREFIX%\\Lib\\site-packages
 
 :: Run tests
 nosetests "%SRC_DIR%\Testing\Python"

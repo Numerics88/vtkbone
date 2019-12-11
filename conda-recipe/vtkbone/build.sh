@@ -48,7 +48,6 @@ cmake .. \
 	-DPython_ROOT_DIR:PATH="${PREFIX}" \
 	-DPython_FIND_STRATEGY="LOCATION" \
 	-DVTKBONE_PYTHON_VERSION:STRING="${PY_VER}" \
-	-DVTKBONE_USE_VTKNETCDF:BOOl=OFF \
 	-DCMAKE_MODULE_PATH:PATH="${SRC_DIR}/cmake/modules" \
 	-DENABLE_TESTING:BOOL=ON \
 	"${CMAKE_PLATFORM_FLAGS[@]}"
@@ -57,5 +56,4 @@ cmake .. \
 ninja install -v
 
 # Run tests
-python -c 'import vtkbone'
 nosetests ${SRC_DIR}/Testing/Python

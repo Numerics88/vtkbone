@@ -64,14 +64,14 @@ MACRO (netCDF_ADJUST_LIB_VARS basename)
   MARK_AS_ADVANCED (${basename}_LIBRARY ${basename}_LIBRARY_RELEASE ${basename}_LIBRARY_DEBUG ${basename}_INCLUDE_DIR )
 ENDMACRO (netCDF_ADJUST_LIB_VARS)
 
-
-# Try to find netCDF using an installed netCDF-config.cmake
-if( NOT netCDF_FOUND )
-    if (FIND_netCDF_DEBUG)
-      message ("Looking for netCDF config.")
-    endif()
-    find_package( netCDF QUIET NO_MODULE )
-endif()
+# NOTE: Turned off to avoid hdf5 target issues on windows. Gotta find manually
+# # Try to find netCDF using an installed netCDF-config.cmake
+# if( NOT netCDF_FOUND )
+#     if (FIND_netCDF_DEBUG)
+#       message ("Looking for netCDF config.")
+#     endif()
+#     find_package( netCDF QUIET NO_MODULE )
+# endif()
 
 # Try to find netCDF manually
 if( NOT netCDF_FOUND )

@@ -6,8 +6,6 @@ include (${PROJECT_SOURCE_DIR}/cmake/vtkboneVersion.cmake)
 
 # === Configure project
 include (${PROJECT_SOURCE_DIR}/cmake/vtkboneOptions.cmake)
-add_subdirectory(Config)
-include (${PROJECT_SOURCE_DIR}/cmake/vtkboneWrapPython.cmake)
 
 # === Enable Testing
 # Note: must be enabled in root CMake file.

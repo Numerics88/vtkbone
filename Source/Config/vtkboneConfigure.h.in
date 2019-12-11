@@ -6,6 +6,7 @@
 #cmakedefine VTKBONE_BUILD_SHARED_LIBS
 #ifndef VTKBONE_BUILD_SHARED_LIBS
 #define VTKBONE_STATIC
+#else
 #endif
 
 #if defined(_MSC_VER) && !defined(VTKBONE_STATIC)

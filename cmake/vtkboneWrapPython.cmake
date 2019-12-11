@@ -45,7 +45,8 @@ macro(vtkbone_wrap_python library_name WRAP_SRCS)
 
         # Determine site-packages for python install
         if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-            set(SITE_PACKAGES "Lib/site-packages")
+            set(SITE_PACKAGES "${CMAKE_INSTALL_PREFIX}/../Lib/site-packages")
+            get_filename_component(SITE_PACKAGES "${SITE_PACKAGES}" ABSOLUTE)
         else ()
             set(SITE_PACKAGES "lib/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages")
         endif()
@@ -73,7 +74,6 @@ macro(vtkbone_wrap_python library_name WRAP_SRCS)
 
         # Create lib${library_name}Python
         Python_add_library (${library_name}Python MODULE ${library_name}PythonInit.cxx)
-        # add_library (${library_name}Python MODULE )
         target_link_libraries(${library_name}Python
             PRIVATE
                 ${library_name}PythonD
