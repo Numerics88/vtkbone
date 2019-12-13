@@ -20,7 +20,7 @@ requirements:
     - gtest
     - python {{ python }}
     - boost >=1.61
-    - libnetcdf 4.7
+    - libnetcdf =4.7.1
     - pqctio
     - aimio
     - vtk =8.2
@@ -29,7 +29,7 @@ requirements:
   run:
     - python {{ python }}
     - boost >=1.61
-    - libnetcdf 4.7
+    - libnetcdf =4.7.1
     - pqctio
     - aimio
     - vtk =8.2
