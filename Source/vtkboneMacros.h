@@ -36,4 +36,55 @@ const char* classname::Get##enumname##AsString (int arg) \
     } \
 }
 
+//
+// Set character string.  Creates member Set"name"()
+// (e.g., SetFilename(char *));
+// Modified from vtkSetStringMacro
+//
+#define vtkboneSetStringMacro(name)                                                                \
+  virtual void Set##name(const char* _arg) vtkboneSetStringBodyMacro(name, _arg)
+
+// This macro defines a body of set string macro. It can be used either in
+// the header file using vtkSetStringMacro or in the implementation.
+// Modified from vtkboneSetStringBodyMacro
+#define vtkboneSetStringBodyMacro(name, _arg)                                                      \
+  {                                                                                                \
+    if (this->name == nullptr && _arg == nullptr)                                                  \
+    {                                                                                              \
+      return;                                                                                      \
+    }                                                                                              \
+    if (this->name && _arg && (!strcmp(this->name, _arg)))                                         \
+    {                                                                                              \
+      return;                                                                                      \
+    }                                                                                              \
+    delete[] this->name;                                                                           \
+    if (_arg)                                                                                      \
+    {                                                                                              \
+      size_t n = strlen(_arg) + 1;                                                                 \
+      char* cp1 = new char[n];                                                                     \
+      const char* cp2 = (_arg);                                                                    \
+      this->name = cp1;                                                                            \
+      do                                                                                           \
+      {                                                                                            \
+        *cp1++ = *cp2++;                                                                           \
+      } while (--n);                                                                               \
+    }                                                                                              \
+    else                                                                                           \
+    {                                                                                              \
+      this->name = nullptr;                                                                        \
+    }                                                                                              \
+    this->Modified();                                                                              \
+  }
+
+//
+// Get character string.  Creates member Get"name"()
+// (e.g., char *GetFilename());
+// Modified from vtkboneGetStringMacro
+//
+#define vtkboneGetStringMacro(name)                                                                \
+  virtual char* Get##name()                                                                        \
+  {                                                                                                \
+    return this->name;                                                                             \
+  }
+
 #endif

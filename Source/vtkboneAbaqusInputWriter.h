@@ -34,12 +34,12 @@ class vtkIdTypeArray;
 class vtkCharArray;
 class vtkboneConstraint;
 
-class VTKBONE_EXPORT vtkboneAbaqusInputWriter : public vtkWriter 
+class VTKBONE_EXPORT vtkboneAbaqusInputWriter : public vtkWriter
 {
 public:
   static vtkboneAbaqusInputWriter *New();
   vtkTypeMacro(vtkboneAbaqusInputWriter, vtkWriter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Specify file name of file to write.
@@ -50,9 +50,9 @@ protected:
   vtkboneAbaqusInputWriter();
   ~vtkboneAbaqusInputWriter();
 
-  virtual int FillInputPortInformation (int port, vtkInformation *info);
+  virtual int FillInputPortInformation (int port, vtkInformation *info) override;
 
-  virtual void WriteData();
+  virtual void WriteData() override;
 
   //BTX
   virtual int WriteHeading (std::ostream& f, vtkboneFiniteElementModel* model);

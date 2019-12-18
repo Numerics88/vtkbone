@@ -36,12 +36,12 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneGenerateHomogeneousMaterialTable : public vtkboneMaterialTableAlgorithm 
+class VTKBONE_EXPORT vtkboneGenerateHomogeneousMaterialTable : public vtkboneMaterialTableAlgorithm
 {
 public:
   static vtkboneGenerateHomogeneousMaterialTable *New();
   vtkTypeMacro(vtkboneGenerateHomogeneousMaterialTable, vtkboneMaterialTableAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set the material. This object can be any kind of derived class of
@@ -77,7 +77,7 @@ protected:
 
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
   int FirstIndex;
   int LastIndex;

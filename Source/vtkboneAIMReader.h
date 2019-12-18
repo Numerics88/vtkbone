@@ -53,7 +53,7 @@ class VTKBONE_EXPORT vtkboneAIMReader : public vtkImageAlgorithm
 public:
   static vtkboneAIMReader *New();
   vtkTypeMacro(vtkboneAIMReader, vtkImageAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/Get the name of the file to read.
@@ -96,10 +96,10 @@ protected:
 
   int RequestInformation(vtkInformation* request,
                          vtkInformationVector** inputVector,
-                         vtkInformationVector* outputVector);
+                         vtkInformationVector* outputVector) override;
   int RequestData(vtkInformation*,
                   vtkInformationVector**,
-                  vtkInformationVector*);
+                  vtkInformationVector*) override;
 
   char *FileName;
   int DataOnCells;  // Flag to put data on cells instead of points.

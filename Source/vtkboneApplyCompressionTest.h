@@ -56,12 +56,12 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneApplyCompressionTest : public vtkboneApplyTestBase 
+class VTKBONE_EXPORT vtkboneApplyCompressionTest : public vtkboneApplyTestBase
 {
 public:
   static vtkboneApplyCompressionTest *New();
   vtkTypeMacro(vtkboneApplyCompressionTest, vtkboneApplyTestBase);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void PrintParameters(ostream& os, vtkIndent indent);
 
   // Description:
@@ -136,7 +136,7 @@ protected:
 
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
   virtual int AddTopAndBottomConstraints(vtkboneFiniteElementModel* model);
   virtual int AddSideConstraints(vtkboneFiniteElementModel* model);
@@ -145,7 +145,7 @@ protected:
   virtual vtkIdType GetCellClosestToXYCenter(vtkboneFiniteElementModel* model);
   virtual int PinElement(vtkboneFiniteElementModel* model);
   virtual int AddInformation(vtkboneFiniteElementModel* model);
-  
+
   int UsePressureBoundaryConditions;
   double AppliedStrain;
   double AppliedDisplacement;

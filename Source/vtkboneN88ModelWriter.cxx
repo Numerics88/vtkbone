@@ -110,7 +110,7 @@ void vtkboneN88ModelWriter::WriteData()
   if (model == NULL)
     {
     vtkErrorMacro(<<"No input data.");
-    return;   
+    return;
     }
 
   vtkDebugMacro(<<"\n  Writing file " << this->FileName << ".");
@@ -263,7 +263,7 @@ int vtkboneN88ModelWriter::DefineMaterialDefinitions
     return VTK_ERROR;
     }
   materialTable->InitTraversal();
-  
+
   while (int index = materialTable->GetNextUniqueIndex())
     {
     vtkboneMaterial* material = materialTable->GetCurrentMaterial();
@@ -743,10 +743,10 @@ int vtkboneN88ModelWriter::DefineProblem
                                    NC_GLOBAL,
                                    "ConvergenceSet",
                                    strlen(convergence_set->GetName()),
-                                   convergence_set->GetName()));    
+                                   convergence_set->GetName()));
     }
 
-  vtkInformationStringVectorKey* postProcessingNodeSetsKey = 
+  vtkInformationStringVectorKey* postProcessingNodeSetsKey =
                          vtkboneSolverParameters::POST_PROCESSING_NODE_SETS();
   if (postProcessingNodeSetsKey->Has(info) != 0)
     {
@@ -784,7 +784,7 @@ int vtkboneN88ModelWriter::DefineProblem
       }
     }
 
-  vtkInformationDoubleVectorKey* rotationCenterKey = 
+  vtkInformationDoubleVectorKey* rotationCenterKey =
                                   vtkboneSolverParameters::ROTATION_CENTER();
   if (rotationCenterKey->Has(info) != 0)
     {
@@ -832,7 +832,7 @@ int vtkboneN88ModelWriter::DefineSets
         {
         vtkErrorMacro(<<"Error accessing node set. Not type vtkIdTypeArray?");
         return VTK_ERROR;
-        }    
+        }
       const char* setName = ids->GetName();
       if (setName == NULL)
         {
@@ -863,7 +863,7 @@ int vtkboneN88ModelWriter::DefineSets
         {
         vtkErrorMacro(<<"Error accessing element set. Not type vtkIdTypeArray?");
         return VTK_ERROR;
-        }    
+        }
       const char* setName = ids->GetName();
       if (setName == NULL)
         {
@@ -917,7 +917,7 @@ int vtkboneN88ModelWriter::GetNeededGaussPointGroups
 {
   vtkDataArrayCollection* gaussPointData = model->GetGaussPointData();
   nGaussPoints.clear();
-  vtkSmartPointer<vtkCollectionIterator> iterator = 
+  vtkSmartPointer<vtkCollectionIterator> iterator =
       vtkSmartPointer<vtkCollectionIterator>::Take(gaussPointData->NewIterator());
   iterator->GoToFirstItem();
   while (iterator->IsDoneWithTraversal() == false)
@@ -925,7 +925,7 @@ int vtkboneN88ModelWriter::GetNeededGaussPointGroups
     vtkFloatArray* data = vtkFloatArray::SafeDownCast(iterator->GetCurrentObject());
     if (data == NULL)
       {
-      vtkWarningMacro (<< "Gauss Point Data not float: discarding.");  
+      vtkWarningMacro (<< "Gauss Point Data not float: discarding.");
       }
     else
       {
@@ -934,7 +934,7 @@ int vtkboneN88ModelWriter::GetNeededGaussPointGroups
       size_t nElements = model->GetNumberOfCells();
       if (nTuples % nElements)
         {
-        vtkWarningMacro (<< "Gauss Point Data not multiple of number of cells: discarding.");  
+        vtkWarningMacro (<< "Gauss Point Data not multiple of number of cells: discarding.");
         }
       else
         {
@@ -971,7 +971,7 @@ int vtkboneN88ModelWriter::DefineSolution
   NC_SAFE_CALL (nc_def_grp (solutions_ncid, "Solution1", &solution1_ncid));
   const char* string_value = "Problem1";
   NC_SAFE_CALL (nc_put_att_text (solution1_ncid, NC_GLOBAL, "Problem", strlen(string_value), string_value));
-  
+
   if (nodeArrayNames.size())
     {
     int nodeValues_ncid;
@@ -1042,7 +1042,7 @@ int vtkboneN88ModelWriter::DefineSolution
     // also check last dimensions of gauss point values.
       { // scope
       vtkDataArrayCollection* gaussPointData = model->GetGaussPointData();
-      vtkSmartPointer<vtkCollectionIterator> iterator = 
+      vtkSmartPointer<vtkCollectionIterator> iterator =
           vtkSmartPointer<vtkCollectionIterator>::Take(gaussPointData->NewIterator());
       iterator->GoToFirstItem();
       while (iterator->IsDoneWithTraversal() == false)
@@ -1103,7 +1103,7 @@ int vtkboneN88ModelWriter::DefineSolution
 
       // Create variables for Gauss values
       vtkDataArrayCollection* gaussPointData = model->GetGaussPointData();
-      vtkSmartPointer<vtkCollectionIterator> iterator = 
+      vtkSmartPointer<vtkCollectionIterator> iterator =
           vtkSmartPointer<vtkCollectionIterator>::Take(gaussPointData->NewIterator());
       iterator->GoToFirstItem();
       while (iterator->IsDoneWithTraversal() == false)
@@ -1160,7 +1160,7 @@ int vtkboneN88ModelWriter::WriteMaterialDefinitions
   NC_SAFE_CALL (nc_inq_ncid(ncid, "MaterialDefinitions", &materialDefinitions_ncid));
 
   materialTable->InitTraversal();
-  
+
   while (int index = materialTable->GetNextUniqueIndex())
     {
     vtkboneMaterial* material = materialTable->GetCurrentMaterial();
@@ -1255,7 +1255,7 @@ int vtkboneN88ModelWriter::WriteMaterialTable
   int material_varid;
   NC_SAFE_CALL (nc_inq_varid (materialTable_ncid, "MaterialName", &material_varid));
 
-  materialTable->InitTraversal();  
+  materialTable->InitTraversal();
   size_t tableindex[1];
   tableindex[0] = 0;
   size_t count[1] = {1};
@@ -1359,7 +1359,7 @@ int vtkboneN88ModelWriter::WriteElements
     // Convert to 1-indexed
     for (int i=0; i<8; ++i)
       { pts1[i] = pts[transform[i]] + 1; }
-    NC_SAFE_CALL (nc_put_vara_longlong (hexahedrons_ncid, 
+    NC_SAFE_CALL (nc_put_vara_longlong (hexahedrons_ncid,
                                         nodeNumbers_varid,
                                         start,
                                         count,
@@ -1464,7 +1464,7 @@ int vtkboneN88ModelWriter::WriteConstraints
   NC_SAFE_CALL (nc_inq_ncid (ncid, "Constraints", &constraints_ncid));
 
   if (constraints)
-    {  
+    {
     constraints->InitTraversal();
     while (vtkboneConstraint* constraint = constraints->GetNextItem())
       {
@@ -1561,12 +1561,12 @@ int vtkboneN88ModelWriter::WriteSolution
 
   if (nodeArrayNames.size() == 0 && elementArrayNames.size() == 0)
     { return VTK_OK; }
-      
+
   int solutions_ncid;
   NC_SAFE_CALL (nc_inq_ncid (ncid, "Solutions", &solutions_ncid));
   int solution1_ncid;
   NC_SAFE_CALL (nc_inq_ncid (solutions_ncid, "Solution1", &solution1_ncid));
-  
+
   if (nodeArrayNames.size())
     {
     int nodeValues_ncid;
@@ -1600,7 +1600,7 @@ int vtkboneN88ModelWriter::WriteSolution
     }
 
   vtkDataArrayCollection* gaussPointData = model->GetGaussPointData();
-  vtkSmartPointer<vtkCollectionIterator> iterator = 
+  vtkSmartPointer<vtkCollectionIterator> iterator =
       vtkSmartPointer<vtkCollectionIterator>::Take(gaussPointData->NewIterator());
   iterator->GoToFirstItem();
   while (iterator->IsDoneWithTraversal() == false)
@@ -1926,7 +1926,7 @@ int vtkboneN88ModelWriter::SetChunking (int ncid, int varid)
       varsize = 8;
       break;
     default:
-      return -999;          
+      return -999;
     }
   int ndims = 0;
   return_val = nc_inq_varndims (ncid, varid, &ndims);

@@ -40,7 +40,7 @@ class VTKBONE_EXPORT vtkboneMaterial : public vtkObject
   public:
     static vtkboneMaterial* New();
     vtkTypeMacro(vtkboneMaterial, vtkObject);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Set/get the name of the material.

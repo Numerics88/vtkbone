@@ -46,7 +46,7 @@ class VTKBONE_EXPORT vtkboneMaterialTable : public vtkDataObject
   public:
     static vtkboneMaterialTable* New();
     vtkTypeMacro(vtkboneMaterialTable, vtkDataObject);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Get the number of materials.

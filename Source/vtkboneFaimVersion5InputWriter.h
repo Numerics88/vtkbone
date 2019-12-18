@@ -57,12 +57,12 @@ class vtkIdTypeArray;
 class vtkCharArray;
 class vtkboneConstraint;
 
-class VTKBONE_EXPORT vtkboneFaimVersion5InputWriter : public vtkWriter 
+class VTKBONE_EXPORT vtkboneFaimVersion5InputWriter : public vtkWriter
 {
 public:
   static vtkboneFaimVersion5InputWriter *New();
   vtkTypeMacro(vtkboneFaimVersion5InputWriter, vtkWriter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Specify file name of file to write.
@@ -80,9 +80,9 @@ protected:
   vtkboneFaimVersion5InputWriter();
   ~vtkboneFaimVersion5InputWriter();
 
-  void WriteData();
+  void WriteData() override;
 
-  virtual int FillInputPortInformation(int port, vtkInformation *info);
+  virtual int FillInputPortInformation(int port, vtkInformation *info) override;
 
   int WriteNodes(ostream *fp, vtkboneFiniteElementModel* model);
   int WriteElements(ostream *fp, vtkboneFiniteElementModel* model);

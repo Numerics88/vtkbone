@@ -80,7 +80,7 @@ int vtkboneAIMReader::RequestInformation (
   catch (const std::exception& e)
     {
     vtkErrorMacro(<< "Error reading " << this->FileName);
-    return 0;    
+    return 0;
     }
 
   SetProcessingLog (reader.processing_log.c_str());
@@ -192,7 +192,7 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
   catch (const std::exception& e)
     {
     vtkErrorMacro(<< "Error reading " << this->FileName);
-    return 0;    
+    return 0;
     }
 
   this->UpdateProgress(.70);
@@ -227,9 +227,9 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
       return 0;
       vtkErrorMacro(<< "No information about AIM data type.");
       }
-    }      
+    }
   int scalarType = attrInfo->Get( vtkDataObject::FIELD_ARRAY_TYPE() );
-  
+
   switch( scalarType )
   {
 
@@ -245,7 +245,7 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
       catch (const std::exception& e)
         {
         vtkErrorMacro(<< "Error reading " << this->FileName);
-        return 0;    
+        return 0;
         }
       dataArray = carray;
       }
@@ -263,7 +263,7 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
       catch (const std::exception& e)
         {
         vtkErrorMacro(<< "Error reading " << this->FileName);
-        return 0;    
+        return 0;
         }
       dataArray = sarray;
       }
@@ -281,7 +281,7 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
       catch (const std::exception& e)
         {
         vtkErrorMacro(<< "Error reading " << this->FileName);
-        return 0;    
+        return 0;
         }
       dataArray = farray;
       }

@@ -72,7 +72,7 @@ int vtkbonepQCTReader::RequestInformation (
   catch (const std::exception& e)
     {
     vtkErrorMacro(<< "Error reading " << this->FileName);
-    return 0;    
+    return 0;
     }
 
   this->ElementSize[0] = reader.VoxelSize;
@@ -169,7 +169,7 @@ int vtkbonepQCTReader::RequestData (vtkInformation*,
   catch (const std::exception& e)
     {
     vtkErrorMacro(<< "Error reading " << this->FileName);
-    return 0;    
+    return 0;
     }
 
   this->UpdateProgress(.70);
@@ -203,9 +203,9 @@ int vtkbonepQCTReader::RequestData (vtkInformation*,
       return 0;
       vtkErrorMacro(<< "No information about pQCT data type.");
       }
-    }      
+    }
   int scalarType = attrInfo->Get( vtkDataObject::FIELD_ARRAY_TYPE() );
-  
+
   switch( scalarType )
   {
     case VTK_SHORT:
@@ -220,7 +220,7 @@ int vtkbonepQCTReader::RequestData (vtkInformation*,
       catch (const std::exception& e)
         {
         vtkErrorMacro(<< "Error reading " << this->FileName);
-        return 0;    
+        return 0;
         }
       dataArray = sarray;
       }

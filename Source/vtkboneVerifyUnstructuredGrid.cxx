@@ -37,7 +37,7 @@ int vtkboneVerifyUnstructuredGrid::RequestData(
 {
   vtkUnstructuredGrid* input = vtkUnstructuredGrid::GetData(inputVector[0]);
   vtkUnstructuredGrid* output = vtkUnstructuredGrid::GetData(outputVector);
-  
+
   if (!input || !output)
     {
     vtkErrorMacro (<<"Wrong or not enough inputs/outputs");
@@ -51,7 +51,7 @@ int vtkboneVerifyUnstructuredGrid::RequestData(
 
   vtkIdType nPoints = input->GetNumberOfPoints();
   vtkIdType nCells = input->GetNumberOfCells();
-  
+
   vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
   for (vtkIdType cellId=0; cellId<nCells; cellId++)
     {
@@ -65,7 +65,7 @@ int vtkboneVerifyUnstructuredGrid::RequestData(
         return 0;
         }
       }
-    
+
     //>>> TO DO: Option to check this plus provide list of valid cells types.
     if (input->GetCellType(cellId) != VTK_VOXEL)
       {
@@ -104,7 +104,7 @@ int vtkboneVerifyUnstructuredGrid::RequestData(
       }
     }
 
-  return 1;  
+  return 1;
 }
 
 //----------------------------------------------------------------------------
@@ -153,7 +153,7 @@ int vtkboneVerifyUnstructuredGrid::CheckVoxelTopology(
     vtkErrorMacro(<<"Inconsistent voxel coordinates for cell " << cellId);
     return 0;
     }
-  
+
   // Calculate where p5 should be
   vtkMath::Subtract(p[1], p[0], b);
   vtkMath::Add(b, p[4], a);

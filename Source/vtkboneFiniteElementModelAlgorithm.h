@@ -29,19 +29,19 @@ class VTKBONE_EXPORT vtkboneFiniteElementModelAlgorithm : public vtkUnstructured
 public:
   static vtkboneFiniteElementModelAlgorithm *New();
   vtkTypeMacro(vtkboneFiniteElementModelAlgorithm,vtkUnstructuredGridAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Get the output data object for a port on this algorithm.
   vtkboneFiniteElementModel* GetOutput();
   vtkboneFiniteElementModel* GetOutput(int);
-  virtual void SetOutput(vtkDataObject* d);
+  virtual void SetOutput(vtkDataObject* d) override;
 
   // Description:
   // see vtkAlgorithm for details
   virtual int ProcessRequest(vtkInformation*,
                              vtkInformationVector**,
-                             vtkInformationVector*);
+                             vtkInformationVector*) override;
 
   // this method is not recommended for use, but lots of old style filters
   // use it
@@ -70,14 +70,14 @@ protected:
   // convenience method
   virtual int RequestInformation(vtkInformation* request,
                                  vtkInformationVector** inputVector,
-                                 vtkInformationVector* outputVector);
+                                 vtkInformationVector* outputVector) override;
 
   // Description:
   // This is called by the superclass.
   // This is the method you should override.
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
 
   // Description:
@@ -92,7 +92,7 @@ protected:
   // This is the method you should override.
   virtual int RequestUpdateExtent(vtkInformation*,
                                   vtkInformationVector**,
-                                  vtkInformationVector*);
+                                  vtkInformationVector*) override;
 
   // Description:
   // This method is the old style execute method
@@ -100,8 +100,8 @@ protected:
   virtual void Execute();
 
   // see algorithm for more info
-  virtual int FillOutputPortInformation(int port, vtkInformation* info);
-  virtual int FillInputPortInformation(int port, vtkInformation* info);
+  virtual int FillOutputPortInformation(int port, vtkInformation* info) override;
+  virtual int FillInputPortInformation(int port, vtkInformation* info) override;
 
 private:
   vtkboneFiniteElementModelAlgorithm(const vtkboneFiniteElementModelAlgorithm&);  // Not implemented.

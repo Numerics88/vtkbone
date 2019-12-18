@@ -37,7 +37,7 @@ class VTKBONE_EXPORT vtkboneLinearOrthotropicMaterial : public vtkboneMaterial
   public:
     static vtkboneLinearOrthotropicMaterial* New();
     vtkTypeMacro(vtkboneLinearOrthotropicMaterial, vtkboneMaterial);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Set/get the Young's modulus (Ex, Ey, Ez).
@@ -66,7 +66,7 @@ class VTKBONE_EXPORT vtkboneLinearOrthotropicMaterial : public vtkboneMaterial
     double GetPoissonsRatioZY();
     double GetPoissonsRatioXZ();
     double GetPoissonsRatioYX();
-    
+
     // Description:
     // Get/get the orthotropic shear modulus (G_yz, G_zx, G_xy).
     // Default is 2626.5 MPa.
@@ -87,14 +87,14 @@ class VTKBONE_EXPORT vtkboneLinearOrthotropicMaterial : public vtkboneMaterial
     // Description:
     // Creates a copy of this object.
     // You should almost certainly give the copy or the original a new name.
-    virtual vtkboneMaterial* Copy();
+    virtual vtkboneMaterial* Copy() override;
 
     // Description:
     // Creates a copy of this object, with all the modulii scaled by
     // factor.
     // You should almost certainly give the copy or the original a new name.
     // Note that you will have to delete the pointer when finished with it.
-    virtual vtkboneMaterial* ScaledCopy(double factor);
+    virtual vtkboneMaterial* ScaledCopy(double factor) override;
 
   protected:
     vtkboneLinearOrthotropicMaterial();

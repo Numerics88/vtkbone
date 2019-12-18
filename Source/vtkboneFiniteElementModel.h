@@ -87,7 +87,7 @@ class VTKBONE_EXPORT vtkboneFiniteElementModel : public vtkUnstructuredGrid
 public:
   static vtkboneFiniteElementModel* New();
   vtkTypeMacro(vtkboneFiniteElementModel, vtkUnstructuredGrid);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Add a node set.
@@ -209,7 +209,7 @@ public:
   // A convenience function that returns all cell points in one array.
   // This is usually only useful if all cells are of the same type.
   // The second version returns NULL if no element set with the specified name exists.
-  // You are responsible for deleting the returned object.  
+  // You are responsible for deleting the returned object.
   virtual void GetAllCellPoints (vtkIdTypeArray* allCellPoints);
   virtual vtkIdTypeArray* GetAllCellPoints ();
 
@@ -380,8 +380,8 @@ public:
 
   // Description:
   // Shallow and Deep copy.
-  virtual void ShallowCopy(vtkDataObject *src);
-  virtual void DeepCopy(vtkDataObject *src);
+  virtual void ShallowCopy(vtkDataObject *src) override;
+  virtual void DeepCopy(vtkDataObject *src) override;
 
 protected:
   vtkboneFiniteElementModel();

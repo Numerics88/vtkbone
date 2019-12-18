@@ -19,7 +19,7 @@ def convert_map_to_ids (m):
     ids = zeros(m.shape , int)
     ids_flat = ids.reshape((product(ids.shape),))
     index = 0
-    for i in xrange(m_flat.shape[0]):
+    for i in range(m_flat.shape[0]):
         if m_flat[i]:
             ids_flat[i] = index
             index += 1
@@ -52,9 +52,9 @@ def generate_point_coordinates (pointmap, numberpoints, offset=array((0.0,0.0,0.
     wherever a point should be exluded), generate a list of coordinates.
     The coordinate list can be indexed with the point ids."""
     coord = zeros((numberpoints, 3), float)
-    for (k,j,i) in itertools.product(xrange(pointmap.shape[0]),
-                                     xrange(pointmap.shape[1]),
-                                     xrange(pointmap.shape[2])):
+    for (k,j,i) in itertools.product(range(pointmap.shape[0]),
+                                     range(pointmap.shape[1]),
+                                     range(pointmap.shape[2])):
         if pointmap[k,j,i] != -1:
             coord[pointmap[k,j,i]] = offset + array((i,j,k))*spacing
     return coord
@@ -89,9 +89,9 @@ def convert_cellmap_to_unstructuredgrid (cellmap, offset=array((0.0,0.0,0.0)), s
     geometry = vtk.vtkUnstructuredGrid()
     geometry.Allocate(numcells,1)
     geometry.SetPoints(points)
-    for (k,j,i) in itertools.product(xrange(cellmap.shape[0]),
-                                     xrange(cellmap.shape[1]),
-                                     xrange(cellmap.shape[2])):
+    for (k,j,i) in itertools.product(range(cellmap.shape[0]),
+                                     range(cellmap.shape[1]),
+                                     range(cellmap.shape[2])):
         if cellmap[k,j,i]:
             voxel = vtk.vtkVoxel()
             voxel.GetPointIds().SetId(0, pointmap[k  ,j  ,i  ])
@@ -104,9 +104,9 @@ def convert_cellmap_to_unstructuredgrid (cellmap, offset=array((0.0,0.0,0.0)), s
             voxel.GetPointIds().SetId(7, pointmap[k+1,j+1,i+1])
             geometry.InsertNextCell(voxel.GetCellType(), voxel.GetPointIds())
     scalars = zeros(numcells, float)
-    for (k,j,i) in itertools.product(xrange(cellmap.shape[0]),
-                                     xrange(cellmap.shape[1]),
-                                     xrange(cellmap.shape[2])):
+    for (k,j,i) in itertools.product(range(cellmap.shape[0]),
+                                     range(cellmap.shape[1]),
+                                     range(cellmap.shape[2])):
         if cellmap[k,j,i]:
             scalars[cellids[k,j,i]] = cellmap[k,j,i]
     assert(alltrue(scalars != 0.0))   # Should always pass

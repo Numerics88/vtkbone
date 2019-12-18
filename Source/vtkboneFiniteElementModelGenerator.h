@@ -45,12 +45,12 @@
 #include "vtkboneConstraint.h"   // Needed for enum definitions.
 
 
-class VTKBONE_EXPORT vtkboneFiniteElementModelGenerator : public vtkboneFiniteElementModelAlgorithm 
+class VTKBONE_EXPORT vtkboneFiniteElementModelGenerator : public vtkboneFiniteElementModelAlgorithm
 {
 public:
   static vtkboneFiniteElementModelGenerator *New();
   vtkTypeMacro(vtkboneFiniteElementModelGenerator, vtkboneFiniteElementModelAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Sets whether PedigreeIds arraysare
@@ -75,10 +75,10 @@ protected:
 
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
-  virtual int FillInputPortInformation(int port, vtkInformation *info);
-  
+  virtual int FillInputPortInformation(int port, vtkInformation *info) override;
+
   int AddPedigreeIdArrays;
 
 private:

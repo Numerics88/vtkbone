@@ -52,7 +52,7 @@ int vtkboneGenerateHommingaMaterialTable::RequestData
   )
   {
   using boost::format;
-  
+
   vtkInformation *outInfo = outputVector->GetInformationObject(0);
   vtkboneMaterialTable *output = vtkboneMaterialTable::SafeDownCast(
                             outInfo->Get(vtkDataObject::DATA_OBJECT()));
@@ -76,7 +76,7 @@ int vtkboneGenerateHommingaMaterialTable::RequestData
       double x = (double)(k+1)/(double)(N);
       double factor = pow(x, this->Exponent);
       ma_aniso->SetScaledItem (k, aniso, factor);
-      }    
+      }
     }
 
   else if (vtkboneLinearOrthotropicMaterial* ortho =

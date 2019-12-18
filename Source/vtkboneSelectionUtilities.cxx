@@ -78,7 +78,7 @@ void vtkboneSelectionUtilities::GetContainingCellsFromUnstructuredGrid
     {
     flagCellAsIncluded[i] = 0;
     }
-  
+
   vtkSmartPointer<vtkIdList> pointCellIds = vtkSmartPointer<vtkIdList>::New();
   for (vtkIdType i=0; i < numSelectedPoints; i++)
     {
@@ -142,7 +142,7 @@ void vtkboneSelectionUtilities::GetContainingCellsFromPolyData
     {
     flagCellAsIncluded[i] = 0;
     }
-  
+
   vtkSmartPointer<vtkIdList> pointCellIds = vtkSmartPointer<vtkIdList>::New();
   for (vtkIdType i=0; i < numSelectedPoints; i++)
     {
@@ -199,7 +199,7 @@ void vtkboneSelectionUtilities::GetContainingCellsFromGeneric
       vtkSmartPointer<vtkDataSet>::Take (data->NewInstance());
   dataCopy->ShallowCopy (data);
 
-  vtkSmartPointer<vtkSelection> cellSelection = 
+  vtkSmartPointer<vtkSelection> cellSelection =
       vtkSmartPointer<vtkSelection>::Take (selection->NewInstance());
   ConvertToContainingCellsSelection (selection, dataCopy, cellSelection);
 
@@ -234,11 +234,11 @@ void vtkboneSelectionUtilities::GetContainingCells
   // Try fastest methods first
   if (vtkPolyData* dataAsPolyData = vtkPolyData::SafeDownCast (data))
     {
-    GetContainingCellsFromPolyData (selection, dataAsPolyData, cellIds);    
+    GetContainingCellsFromPolyData (selection, dataAsPolyData, cellIds);
     }
   else if (vtkUnstructuredGrid* dataAsUG = vtkUnstructuredGrid::SafeDownCast (data))
     {
-    GetContainingCellsFromUnstructuredGrid (selection, dataAsUG, cellIds);    
+    GetContainingCellsFromUnstructuredGrid (selection, dataAsUG, cellIds);
     }
   else
     {
@@ -262,7 +262,7 @@ void vtkboneSelectionUtilities::ConvertToContainingCellsSelection
   vtkSmartPointer<vtkDataSet> dataCopy =
       vtkSmartPointer<vtkDataSet>::Take (data->NewInstance());
   dataCopy->ShallowCopy (data);
-  vtkSmartPointer<vtkSelection> selectionCopy = 
+  vtkSmartPointer<vtkSelection> selectionCopy =
       vtkSmartPointer<vtkSelection>::Take (selectionIn->NewInstance());
   selectionCopy->ShallowCopy (selectionIn);
 
@@ -356,7 +356,7 @@ int vtkboneSelectionUtilities::ExtractPointsAsPolyData(
   points->Allocate(selectionCount);
   vtkSmartPointer<vtkCellArray> verts = vtkSmartPointer<vtkCellArray>::New();
   verts->Allocate(selectionCount);
-  
+
   for (vtkIdType i=0; i<selectionCount; i++)
     {
     vtkIdType id = ids->GetValue(i);
@@ -394,11 +394,11 @@ int vtkboneSelectionUtilities::ExtractPointsAsPolyData(
   if (selection->GetNumberOfNodes() != 1)
     {
     // Right now can only deal with exactly one selection node.
-    return 0;  
+    return 0;
     }
-  
+
   vtkSelectionNode* selectionNode = selection->GetNode(0);
-  
+
   if (selectionNode->GetContentType() != vtkSelectionNode::INDICES)
     {
     // Right now can only deal with selection by indices.
@@ -409,7 +409,7 @@ int vtkboneSelectionUtilities::ExtractPointsAsPolyData(
     // Right now can only deal with point selection.
     return 0;
     }
-  
+
   vtkIdTypeArray* ids = vtkIdTypeArray::SafeDownCast(selectionNode->GetSelectionList());
   if (!ids)
     {

@@ -66,7 +66,7 @@ class TestGenerateHomogeneousMaterialTable (unittest.TestCase):
         self.assertFalse(material_table is None)
         self.assertEqual(material_table.GetNumberOfMaterials(), 3)
         for index in indices:
-            print index
+            print(index)
             material = material_table.GetMaterial(index)
             self.assertFalse(material is None)
             self.assertEqual(material.GetClassName(), "vtkboneLinearIsotropicMaterial")

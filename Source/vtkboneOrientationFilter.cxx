@@ -50,7 +50,7 @@ int vtkboneOrientationFilter::RequestData(
   vtkInformation *outInfo = outputVector->GetInformationObject(0);
   vtkPolyData* input = vtkPolyData::SafeDownCast (inInfo->Get (vtkDataObject::DATA_OBJECT()));
   vtkPolyData* output = vtkPolyData::SafeDownCast (outInfo->Get (vtkDataObject::DATA_OBJECT()));
-  
+
   if (!input || !output)
     {
     vtkErrorMacro (<<"Wrong or not enough inputs/outputs");
@@ -99,13 +99,13 @@ int vtkboneOrientationFilter::RequestData(
   extractor->SetInputData (0, input);
   extractor->SetInputData (1, selection);
   extractor->Update();
-  
+
   // We need this because the output of vtkExtractSelection is vtkUnstructuredGrid,
   // however, we need to return a vtkPolyData.
   vtkSmartPointer<vtkGeometryFilter> geometryFilter = vtkSmartPointer<vtkGeometryFilter>::New();
   geometryFilter->SetInputData (extractor->GetOutput());
   geometryFilter->Update();
-  
+
   output->ShallowCopy (geometryFilter->GetOutput());
 
   return 1;

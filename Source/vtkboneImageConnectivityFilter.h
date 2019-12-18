@@ -40,7 +40,7 @@ public:
   static vtkboneImageConnectivityFilter* New();
   vtkTypeMacro(vtkboneImageConnectivityFilter,
                        vtkSimpleImageToImageFilter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // These match the defines in vtkConnectivityFilter
   enum ExtractionMode_t {
@@ -97,7 +97,7 @@ public:
   void DeleteSpecifiedRegion(int id);
 
   // Description:
-  // Use to specify x-y-z point coordinates when extracting the region 
+  // Use to specify x-y-z point coordinates when extracting the region
   // closest to a specified point.
   vtkSetVector3Macro(ClosestPoint,double);
   vtkGetVectorMacro(ClosestPoint,double,3);
@@ -116,11 +116,11 @@ protected:
   vtkboneImageConnectivityFilter();
   ~vtkboneImageConnectivityFilter();
 
-  virtual int RequestData(vtkInformation *, 
-                          vtkInformationVector **, 
-                          vtkInformationVector *);
+  virtual int RequestData(vtkInformation *,
+                          vtkInformationVector **,
+                          vtkInformationVector *) override;
 
-  virtual void SimpleExecute(vtkImageData*, vtkImageData*);
+  virtual void SimpleExecute(vtkImageData*, vtkImageData*) override;
 
   int CalculateRegionSizes(
     vtkUnsignedIntArray* cmap_data,

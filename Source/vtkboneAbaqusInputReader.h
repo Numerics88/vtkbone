@@ -13,7 +13,7 @@
 
 // .NAME vtkboneAbaqusInputReader - A class to read Abaqus input files.
 // .SECTION Description
-// 
+//
 // The data will be written in a VTK object of type vtkboneFiniteElementModel.
 //
 // This object supports only a limited subset of Abaqus features.  The
@@ -53,7 +53,7 @@ public:
 
   static vtkboneAbaqusInputReader* New();
   vtkTypeMacro(vtkboneAbaqusInputReader,vtkboneFiniteElementModelAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/get the file name of the ABAQUS Input file to read.
@@ -72,7 +72,7 @@ protected:
 
   int RequestData (vtkInformation *,
                    vtkInformationVector **,
-                   vtkInformationVector *);
+                   vtkInformationVector *) override;
 
   char *FileName;
 

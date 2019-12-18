@@ -62,7 +62,7 @@ int vtkboneApplyTorsionTest::RequestData
   )
   {
   vtkboneApplyTestBase::RequestData(request, inputVector, outputVector);
-  
+
   // Only need output object: vtkboneApplyTestBase has already copied the input
   // object to the output object (and added stuff).
   vtkInformation *outInfo = outputVector->GetInformationObject(0);
@@ -189,7 +189,7 @@ int vtkboneApplyTorsionTest::AddInformation
   vtkboneApplyTestBase::PrintParameters(comments, indent);
   this->PrintParameters(comments, indent);
   model->AppendLog(comments.str().c_str());
-  
+
   return VTK_OK;
   }
 

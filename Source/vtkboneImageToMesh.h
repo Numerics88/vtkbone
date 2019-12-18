@@ -64,16 +64,16 @@ class VTKBONE_EXPORT vtkboneImageToMesh : public vtkUnstructuredGridAlgorithm
 public:
   static vtkboneImageToMesh* New();
   vtkTypeMacro(vtkboneImageToMesh, vtkUnstructuredGridAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void Report(ostream& s);
 
 protected:
   vtkboneImageToMesh();
   ~vtkboneImageToMesh();
 
-  virtual int FillInputPortInformation(int port, vtkInformation* info);
+  virtual int FillInputPortInformation(int port, vtkInformation* info) override;
 
-  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *) override;
 
   // Description:
   // Returns the input if the input has the scalar data on the points; otherwise
@@ -81,7 +81,7 @@ protected:
   // points.
   int GetInputAsCellScalars(vtkImageData* input,
                             vtkImageData* inputAsPointScalars);
-  
+
   int GenerateHexahedrons(vtkImageData* input,
                           vtkUnstructuredGrid* output);
 

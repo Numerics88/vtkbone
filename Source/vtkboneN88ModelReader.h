@@ -37,7 +37,7 @@ class VTKBONE_EXPORT vtkboneN88ModelReader : public vtkboneFiniteElementModelAlg
 public:
   static vtkboneN88ModelReader *New();
   vtkTypeMacro(vtkboneN88ModelReader, vtkboneFiniteElementModelAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/get the file name of the file to read.
@@ -70,7 +70,7 @@ protected:
 
   virtual int RequestData(vtkInformation *,
                           vtkInformationVector **,
-                          vtkInformationVector *);
+                          vtkInformationVector *) override;
 
   int ReadDataFromNetCDFFile(int ncid, vtkboneFiniteElementModel* model);
   int ReadProblem(int ncid, vtkboneFiniteElementModel* model);

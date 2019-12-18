@@ -45,19 +45,19 @@ def tensor_of_inertia_standard_analysis(toi, I_ref, COM_ref, count_ref, mass_ref
 
     # Check the tensor of inertia about the origin.
     #
-    I_vtk = vtk.vtkTensor()
+    I_vtk = vtkbone.vtkboneTensor()
     toi.GetTensorOfInertiaAboutOrigin(I_vtk)
     I = zeros((3,3), float)
-    for i,j in itertools.product(range(3),range(3)):
+    for i,j in itertools.product(list(range(3)),list(range(3))):
         I[i,j] = I_vtk.GetComponent(i,j)
     assert(alltrue(abs(I - I_ref) < 1E-6))
     
     # Check the tensor of inertia about the center of mass.
     #
-    I_center_vtk = vtk.vtkTensor()
+    I_center_vtk = vtkbone.vtkboneTensor()
     toi.GetTensorOfInertia(I_center_vtk)
     I_center = zeros((3,3), float)
-    for i,j in itertools.product(range(3),range(3)):
+    for i,j in itertools.product(list(range(3)),list(range(3))):
         I_center[i,j] = I_center_vtk.GetComponent(i,j)
     I_center_ref = I - mass_ref*(inner(COM,COM)*identity(3) - outer(COM,COM))
     assert(alltrue(abs(I_center - I_center_ref) < 1E-6))
@@ -67,7 +67,7 @@ def tensor_of_inertia_standard_analysis(toi, I_ref, COM_ref, count_ref, mass_ref
     U_vtk = vtk.vtkMatrix3x3()
     toi.GetEigenvectors(U_vtk)
     U = zeros((3,3), float)
-    for i,j in itertools.product(range(3),range(3)):
+    for i,j in itertools.product(list(range(3)),list(range(3))):
         U[i,j] = U_vtk.GetElement(i,j)
     e = array(toi.GetPrincipalMoments())
     e_sort_key = argsort(e)

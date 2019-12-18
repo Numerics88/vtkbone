@@ -46,7 +46,7 @@ int vtkboneFiniteElementModelGenerator::FillInputPortInformation(int port, vtkIn
   else
     {
     return 0;
-    }  
+    }
   return 1;
 }
 

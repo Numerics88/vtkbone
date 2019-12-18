@@ -76,7 +76,7 @@ void vtkboneAbaqusInputWriter::WriteData()
   if (model == NULL)
     {
     vtkErrorMacro(<<"No input data.");
-    return;   
+    return;
     }
 
   vtkDebugMacro(<<"\n  Writing file " << this->FileName << ".");
@@ -125,7 +125,7 @@ int vtkboneAbaqusInputWriter::WriteHeading
     for (int i=0; i<lines.size(); ++i)
       { f << "** " << lines[i] << "\n"; }
     }
-  
+
   return VTK_OK;
 }
 
@@ -218,7 +218,7 @@ int vtkboneAbaqusInputWriter::WriteMaterials
     return VTK_ERROR;
     }
   materialTable->InitTraversal();
-  
+
   while (int index = materialTable->GetNextUniqueIndex())
     {
     vtkboneMaterial* material = materialTable->GetCurrentMaterial();
@@ -315,9 +315,9 @@ int vtkboneAbaqusInputWriter::WriteSolidSections
     // Ignore if no scalars
     return VTK_OK;
     }
-  
+
   materialTable->InitTraversal();
-  
+
   while (int index = materialTable->GetNextUniqueIndex())
     {
     vtkboneMaterial* material = materialTable->GetCurrentMaterial();
@@ -358,7 +358,7 @@ int vtkboneAbaqusInputWriter::WriteSolidSections
       f << "*SOLID SECTION, ELSET=" << setName
         << ", MATERIAL=" << materialName << "\n";
     }
-  
+
   return VTK_OK;
 }
 
@@ -490,7 +490,7 @@ int vtkboneAbaqusInputWriter::WriteLoads
           << values->GetTuple1(i) << "\n";
         }
       }
-      
+
     }
 
   return VTK_OK;

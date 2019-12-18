@@ -39,7 +39,7 @@ class VTKBONE_EXPORT vtkboneOrientationFilter : public vtkPolyDataAlgorithm
 public:
   static vtkboneOrientationFilter* New();
   vtkTypeMacro(vtkboneOrientationFilter, vtkPolyDataAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set get the normal vector from the object towards the viewer.
@@ -53,7 +53,7 @@ protected:
 
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
   double NormalVector[3];
 

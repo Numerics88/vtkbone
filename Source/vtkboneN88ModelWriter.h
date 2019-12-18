@@ -44,12 +44,12 @@ class vtkDataArrayCollection;
 class vtkboneConstraint;
 class vtkDataSetAttributes;
 
-class VTKBONE_EXPORT vtkboneN88ModelWriter : public vtkWriter 
+class VTKBONE_EXPORT vtkboneN88ModelWriter : public vtkWriter
 {
 public:
   static vtkboneN88ModelWriter *New();
   vtkTypeMacro(vtkboneN88ModelWriter, vtkWriter);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Specify file name of file to write.
@@ -66,9 +66,9 @@ protected:
   vtkboneN88ModelWriter();
   ~vtkboneN88ModelWriter();
 
-  void WriteData();
+  void WriteData() override;
 
-  virtual int FillInputPortInformation(int port, vtkInformation *info);
+  virtual int FillInputPortInformation(int port, vtkInformation *info) override;
 
   int DefineNetCDFFile(int ncid, vtkboneFiniteElementModel* model);
   int DefineMaterialDefinitions(int ncid, vtkboneFiniteElementModel* model);

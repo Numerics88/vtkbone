@@ -50,12 +50,12 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneGenerateHommingaMaterialTable : public vtkboneMaterialTableAlgorithm 
+class VTKBONE_EXPORT vtkboneGenerateHommingaMaterialTable : public vtkboneMaterialTableAlgorithm
 {
 public:
   static vtkboneGenerateHommingaMaterialTable *New();
   vtkTypeMacro(vtkboneGenerateHommingaMaterialTable, vtkboneMaterialTableAlgorithm);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Set/Get the material ID equal for the first material definition in the sequence.
@@ -93,7 +93,7 @@ protected:
 
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
   int FirstIndex;
   int LastIndex;

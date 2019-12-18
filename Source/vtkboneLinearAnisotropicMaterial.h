@@ -40,7 +40,7 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterial : public vtkboneMaterial
   public:
     static vtkboneLinearAnisotropicMaterial* New();
     vtkTypeMacro(vtkboneLinearAnisotropicMaterial, vtkboneMaterial);
-    void PrintSelf(ostream& os, vtkIndent indent);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
     // Description:
     // Sets the stress-strain matrix. Arguement should be 36 values,
@@ -73,19 +73,19 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterial : public vtkboneMaterial
     // Description:
     // Creates a copy of this object.
     // You should almost certainly give the copy or the original a new name.
-    virtual vtkboneMaterial* Copy();
+    virtual vtkboneMaterial* Copy() override;
 
     // Description:
     // Creates a copy of this object, with all the modulii scaled by
     // factor.
     // You should almost certainly give the copy or the original a new name.
     // Note that you will have to delete the pointer when finished with it.
-    virtual vtkboneMaterial* ScaledCopy(double factor);
+    virtual vtkboneMaterial* ScaledCopy(double factor) override;
 
   protected:
     vtkboneLinearAnisotropicMaterial();
     ~vtkboneLinearAnisotropicMaterial();
-    
+
     double StressStrainMatrix[6*6];
 
   private:

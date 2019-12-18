@@ -5,7 +5,6 @@
 #include "vtkDataObject.h"
 #include "vtkIdList.h"
 #include "vtkMath.h"
-#include "vtkTensor.h"
 #include "vtkMatrix3x3.h"
 #include "vtkDataArray.h"
 #include "vtkPointData.h"
@@ -35,8 +34,8 @@ vtkboneTensorOfInertia::vtkboneTensorOfInertia()
   this->CenterOfMass[0] = 0;
   this->CenterOfMass[1] = 0;
   this->CenterOfMass[2] = 0;
-  this->TensorOfInertiaAboutOrigin = vtkTensor::New();
-  this->TensorOfInertia = vtkTensor::New();
+  this->TensorOfInertiaAboutOrigin = vtkboneTensor::New();
+  this->TensorOfInertia = vtkboneTensor::New();
   this->Eigenvectors = vtkMatrix3x3::New();
 
   this->PrincipalMoments[0] = 0;
@@ -52,7 +51,7 @@ vtkboneTensorOfInertia::vtkboneTensorOfInertia()
   this->PrincipalAxisClosestToZ[0] = 0;
   this->PrincipalAxisClosestToZ[1] = 0;
   this->PrincipalAxisClosestToZ[2] = 0;
-  
+
   this->SetNumberOfInputPorts(1);
   this->SetNumberOfOutputPorts(0);
 }
@@ -445,13 +444,13 @@ int vtkboneTensorOfInertia::ProcessUnstructuredGrid(
 }
 
 //----------------------------------------------------------------------------
-void vtkboneTensorOfInertia::GetTensorOfInertia (vtkTensor* MOI)
+void vtkboneTensorOfInertia::GetTensorOfInertia (vtkboneTensor* MOI)
 {
   MOI->DeepCopy(this->TensorOfInertia);
 }
 
 //----------------------------------------------------------------------------
-void vtkboneTensorOfInertia::GetTensorOfInertiaAboutOrigin (vtkTensor* MOI)
+void vtkboneTensorOfInertia::GetTensorOfInertiaAboutOrigin (vtkboneTensor* MOI)
 {
   MOI->DeepCopy(this->TensorOfInertiaAboutOrigin);
 }
@@ -465,10 +464,10 @@ void vtkboneTensorOfInertia::GetEigenvectors (vtkMatrix3x3* A)
 //----------------------------------------------------------------------------
 void vtkboneTensorOfInertia::TranslateTensorOfInertiaFromCOM
 (
-  vtkTensor* T0,
+  vtkboneTensor* T0,
   double m,
   double r[3],
-  vtkTensor* T
+  vtkboneTensor* T
 )
 {
   T->Initialize();
@@ -480,16 +479,16 @@ void vtkboneTensorOfInertia::TranslateTensorOfInertiaFromCOM
   T->SetComponent (1,2, T0->GetComponent(1,2) - m*r[1]*r[2]);
   T->SetComponent (2,1, T->GetComponent(1,2));
   T->SetComponent (2,0, T0->GetComponent(2,0) - m*r[2]*r[0]);
-  T->SetComponent (0,2, T->GetComponent(2,0));  
+  T->SetComponent (0,2, T->GetComponent(2,0));
 }
 
 //----------------------------------------------------------------------------
 void vtkboneTensorOfInertia::TranslateTensorOfInertiaToCOM
 (
-  vtkTensor* T,
+  vtkboneTensor* T,
   double m,
   double r[3],
-  vtkTensor* T0
+  vtkboneTensor* T0
 )
 {
   T0->Initialize();
@@ -501,20 +500,20 @@ void vtkboneTensorOfInertia::TranslateTensorOfInertiaToCOM
   T0->SetComponent (1,2, T->GetComponent(1,2) + m*r[1]*r[2]);
   T0->SetComponent (2,1, T->GetComponent(1,2));
   T0->SetComponent (2,0, T->GetComponent(2,0) + m*r[2]*r[0]);
-  T0->SetComponent (0,2, T->GetComponent(2,0));  
+  T0->SetComponent (0,2, T->GetComponent(2,0));
 }
 
 //----------------------------------------------------------------------------
 void vtkboneTensorOfInertia::TranslateTensorOfInertia
 (
-  vtkTensor* T1,
+  vtkboneTensor* T1,
   double r1[3],
   double m,
   double r2[3],
-  vtkTensor* T2
+  vtkboneTensor* T2
 )
 {
-  vtkSmartPointer<vtkTensor> T0 = vtkSmartPointer<vtkTensor>::New();
+  vtkSmartPointer<vtkboneTensor> T0 = vtkSmartPointer<vtkboneTensor>::New();
   TranslateTensorOfInertiaToCOM (T1, m, r1, T0);
   TranslateTensorOfInertiaFromCOM (T0, m, r2, T2);
 }

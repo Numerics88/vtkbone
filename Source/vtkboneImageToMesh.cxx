@@ -88,7 +88,7 @@ int vtkboneImageToMesh::GetInputAsCellScalars
                                   origin[2] + (extents[4] - 0.5) * spacing[2]);
     inputAsCellScalars->GetCellData()->SetScalars(input->GetPointData()->GetScalars());
     }
-  
+
     return 1;
 }
 
@@ -150,7 +150,7 @@ int vtkboneImageToMesh::GenerateHexahedrons
     for (int p=0; p < pointIds->GetNumberOfIds(); p++)
       {
       pointMap->SetValue(pointIds->GetId(p), 1);   // 1 indicates old point is used.
-      }    
+      }
     }
   }
   // Now go through and generate actual new Ids for new points (replacing all
@@ -164,7 +164,7 @@ int vtkboneImageToMesh::GenerateHexahedrons
       numOutputPoints++;
       }
     }
-  
+
   // Generate the node coordinate list.
   vtkSmartPointer<vtkDoubleArray> pointCoord = vtkSmartPointer<vtkDoubleArray>::New();
   pointCoord->SetNumberOfComponents(3);
@@ -177,12 +177,12 @@ int vtkboneImageToMesh::GenerateHexahedrons
       pointCoord->SetTuple(newId, input->GetPoint(oldId));
       }
     }
-  
+
   vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
   points->SetData(pointCoord);
   output->SetPoints(points);
 
-  // Generate Cell Array (i.e. list of point Ids associated with cells)  
+  // Generate Cell Array (i.e. list of point Ids associated with cells)
   vtkSmartPointer<vtkCellArray> cells = vtkSmartPointer<vtkCellArray>::New();
   // The following allocation is exact
   const int pointsPerCell = 8;
@@ -200,7 +200,7 @@ int vtkboneImageToMesh::GenerateHexahedrons
     }
   }
   output->SetCells(VTK_VOXEL, cells);
-  
+
   // Generate Cell scalars
   vtkSmartPointer<vtkDataArray> outputScalars = vtkSmartPointer<vtkDataArray>::Take(
                 vtkDataArray::CreateDataArray(inputScalars->GetDataType()));
@@ -211,7 +211,7 @@ int vtkboneImageToMesh::GenerateHexahedrons
     outputScalars->SetTuple(newCellId, reverseCellMap->GetValue(newCellId), inputScalars);
     }
   output->GetCellData()->SetScalars(outputScalars);
-  
+
   return 1;
 }
 
@@ -262,8 +262,8 @@ int vtkboneImageToMesh::RequestData(
 
   this->GenerateHexahedrons(input, output);
 
-  vtkDebugMacro(<<"\n  Generated :\n" 
-                << "    " << output->GetNumberOfPoints() <<" points\n" 
+  vtkDebugMacro(<<"\n  Generated :\n"
+                << "    " << output->GetNumberOfPoints() <<" points\n"
                 << "    " << output->GetNumberOfCells() <<" cells\n"
                 );
 

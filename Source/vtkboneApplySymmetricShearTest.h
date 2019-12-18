@@ -29,7 +29,7 @@
 //
 // The following Constraints are generated:
 //
-// - "face_x0_lateral" 
+// - "face_x0_lateral"
 // - "face_x1_lateral"
 // - "face_y0_lateral"
 // - "face_y1_lateral"
@@ -63,12 +63,12 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneApplySymmetricShearTest : public vtkboneApplyTestBase 
+class VTKBONE_EXPORT vtkboneApplySymmetricShearTest : public vtkboneApplyTestBase
 {
 public:
   static vtkboneApplySymmetricShearTest *New();
   vtkTypeMacro(vtkboneApplySymmetricShearTest, vtkboneApplyTestBase);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void PrintParameters(ostream& os, vtkIndent indent);
 
   // Description:
@@ -103,14 +103,14 @@ protected:
 
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
   virtual int AddSideConstraints(vtkboneFiniteElementModel* model);
   virtual int AddTopAndBottomConstraints(vtkboneFiniteElementModel* model);
   virtual int AddConvergenceSet(vtkboneFiniteElementModel* model);
   virtual int AddPostProcessingSets(vtkboneFiniteElementModel* model);
   virtual int AddInformation(vtkboneFiniteElementModel* model);
-  
+
 private:
   vtkboneApplySymmetricShearTest(const vtkboneApplySymmetricShearTest&); // Not implemented
   void operator=(const vtkboneApplySymmetricShearTest&); // Not implemented

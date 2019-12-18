@@ -57,12 +57,12 @@
 #include "vtkboneWin32Header.h"
 
 
-class VTKBONE_EXPORT vtkboneApplyBendingTest : public vtkboneApplyTestBase 
+class VTKBONE_EXPORT vtkboneApplyBendingTest : public vtkboneApplyTestBase
 {
 public:
   static vtkboneApplyBendingTest *New();
   vtkTypeMacro(vtkboneApplyBendingTest, vtkboneApplyTestBase);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
   void PrintParameters(ostream& os, vtkIndent indent);
 
   // Description:
@@ -94,13 +94,13 @@ protected:
 
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
-                          vtkInformationVector* outputVector);
+                          vtkInformationVector* outputVector) override;
 
   virtual int AddTopAndBottomConstraints(vtkboneFiniteElementModel* model);
   virtual int AddConvergenceSet(vtkboneFiniteElementModel* model);
   virtual int AddPostProcessingSets(vtkboneFiniteElementModel* model);
   virtual int AddInformation(vtkboneFiniteElementModel* model);
-  
+
 private:
   vtkboneApplyBendingTest(const vtkboneApplyBendingTest&); // Not implemented
   void operator=(const vtkboneApplyBendingTest&); // Not implemented

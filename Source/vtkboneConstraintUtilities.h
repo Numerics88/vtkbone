@@ -17,7 +17,7 @@
 // .SECTION See Also
 // vtkboneConstraint vtkboneConstraintCollection
 // vtkboneFiniteElementModel
-// 
+//
 
 #ifndef __vtkboneConstraintUtilities_h
 #define __vtkboneConstraintUtilities_h
@@ -38,7 +38,7 @@ class VTKBONE_EXPORT vtkboneConstraintUtilities : public vtkObject
 public:
   static vtkboneConstraintUtilities* New();
   vtkTypeMacro(vtkboneConstraintUtilities, vtkObject);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   // Description:
   // Generates a displacement constraint along the specified senses with the
