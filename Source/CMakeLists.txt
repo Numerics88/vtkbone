@@ -133,6 +133,7 @@ set (VTKBONE_DISTRIBUTED_INCLUDE_FILES
     vtkboneVersion.h
     vtkboneVonMisesIsotropicMaterial.h
     vtkboneWin32Header.h
+    vtkboneMacros.h
     )
 
 # === Options around shared libraries
@@ -204,7 +205,7 @@ target_link_libraries (vtkbone
         pQCTIO::pQCTIO
         n88util::n88util
         Boost::date_time Boost::filesystem Boost::system
-        TBB::tbb
+#        TBB::tbb
         netcdf
 )
 
