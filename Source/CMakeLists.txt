@@ -153,7 +153,7 @@ add_subdirectory(Config)
 
 # Requires Boost
 # set (Boost_USE_STATIC_LIBS ON)
-find_package (Boost 1.75.0 COMPONENTS date_time filesystem thread system REQUIRED)
+find_package (Boost 1.61.0 COMPONENTS date_time filesystem thread system REQUIRED)
 
 # Requires n88util
 find_package (n88util 2.0 REQUIRED)
