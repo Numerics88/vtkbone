@@ -216,7 +216,8 @@ target_link_libraries (vtkbone
         Boost::date_time
  				Boost::filesystem
  				Boost::system
-        ${netCDF_LIBRARY}
+        netcdf
+#        ${netCDF_LIBRARY}
 )
 
 #${Boost_DATE_TIME_LIBRARY}
