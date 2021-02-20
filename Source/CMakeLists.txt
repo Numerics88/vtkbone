@@ -153,7 +153,7 @@ add_subdirectory(Config)
 
 # Requires Boost
 # set (Boost_USE_STATIC_LIBS ON)
-find_package (Boost 1.61.0 COMPONENTS date_time filesystem thread system REQUIRED)
+find_package (Boost 1.75.0 COMPONENTS date_time filesystem thread system REQUIRED)
 
 # Requires n88util
 find_package (n88util 2.0 REQUIRED)
@@ -166,9 +166,6 @@ mark_as_advanced (AimIO_DIR)
 # Requires pQCT
 find_package (pQCTIO 1.0 REQUIRED)
 mark_as_advanced (pQCTIO_Dir)
-
-# We need to include TBB untill VTK fixes their CMake exports
-find_package(TBB REQUIRED)
 
 # Requires VTK
 find_package (VTK COMPONENTS
@@ -184,8 +181,6 @@ mark_as_advanced (VTK_DIR)
 find_package(netCDF REQUIRED)
 
 # Include all directories
-# We need to include TBB untill VTK fixes their CMake exports
-include_directories (${TBB_INCLUDE_DIRS})
 include_directories (${PROJECT_BINARY_DIR}/Source/Config/)
 include_directories (${Boost_INCLUDE_DIR})
 include_directories (${N88UTIL_INCLUDE_DIRS})
@@ -194,8 +189,22 @@ include_directories (${PQCTIO_INCLUDE_DIRS})
 include_directories (${netCDF_INCLUDE_DIRS})
 include ("${VTK_USE_FILE}")
 
+# # === Create the vtkbone C++ library
+# add_library (vtkbone ${VTKBONE_SRCS})
+# target_link_libraries (vtkbone
+#     PUBLIC
+#         vtkFiltersExtraction vtkFiltersGeometry vtkFiltersFlowPaths vtkIOCore
+#     PRIVATE
+#         AimIO::AimIO
+#         pQCTIO::pQCTIO
+#         n88util::n88util
+#         Boost::date_time
+# 				Boost::filesystem
+# 				Boost::system
+#         netcdf
+# )
+
 # === Create the vtkbone C++ library
-# We need to include TBB untill VTK fixes their CMake exports
 add_library (vtkbone ${VTKBONE_SRCS})
 target_link_libraries (vtkbone
     PUBLIC
@@ -204,10 +213,17 @@ target_link_libraries (vtkbone
         AimIO::AimIO
         pQCTIO::pQCTIO
         n88util::n88util
-        Boost::date_time Boost::filesystem Boost::system
-#        TBB::tbb
-        netcdf
+        Boost::date_time
+ 				Boost::filesystem
+ 				Boost::system
+        ${netCDF_LIBRARY}
 )
+
+#${Boost_DATE_TIME_LIBRARY}
+#${Boost_FILESYSTEM_LIBRARY}
+#${Boost_SYSTEM_LIBRARY}
+#${Boost_TIMER_LIBRARY}
+#${Boost_CHRONO_LIBRARY}
 
 # On Linux systems, need to build static libraries with -fPIC
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT BUILD_SHARED_LIBS)
