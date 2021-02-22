@@ -217,7 +217,10 @@ target_link_libraries (vtkbone
  				Boost::filesystem
  				Boost::system
         netcdf
-#        ${netCDF_LIBRARY}
+				${ZLIB_LIBRARY}
+				${HDF5_HL_LIBRARY}
+				${HDF5_LIBRARY}
+        ${netCDF_LIBRARY}
 )
 
 #${Boost_DATE_TIME_LIBRARY}
