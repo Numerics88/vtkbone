@@ -189,21 +189,6 @@ include_directories (${PQCTIO_INCLUDE_DIRS})
 include_directories (${netCDF_INCLUDE_DIRS})
 include ("${VTK_USE_FILE}")
 
-# # === Create the vtkbone C++ library
-# add_library (vtkbone ${VTKBONE_SRCS})
-# target_link_libraries (vtkbone
-#     PUBLIC
-#         vtkFiltersExtraction vtkFiltersGeometry vtkFiltersFlowPaths vtkIOCore
-#     PRIVATE
-#         AimIO::AimIO
-#         pQCTIO::pQCTIO
-#         n88util::n88util
-#         Boost::date_time
-# 				Boost::filesystem
-# 				Boost::system
-#         netcdf
-# )
-
 # === Create the vtkbone C++ library
 add_library (vtkbone ${VTKBONE_SRCS})
 target_link_libraries (vtkbone
@@ -216,18 +201,13 @@ target_link_libraries (vtkbone
         Boost::date_time
  				Boost::filesystem
  				Boost::system
-        netcdf
 				${ZLIB_LIBRARY}
 				${HDF5_HL_LIBRARY}
 				${HDF5_LIBRARY}
         ${netCDF_LIBRARY}
 )
-
-#${Boost_DATE_TIME_LIBRARY}
-#${Boost_FILESYSTEM_LIBRARY}
-#${Boost_SYSTEM_LIBRARY}
-#${Boost_TIMER_LIBRARY}
-#${Boost_CHRONO_LIBRARY}
+# The ZLIB, HDF5_HL, HDF5 and netCDF libraries above used to be replaced
+# specifically by 'netcdf'.
 
 # On Linux systems, need to build static libraries with -fPIC
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT BUILD_SHARED_LIBS)
