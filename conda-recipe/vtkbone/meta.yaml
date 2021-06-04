@@ -19,8 +19,8 @@ requirements:
     - ninja
     - gtest
     - python {{ python }}
-    - boost >=1.61
-    - libnetcdf =4.7.1
+    - boost >=1.57,<=1.67
+    - libnetcdf
     - pqctio
     - aimio
     - vtk =8.2
@@ -28,8 +28,8 @@ requirements:
     - nose
   run:
     - python {{ python }}
-    - boost >=1.61
-    - libnetcdf =4.7.1
+    - boost >=1.57
+    - libnetcdf
     - pqctio
     - aimio
     - vtk =8.2
