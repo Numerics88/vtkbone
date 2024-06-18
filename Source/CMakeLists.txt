@@ -164,12 +164,14 @@ find_package (VTK COMPONENTS
     vtkFiltersGeometry
     vtkFiltersFlowPaths
     vtkIOCore
+    vtkzlib
+    vtknetcdfcpp # for VTK 8
+#   vtknetdf     # for VTK 7
     NO_MODULE
 )
 mark_as_advanced (VTK_DIR)
-
-# Requires netCDF
-find_package(netCDF REQUIRED)
+set(ZLIB_LIBRARY vtkzlib)
+set(netCDF_LIBRARY vtknetcdfcpp)
 
 # Include all directories
 include_directories (${PROJECT_BINARY_DIR}/Source/Config/)
@@ -177,7 +179,6 @@ include_directories (${Boost_INCLUDE_DIRS})
 include_directories (${N88UTIL_INCLUDE_DIRS})
 include_directories (${AIMIO_INCLUDE_DIRS})
 include_directories (${PQCTIO_INCLUDE_DIRS})
-include_directories (${netCDF_INCLUDE_DIRS})
 include ("${VTK_USE_FILE}")
 
 # === Create the vtkbone C++ library
@@ -190,15 +191,11 @@ target_link_libraries (vtkbone
         pQCTIO::pQCTIO
         n88util::n88util
         Boost::date_time
- 				Boost::filesystem
- 				Boost::system
-				${ZLIB_LIBRARY}
-				${HDF5_HL_LIBRARY}
-				${HDF5_LIBRARY}
+        Boost::filesystem
+        Boost::system
+        ${ZLIB_LIBRARY}
         ${netCDF_LIBRARY}
 )
-# The ZLIB, HDF5_HL, HDF5 and netCDF libraries above used to be replaced
-# specifically by 'netcdf'.
 
 if (BUILD_SHARED_LIBS)
     set_target_properties(vtkbone
