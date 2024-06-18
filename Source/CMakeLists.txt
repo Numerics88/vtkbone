@@ -230,6 +230,7 @@ install (FILES ${VTKBONE_DISTRIBUTED_INCLUDE_FILES} DESTINATION include)
 
 # Add all targets to the build-tree export set
 export (TARGETS vtkbone
+    NAMESPACE vtkbone::
     FILE "${PROJECT_BINARY_DIR}/vtkboneTargets.cmake")
 
 # Export the package for use from the build-tree
