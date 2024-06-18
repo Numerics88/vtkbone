@@ -182,7 +182,7 @@ find_package(netCDF REQUIRED)
 
 # Include all directories
 include_directories (${PROJECT_BINARY_DIR}/Source/Config/)
-include_directories (${Boost_INCLUDE_DIR})
+include_directories (${Boost_INCLUDE_DIRS})
 include_directories (${N88UTIL_INCLUDE_DIRS})
 include_directories (${AIMIO_INCLUDE_DIRS})
 include_directories (${PQCTIO_INCLUDE_DIRS})
