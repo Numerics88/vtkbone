@@ -160,18 +160,16 @@ mark_as_advanced (pQCTIO_DIR)
 
 # Requires VTK
 find_package (VTK COMPONENTS
-    vtkFiltersExtraction
-    vtkFiltersGeometry
-    vtkFiltersFlowPaths
-    vtkIOCore
-    vtkzlib
-    vtknetcdfcpp # for VTK 8
-#   vtknetdf     # for VTK 7
-    NO_MODULE
+    FiltersExtraction
+    FiltersGeometry
+    FiltersFlowPaths
+    IOCore
+    zlib
+    netcdf
 )
 mark_as_advanced (VTK_DIR)
-set(ZLIB_LIBRARY vtkzlib)
-set(netCDF_LIBRARY vtknetcdfcpp)
+set(ZLIB_LIBRARY VTK::zlib)
+set(netCDF_LIBRARY VTK::netcdf)
 
 # Include all directories
 include_directories (${PROJECT_BINARY_DIR}/Source/Config/)
@@ -179,13 +177,15 @@ include_directories (${Boost_INCLUDE_DIRS})
 include_directories (${N88UTIL_INCLUDE_DIRS})
 include_directories (${AIMIO_INCLUDE_DIRS})
 include_directories (${PQCTIO_INCLUDE_DIRS})
-include ("${VTK_USE_FILE}")
 
 # === Create the vtkbone C++ library
 add_library (vtkbone ${VTKBONE_SRCS})
 target_link_libraries (vtkbone
     PUBLIC
-        vtkFiltersExtraction vtkFiltersGeometry vtkFiltersFlowPaths vtkIOCore
+        VTK::FiltersExtraction
+        VTK::FiltersGeometry
+        VTK::FiltersFlowPaths
+        VTK::IOCore
     PRIVATE
         AimIO::AimIO
         pQCTIO::pQCTIO
@@ -196,6 +196,8 @@ target_link_libraries (vtkbone
         ${ZLIB_LIBRARY}
         ${netCDF_LIBRARY}
 )
+
+add_definitions (-DVTKBONE_USE_VTKNETCDF)
 
 if (BUILD_SHARED_LIBS)
     set_target_properties(vtkbone
