@@ -414,19 +414,19 @@ vtkUnstructuredGrid* vtkboneFiniteElementModel::DataSetFromElementSet
 //----------------------------------------------------------------------------
 int vtkboneFiniteElementModel::GetElementType()
 {
-  vtkSmartPointer<vtkCellTypes> cellTypes = vtkSmartPointer<vtkCellTypes>::New();
-  this->GetCellTypes(cellTypes);
-  if (cellTypes->GetNumberOfTypes() == 0)
+  vtkSmartPointer<vtkUnsignedCharArray> cellTypes = this->GetDistinctCellTypesArray();
+  if (cellTypes->GetNumberOfValues() == 0)
     {
     return N88_UNKNOWN;
     }
-  else if (cellTypes->GetNumberOfTypes() == 1)   // single type
+  else if (cellTypes->GetNumberOfValues() == 1)   // single type
     {
-    if (cellTypes->IsType(VTK_TETRA))
+    int cellType = cellTypes->GetValue(0);
+    if (cellType == VTK_TETRA)
       {
       return N88_TETRAHEDRON;
       }
-    else if (cellTypes->IsType(VTK_HEXAHEDRON) || cellTypes->IsType(VTK_VOXEL))
+    else if (cellType == VTK_HEXAHEDRON || cellType == VTK_VOXEL)
       {
       return N88_HEXAHEDRON;
       }
@@ -435,9 +435,12 @@ int vtkboneFiniteElementModel::GetElementType()
       return N88_UNKNOWN;
       }
     }
-  else if (cellTypes->GetNumberOfTypes() == 2)
+  else if (cellTypes->GetNumberOfValues() == 2)
     {
-    if (cellTypes->IsType(VTK_HEXAHEDRON) && cellTypes->IsType(VTK_VOXEL))
+    int cellType1 = cellTypes->GetValue(0);
+    int cellType2 = cellTypes->GetValue(1);
+    if ((cellType1 == VTK_HEXAHEDRON && cellType2 == VTK_VOXEL) ||
+        (cellType1 == VTK_VOXEL && cellType2 == VTK_HEXAHEDRON))
       {
       return N88_HEXAHEDRON;
       }
