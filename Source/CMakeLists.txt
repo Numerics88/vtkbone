@@ -165,7 +165,7 @@ mark_as_advanced (AimIO_DIR)
 
 # Requires pQCT
 find_package (pQCTIO 1.0 REQUIRED)
-mark_as_advanced (pQCTIO_Dir)
+mark_as_advanced (pQCTIO_DIR)
 
 # Requires VTK
 find_package (VTK COMPONENTS
