@@ -153,7 +153,7 @@ int vtkboneAbaqusInputWriter::WriteElements
   vtkCellArray* cells = model->GetCells();
   cells->InitTraversal();
   vtkIdType npts = 0;
-  vtkIdType* pts = NULL;
+  const vtkIdType* pts = nullptr;
   vtkIdType cellid = 0;
   vtkIdType transform[8];
   while (cells->GetNextCell(npts, pts))

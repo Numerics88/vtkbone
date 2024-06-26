@@ -147,8 +147,8 @@ void vtkboneSelectionUtilities::GetContainingCellsFromPolyData
   for (vtkIdType i=0; i < numSelectedPoints; i++)
     {
     vtkIdType pointId = pointIds->GetValue(i);
-    unsigned short ncells;
-    vtkIdType* pointCellIds;
+    vtkIdType ncells = 0;
+    vtkIdType* pointCellIds = nullptr;
     data->GetPointCells (pointId, ncells, pointCellIds);
     for (vtkIdType j=0; j<ncells; j++)
       {

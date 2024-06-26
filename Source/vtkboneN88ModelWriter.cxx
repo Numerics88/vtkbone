@@ -1312,7 +1312,7 @@ int vtkboneN88ModelWriter::WriteElements
   vtkCellArray* cells = model->GetCells();
   cells->InitTraversal();
   vtkIdType npts = 0;
-  vtkIdType* pts = NULL;
+  const vtkIdType* pts = NULL;
   vtkIdType pts1[8];
   size_t start[2];
   start[0] = 0;

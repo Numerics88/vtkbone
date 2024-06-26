@@ -339,7 +339,7 @@ int vtkboneTensorOfInertia::ProcessUnstructuredGrid(
   this->Volume = 0;
   cells->InitTraversal();
   vtkIdType npts = 0;
-  vtkIdType* pts = NULL;
+  const vtkIdType* pts = nullptr;
   vtkIdType pts1[8];
   vtkIdType cellid = 0;
   double sum_centers[3] = {0, 0, 0};

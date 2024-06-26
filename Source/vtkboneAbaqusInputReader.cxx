@@ -55,7 +55,7 @@ int vtkboneAbaqusInputReader::RequestData(
     }
 
   // Open the input file.
-  ifstream fin(this->FileName);
+  std::ifstream fin(this->FileName);
   if (!fin)
     {
     vtkErrorMacro("Error opening file " << this->FileName);

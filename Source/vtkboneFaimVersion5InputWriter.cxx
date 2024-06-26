@@ -93,7 +93,7 @@ void vtkboneFaimVersion5InputWriter::WriteData()
   //
   // Open output file.
   //
-  ofstream fp;
+  std::ofstream fp;
   fp.open (this->FileName, ios::out);
   if (fp.fail())
     {
@@ -162,8 +162,8 @@ int vtkboneFaimVersion5InputWriter::WriteElements
         vtkErrorMacro(<<"Unsupported Element Type");
         return 0;
       }
-    vtkIdType npts;
-    vtkIdType* pts;
+    vtkIdType npts = 0;
+    const vtkIdType* pts = nullptr;
     model->GetCellPoints(id, npts, pts);
     for (int p=0; p<npts; p++)
       {

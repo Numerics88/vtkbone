@@ -466,7 +466,7 @@ void vtkboneFiniteElementModel::GetAllCellPoints (vtkIdTypeArray* allCellPoints)
   allCellPoints->Reset();
   allCellPoints->Allocate (numCells*nodesPerElement, numCells*nodesPerElement/4);
   vtkIdType npts = 0;
-  vtkIdType* pts = NULL;
+  const vtkIdType* pts = nullptr;
   for (vtkIdType cellId=0; cellId < numCells; ++cellId)
     {
     this->GetCellPoints(cellId, npts, pts);
