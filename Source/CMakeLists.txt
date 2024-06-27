@@ -209,15 +209,15 @@ target_link_libraries (vtkbone
 # The ZLIB, HDF5_HL, HDF5 and netCDF libraries above used to be replaced
 # specifically by 'netcdf'.
 
-# On Linux systems, need to build static libraries with -fPIC
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT BUILD_SHARED_LIBS)
-    target_compile_options(vtkbone PRIVATE -fPIC)
-endif ()
-
 if (BUILD_SHARED_LIBS)
     set_target_properties(vtkbone
         PROPERTIES
             OUTPUT_NAME vtkbone-${VTKBONE_MAJOR_VERSION}.${VTKBONE_MINOR_VERSION})
+else ()
+    # On Linux systems, need to build static libraries with -fPIC
+    set_target_properties(vtkbone
+        PROPERTIES
+            POSITION_INDEPENDENT_CODE ON)
 endif()
 
 install (TARGETS vtkbone
