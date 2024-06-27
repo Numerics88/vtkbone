@@ -1,4 +1,4 @@
-# include_directories ("${GTEST_INCLUDE_DIR}")
+# include_directories (${GTEST_INCLUDE_DIRS})
 # include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/../../Source")
 
 # add_executable (vtkboneTests
