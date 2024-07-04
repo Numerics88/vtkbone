@@ -8,6 +8,10 @@ set (VTKBONE_VERSION_TAG "devel")
 set(VTKBONE_VERSION
     ${VTKBONE_MAJOR_VERSION}.${VTKBONE_MINOR_VERSION}.${VTKBONE_PATCH_VERSION})
 
+# This is the version for the libraries, config files, etc.
+set(VTKBONE_SHORT_VERSION
+    ${VTKBONE_MAJOR_VERSION}.${VTKBONE_MINOR_VERSION})
+
 # This is the version for the code, which might include tags
 set(VTKBONE_FULL_VERSION ${VTKBONE_MAJOR_VERSION}.${VTKBONE_MINOR_VERSION})
 if (VTKBONE_PATCH_VERSION)

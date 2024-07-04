@@ -1,0 +1,13 @@
+NAME
+  vtkbone::vtkbone
+LIBRARY_NAME
+  vtkbone
+DEPENDS
+  VTK::CommonCore
+  VTK::CommonDataModel
+  VTK::CommonExecutionModel
+  VTK::IOCore
+PRIVATE_DEPENDS
+  VTK::FiltersExtraction
+  VTK::FiltersGeometry
+  VTK::FiltersFlowPaths

@@ -20,15 +20,6 @@
 #define __vtkboneWin32Header_h
 
 #include "vtkboneConfigure.h"
-
-#if defined(WIN32) && !defined(VTKBONE_STATIC)
-#if defined(vtkbone_EXPORTS)
-#define VTKBONE_EXPORT __declspec( dllexport )
-#else
-#define VTKBONE_EXPORT __declspec( dllimport )
-#endif
-#else
-#define VTKBONE_EXPORT
-#endif
+#include "vtkboneModule.h"
 
 #endif

@@ -1,34 +1,32 @@
+include(CMakePackageConfigHelpers)
 
-# Create version file
-configure_file (
-    "${PROJECT_SOURCE_DIR}/Source/Config/vtkbone_version.h.in"
-    "${PROJECT_BINARY_DIR}/Source/Config/vtkbone_version.h"
-)
+# Create the main config.cmake file
+configure_package_config_file(
+    vtkbone-config.cmake.in
+    "${PROJECT_BINARY_DIR}/${VTKBONE_CMAKE_DESTINATION}/vtkbone-config.cmake"
+    INSTALL_DESTINATION "${VTKBONE_CMAKE_DESTINATION}")
 
-# Create the vtkboneConfigure.h file.
-# To include this file in source,
-#   include_directories (${PROJECT_BINARY_DIR}/Source/Config/)
-set(VTKBONE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
-configure_file (
-    "${PROJECT_SOURCE_DIR}/Source/Config/vtkboneConfigure.h.in"
-    "${PROJECT_BINARY_DIR}/Source/Config/vtkboneConfigure.h"
-)
-install (FILES "${PROJECT_BINARY_DIR}/Source/Config/vtkboneConfigure.h" DESTINATION include)
+# Automatically generate version file
+write_basic_package_version_file(
+    "${PROJECT_BINARY_DIR}/${VTKBONE_CMAKE_DESTINATION}/vtkbone-config-version.cmake"
+    VERSION "${VTKBONE_VERSION}"
+    COMPATIBILITY AnyNewerVersion)
 
-# Create the vtkboneConfig.cmake and vtkboneConfigVersion files
-file(RELATIVE_PATH REL_INCLUDE_DIR
-     "${CMAKE_PREFIX_PATH}/${VTKBONE_CMAKE_DESTINATION}"
-     "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
-# ... for the build tree
-set(CONF_INCLUDE_DIRS
-    "${PROJECT_SOURCE_DIR}/Source"
-    "${PROJECT_BINARY_DIR}")
-configure_file(vtkboneConfig.cmake.in
-    "${PROJECT_BINARY_DIR}/vtkboneConfig.cmake" @ONLY)
-# ... for the install tree
-set(CONF_INCLUDE_DIRS "\${VTKBONE_CMAKE_DIR}/${REL_INCLUDE_DIR}")
-configure_file(vtkboneConfig.cmake.in
-    "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/vtkboneConfig.cmake" @ONLY)
-# ... for both
-configure_file(vtkboneConfigVersion.cmake.in
-    "${PROJECT_BINARY_DIR}/vtkboneConfigVersion.cmake" @ONLY)
+# Make a copy (actually a link) at project root
+file(GENERATE
+    OUTPUT  "${PROJECT_BINARY_DIR}/vtkbone-config.cmake"
+    CONTENT "include(\"${PROJECT_BINARY_DIR}/${VTKBONE_CMAKE_DESTINATION}/vtkbone-config.cmake\")\n")
+
+# Ditto for the version.cmake file
+configure_file(
+    "${PROJECT_BINARY_DIR}/${VTKBONE_CMAKE_DESTINATION}/vtkbone-config-version.cmake"
+    "${PROJECT_BINARY_DIR}/vtkbone-config-version.cmake"
+    COPYONLY)
+
+# Install the config files
+install(
+    FILES
+       "${PROJECT_BINARY_DIR}/${VTKBONE_CMAKE_DESTINATION}/vtkbone-config.cmake"
+       "${PROJECT_BINARY_DIR}/${VTKBONE_CMAKE_DESTINATION}/vtkbone-config-version.cmake"
+    DESTINATION "${VTKBONE_CMAKE_DESTINATION}"
+    COMPONENT   "development")

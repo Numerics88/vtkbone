@@ -21,8 +21,8 @@ if (ENABLE_TESTING)
     enable_testing()
 endif ()
 
-# === Source files
-add_subdirectory (Source)
+# === Build Source folder as a VTK module
+include(vtkboneModule)
 
 # === Documentation
 add_subdirectory (Utilities)

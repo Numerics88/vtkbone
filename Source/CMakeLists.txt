@@ -75,7 +75,7 @@ set_source_files_properties (${VTKBONE_NONWRAPPED_SRCS}
 # All sources
 set (VTKBONE_SRCS ${VTKBONE_WRAPPED_SRCS} ${VTKBONE_NONWRAPPED_SRCS})
 
-set (VTKBONE_DISTRIBUTED_INCLUDE_FILES
+set (VTKBONE_DISTRIBUTED_HDRS
     vtkboneAbaqusInputReader.h
     vtkboneAbaqusInputWriter.h
     vtkboneAIMReader.h
@@ -136,9 +136,34 @@ set (VTKBONE_DISTRIBUTED_INCLUDE_FILES
     vtkboneMacros.h
     )
 
-# === Configure the package
+set (VTKBONE_PRIVATE_HDRS
+    AbaqusInputReaderHelper.h
+    CommandStyleFileReader.h
+    )
 
-add_subdirectory(Config)
+# === Configure the package
+set (VTKBONE_USE_VTKNETCDF ON)
+set (VTKBONE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+
+add_subdirectory (Config)
+
+# Create version header
+configure_file (
+    "${CMAKE_CURRENT_SOURCE_DIR}/Config/vtkbone_version.h.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/vtkbone_version.h"
+)
+list (APPEND VTKBONE_PRIVATE_HDRS
+    "${CMAKE_CURRENT_BINARY_DIR}/vtkbone_version.h"
+)
+
+# Create config header
+configure_file (
+    "${CMAKE_CURRENT_SOURCE_DIR}/Config/vtkboneConfigure.h.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/vtkboneConfigure.h"
+)
+list (APPEND VTKBONE_DISTRIBUTED_HDRS
+    "${CMAKE_CURRENT_BINARY_DIR}/vtkboneConfigure.h"
+)
 
 # === Find packages
 
@@ -158,127 +183,31 @@ mark_as_advanced (AimIO_DIR)
 find_package (pQCTIO 1.0 REQUIRED)
 mark_as_advanced (pQCTIO_DIR)
 
-# Requires VTK
-find_package (VTK COMPONENTS
-    FiltersExtraction
-    FiltersGeometry
-    FiltersFlowPaths
-    IOCore
-    zlib
-    netcdf
+# Add include directories
+include_directories (
+    ${Boost_INCLUDE_DIRS}
+    ${N88UTIL_INCLUDE_DIRS}
+    ${AIMIO_INCLUDE_DIRS}
+    ${PQCTIO_INCLUDE_DIRS}
 )
-mark_as_advanced (VTK_DIR)
-set(ZLIB_LIBRARY VTK::zlib)
-set(netCDF_LIBRARY VTK::netcdf)
 
-# Include all directories
-include_directories (${PROJECT_BINARY_DIR}/Source/Config/)
-include_directories (${Boost_INCLUDE_DIRS})
-include_directories (${N88UTIL_INCLUDE_DIRS})
-include_directories (${AIMIO_INCLUDE_DIRS})
-include_directories (${PQCTIO_INCLUDE_DIRS})
+# === Build the library as a VTK module
 
-# === Create the vtkbone C++ library
-add_library (vtkbone ${VTKBONE_SRCS})
-target_link_libraries (vtkbone
-    PUBLIC
-        VTK::FiltersExtraction
-        VTK::FiltersGeometry
-        VTK::FiltersFlowPaths
-        VTK::IOCore
+# Create the module
+vtk_module_add_module (vtkbone::vtkbone
+    SOURCES ${VTKBONE_SRCS}
+    HEADERS ${VTKBONE_DISTRIBUTED_HDRS}
+    PRIVATE_HEADERS ${VTKBONE_PRIVATE_HDRS}
+)
+
+# Link extra (non-VTK) libraries
+vtk_module_link (vtkbone::vtkbone
     PRIVATE
+        VTK::netcdf
         AimIO::AimIO
         pQCTIO::pQCTIO
         n88util::n88util
         Boost::date_time
         Boost::filesystem
         Boost::system
-        ${ZLIB_LIBRARY}
-        ${netCDF_LIBRARY}
 )
-
-add_definitions (-DVTKBONE_USE_VTKNETCDF)
-
-if (BUILD_SHARED_LIBS)
-    set_target_properties(vtkbone
-        PROPERTIES
-            OUTPUT_NAME vtkbone-${VTKBONE_MAJOR_VERSION}.${VTKBONE_MINOR_VERSION})
-else ()
-    # On Linux systems, need to build static libraries with -fPIC
-    set_target_properties(vtkbone
-        PROPERTIES
-            POSITION_INDEPENDENT_CODE ON)
-endif()
-
-install (TARGETS vtkbone
-         EXPORT vtkboneTargets
-         RUNTIME DESTINATION bin
-         LIBRARY DESTINATION lib
-         ARCHIVE DESTINATION lib)
-
-install (FILES ${VTKBONE_DISTRIBUTED_INCLUDE_FILES} DESTINATION include)
-
-# Add all targets to the build-tree export set
-export (TARGETS vtkbone
-    NAMESPACE vtkbone::
-    FILE "${PROJECT_BINARY_DIR}/vtkboneTargets.cmake")
-
-# Export the package for use from the build-tree
-# (this registers the build-tree with a global CMake-registry)
-export(PACKAGE vtkbone)
-
-# Install the vtkboneConfig.cmake and vtkboneConfigVersion.cmake
-install(
-    FILES
-        "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/vtkboneConfig.cmake"
-        "${PROJECT_BINARY_DIR}/vtkboneConfigVersion.cmake"
-    DESTINATION
-        "${VTKBONE_CMAKE_DESTINATION}"
-    COMPONENT
-        dev
-)
- 
-# Install the export set for use with the install-tree
-install(EXPORT vtkboneTargets
-    NAMESPACE
-        vtkbone::
-    DESTINATION
-        "${VTKBONE_CMAKE_DESTINATION}"
-    COMPONENT
-        dev
-)
-
-# === Wrap Python
-include (vtkboneWrapPython)
-if (VTKBONE_WRAP_PYTHON)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-    include_directories(${CMAKE_CURRENT_BINARY_DIR})
-    vtkbone_wrap_python(vtkbone "${VTKBONE_WRAPPED_SRCS}")
-
-    #=== Setup remainder of package
-
-    # Copy vtkbone to the build directory.
-    configure_file (
-        "${PROJECT_SOURCE_DIR}/Wrapping/Python/vtkbone/__init__.py"
-        "${PROJECT_BINARY_DIR}/Wrapping/Python/vtkbone/__init__.py"
-    )
-
-    # Compile .py files to .pyc files
-    configure_file(
-        "${PROJECT_SOURCE_DIR}/Wrapping/Python/compile_all_vtk.py.in"
-        "${PROJECT_BINARY_DIR}/Wrapping/Python/compile_all_vtk.py"
-    )
-    add_custom_command(
-        COMMAND "${Python_EXECUTABLE}" "${PROJECT_BINARY_DIR}/Wrapping/Python/compile_all_vtk.py"
-        DEPENDS "${PROJECT_BINARY_DIR}/Wrapping/Python/compile_all_vtk.py"
-        OUTPUT "${PROJECT_BINARY_DIR}/Wrapping/Python/vtk_compile_complete"
-    )
-    add_custom_target(vtkbonepython_pyc ALL
-        DEPENDS "${PROJECT_BINARY_DIR}/Wrapping/Python/vtk_compile_complete"
-    )
-
-    install (DIRECTORY "${PROJECT_BINARY_DIR}/Wrapping/Python/vtkbone"
-        DESTINATION "${SITE_PACKAGES}"
-        PATTERN vtk_compile_complete EXCLUDE
-    )
-endif()

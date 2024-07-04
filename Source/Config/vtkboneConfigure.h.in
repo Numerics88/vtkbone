@@ -9,6 +9,8 @@
 #else
 #endif
 
+#cmakedefine VTKBONE_USE_VTKNETCDF
+
 #if defined(_MSC_VER) && !defined(VTKBONE_STATIC)
 #pragma warning ( disable : 4275 )
 #endif
