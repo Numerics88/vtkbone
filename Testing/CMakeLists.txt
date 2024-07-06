@@ -1,6 +1,6 @@
 
-SUBDIRS(Cxx)
+add_subdirectory(Cxx)
 
-IF (VTKBONE_WRAP_PYTHON)
-  SUBDIRS(Python)
-ENDIF (VTKBONE_WRAP_PYTHON)
+if (VTKBONE_WRAP_PYTHON)
+  add_subdirectory(Python)
+endif (VTKBONE_WRAP_PYTHON)

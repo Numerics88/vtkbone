@@ -1,6 +1,6 @@
 find_package (PythonInterp REQUIRED)
 
-Set (Tests
+set (Tests
   TestImageConnectivityMap.py
   TestImageConnectivityFilter.py
   TestTensorOfInertia.py
