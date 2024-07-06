@@ -234,7 +234,7 @@ install(
         "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/vtkboneConfig.cmake"
         "${PROJECT_BINARY_DIR}/vtkboneConfigVersion.cmake"
     DESTINATION
-        "${INSTALL_CMAKE_DIR}"
+        "${VTKBONE_CMAKE_DESTINATION}"
     COMPONENT
         dev
 )
@@ -244,7 +244,7 @@ install(EXPORT vtkboneTargets
     NAMESPACE
         vtkbone::
     DESTINATION
-        "${INSTALL_CMAKE_DIR}"
+        "${VTKBONE_CMAKE_DESTINATION}"
     COMPONENT
         dev
 )

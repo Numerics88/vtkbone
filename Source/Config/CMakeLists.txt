@@ -16,8 +16,9 @@ configure_file (
 install (FILES "${PROJECT_BINARY_DIR}/Source/Config/vtkboneConfigure.h" DESTINATION include)
 
 # Create the vtkboneConfig.cmake and vtkboneConfigVersion files
-file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
-     "${INSTALL_INCLUDE_DIR}")
+file(RELATIVE_PATH REL_INCLUDE_DIR
+     "${CMAKE_PREFIX_PATH}/${VTKBONE_CMAKE_DESTINATION}"
+     "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
 # ... for the build tree
 set(CONF_INCLUDE_DIRS
     "${PROJECT_SOURCE_DIR}/Source"
