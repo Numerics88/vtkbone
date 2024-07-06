@@ -259,7 +259,7 @@ install(EXPORT vtkboneTargets
 )
 
 # === Wrap Python
-include (${PROJECT_SOURCE_DIR}/cmake/vtkboneWrapPython.cmake)
+include (vtkboneWrapPython)
 if (VTKBONE_WRAP_PYTHON)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR})
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
