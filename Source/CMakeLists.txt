@@ -142,8 +142,8 @@ set (VTKBONE_PRIVATE_HDRS
     )
 
 # === Configure the package
-set (VTKBONE_USE_VTKNETCDF ON)
 set (VTKBONE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+option (VTKBONE_USE_VTKNETCDF "Use VTK's netCDF module" OFF)
 
 add_subdirectory (Config)
 
@@ -183,12 +183,22 @@ mark_as_advanced (AimIO_DIR)
 find_package (pQCTIO 1.0 REQUIRED)
 mark_as_advanced (pQCTIO_DIR)
 
+# Requires netCDF, optionally use VTK::netcdf
+if (VTKBONE_USE_VTKNETCDF)
+    set (netCDF_INCLUDE_DIR)
+    set (netCDF_LIBRARIES VTK::netcdf)
+else()
+    find_package (netCDF REQUIRED)
+    mark_as_advanced (netCDF_DIR)
+endif()
+
 # Add include directories
 include_directories (
     ${Boost_INCLUDE_DIRS}
     ${N88UTIL_INCLUDE_DIRS}
     ${AIMIO_INCLUDE_DIRS}
     ${PQCTIO_INCLUDE_DIRS}
+    ${netCDF_INCLUDE_DIR}
 )
 
 # === Build the library as a VTK module
@@ -210,4 +220,5 @@ vtk_module_link (vtkbone::vtkbone
         Boost::date_time
         Boost::filesystem
         Boost::system
+        ${netCDF_LIBRARIES}
 )
