@@ -1,4 +1,6 @@
-find_package (PythonInterp REQUIRED)
+find_package (Python
+    COMPONENTS Interpreter
+    QUIET REQUIRED)
 
 set (Tests
   TestImageConnectivityMap.py
@@ -31,5 +33,5 @@ set (Tests
 
 foreach (test ${Tests})
   get_filename_component (TName ${test} NAME_WE)
-  add_test (${TName} ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/${test} -v)
+  add_test (${TName} ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/${test} -v)
 endforeach (test)
