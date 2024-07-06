@@ -11,6 +11,9 @@ include (vtkboneVersion)
 # === Configure project
 include (vtkboneOptions)
 
+# === Default to static libraries
+option (BUILD_SHARED_LIBS "Build shared libraries" OFF)
+
 # === Enable Testing
 # Note: must be enabled in root CMake file.
 option (ENABLE_TESTING "Build unit and other tests" ON)

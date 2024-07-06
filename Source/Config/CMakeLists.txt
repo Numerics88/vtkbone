@@ -8,6 +8,7 @@ configure_file (
 # Create the vtkboneConfigure.h file.
 # To include this file in source,
 #   include_directories (${PROJECT_BINARY_DIR}/Source/Config/)
+set(VTKBONE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
 configure_file (
     "${PROJECT_SOURCE_DIR}/Source/Config/vtkboneConfigure.h.in"
     "${PROJECT_BINARY_DIR}/Source/Config/vtkboneConfigure.h"

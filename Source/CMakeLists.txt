@@ -136,15 +136,6 @@ set (VTKBONE_DISTRIBUTED_INCLUDE_FILES
     vtkboneMacros.h
     )
 
-# === Options around shared libraries
-
-# Build shared libs ?
-# Defaults to the same VTK setting.
-option (BUILD_SHARED_LIBS
-        "Build shared libraries."
-        ${VTK_BUILD_SHARED_LIBS})
-set (VTKBONE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
-
 # === Configure the package
 
 add_subdirectory(Config)
