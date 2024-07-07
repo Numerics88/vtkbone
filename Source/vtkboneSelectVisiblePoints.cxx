@@ -14,7 +14,6 @@
 #include "vtkDemandDrivenPipeline.h"
 #include "vtkStreamingDemandDrivenPipeline.h"
 #include "vtkObjectFactory.h"
-#include "vtkExtractSelectedIds.h"
 #include <limits>
 #include <algorithm>
 
@@ -195,8 +194,7 @@ int vtkboneSelectVisiblePoints::RequestData(
   vtkSmartPointer<vtkSelection> selection = vtkSmartPointer<vtkSelection>::New();
   vtkboneSelectionUtilities::PointSelectionFromIds (selection, pointDataSet, visiblePointList);
 
-//  vtkSmartPointer<vtkExtractSelection> extractor = vtkSmartPointer<vtkExtractSelection>::New();
-  vtkSmartPointer<vtkExtractSelectedIds> extractor = vtkSmartPointer<vtkExtractSelectedIds>::New();
+  vtkSmartPointer<vtkExtractSelection> extractor = vtkSmartPointer<vtkExtractSelection>::New();
   extractor->SetInputData (0, pointDataSet);
   extractor->SetInputData (1, selection);
   extractor->Update();
@@ -213,7 +211,7 @@ int vtkboneSelectVisiblePoints::RequestData(
   if (pointData->GetPedigreeIds() == NULL)
     {
     // It shouldn't be possible for vtkOriginalPointIds not to exist, as
-    // it is added by vtkExtractSelectedIds.  However, if for some reason
+    // it is added by vtkExtractSelection.  However, if for some reason
     // it doesn't, then PedigreeIds will remain NULL.
     pointData->SetPedigreeIds(pointData->GetArray("vtkOriginalPointIds"));
     }
