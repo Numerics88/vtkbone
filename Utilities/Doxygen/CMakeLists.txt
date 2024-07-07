@@ -2,6 +2,10 @@
 # Build the documentation
 #
 
+if (POLICY CMP0106)
+  cmake_policy(SET CMP0106 OLD) # Documentation module
+endif ()
+
 INCLUDE (${CMAKE_ROOT}/Modules/Documentation.cmake OPTIONAL)
 
 IF (BUILD_DOCUMENTATION)
