@@ -32,7 +32,7 @@
 #include "vtkboneWin32Header.h"
 
 class VTKBONE_EXPORT vtkboneMaterialArray : public vtkboneMaterial
-  {
+{
   public:
     static vtkboneMaterialArray* New();
     vtkTypeMacro(vtkboneMaterialArray, vtkObject);
@@ -53,7 +53,7 @@ class VTKBONE_EXPORT vtkboneMaterialArray : public vtkboneMaterial
   private:
     vtkboneMaterialArray(const vtkboneMaterialArray&);  // Not implemented.
     void operator=(const vtkboneMaterialArray&);  // Not implemented.
-  };
+};
 
 #endif
 

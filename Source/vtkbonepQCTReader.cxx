@@ -66,14 +66,14 @@ int vtkbonepQCTReader::RequestInformation (
 
   reader.filename = this->FileName;
   try
-    {
+  {
     reader.ReadImageInfo();
-    }
+  }
   catch (const std::exception& e)
-    {
+  {
     vtkErrorMacro(<< "Error reading " << this->FileName);
     return 0;
-    }
+  }
 
   this->ElementSize[0] = reader.VoxelSize;
   this->ElementSize[1] = reader.VoxelSize;
@@ -86,11 +86,11 @@ int vtkbonepQCTReader::RequestInformation (
   this->Position[2] = 0;
 
   if (DataOnCells == -1)
-    {
+  {
     vtkWarningMacro(<< "DataOnCells in vtkbonepQCTReader not set.  Defaulting "
                        "to data on points.  This default may change in future.");
     DataOnCells = 0;
-    }
+  }
 
   // pQCT 'pos' data is in units of voxels, and converted to vtkImageData->Origin
   // which are in real world coordinates.  Therefore, voxels are converted to
@@ -106,7 +106,7 @@ int vtkbonepQCTReader::RequestInformation (
   int extent[6];
   double origin[3];
   if (DataOnCells == 0)  // on Points
-    {
+  {
     extent[0] = 0;   extent[1] = reader.PicMatrixX - 1;
     extent[2] = 0;   extent[3] = reader.PicMatrixY - 1;
     extent[4] = 0;   extent[5] = 0;
@@ -114,9 +114,9 @@ int vtkbonepQCTReader::RequestInformation (
     origin[0] = (0 + 0.5) * reader.VoxelSize;
     origin[1] = (0 + 0.5) * reader.VoxelSize;
     origin[2] = (0 + 0.5) * 2;
-    }
+  }
   else // on Cells
-    {
+  {
     extent[0] = 0;   extent[1] = reader.PicMatrixX;
     extent[2] = 0;   extent[3] = reader.PicMatrixY;
     extent[4] = 0;   extent[5] = 0;
@@ -124,7 +124,7 @@ int vtkbonepQCTReader::RequestInformation (
     origin[0] = 0 * reader.VoxelSize;
     origin[1] = 0 * reader.VoxelSize;
     origin[2] = (0 + 0.5) * 2;
-    }
+  }
 
   // pQCT always short type
   int scalarType = VTK_SHORT;
@@ -133,14 +133,14 @@ int vtkbonepQCTReader::RequestInformation (
   vtkInformation* outInfo = outputVector->GetInformationObject(0);
 
   if (DataOnCells)
-    {
+  {
     vtkDataObject::SetActiveAttributeInfo(outInfo, vtkDataObject::FIELD_ASSOCIATION_CELLS,
       vtkDataSetAttributes::SCALARS, NULL, scalarType, 1, -1);
-    }
+  }
   else
-    {
+  {
     vtkDataObject::SetPointDataActiveScalarInfo (outInfo, scalarType, 1);
-    }
+  }
 
   outInfo->Set (vtkStreamingDemandDrivenPipeline::WHOLE_EXTENT(), extent, 6);
   outInfo->Set (vtkDataObject::SPACING(), spacing, 3);
@@ -163,31 +163,31 @@ int vtkbonepQCTReader::RequestData (vtkInformation*,
   pQCTIO::pQCTFile reader;
   reader.filename = this->FileName;
   try
-    {
+  {
     reader.ReadImageInfo();
-    }
+  }
   catch (const std::exception& e)
-    {
+  {
     vtkErrorMacro(<< "Error reading " << this->FileName);
     return 0;
-    }
+  }
 
   this->UpdateProgress(.70);
 
   vtkIdType N = reader.number_of_voxels;
   int extent[6];
   if (DataOnCells == 0)  // on Points
-    {
+  {
     extent[0] = 0;   extent[1] = reader.PicMatrixX - 1;
     extent[2] = 0;   extent[3] = reader.PicMatrixY - 1;
     extent[4] = 0;   extent[5] = 0;
-    }
+  }
   else // on Cells
-    {
+  {
     extent[0] = 0;   extent[1] = reader.PicMatrixX;
     extent[2] = 0;   extent[3] = reader.PicMatrixY;
     extent[4] = 0;   extent[5] = 0;
-    }
+  }
   out->SetExtent(extent);
 
   vtkSmartPointer<vtkDataArray> dataArray;
@@ -195,36 +195,36 @@ int vtkbonepQCTReader::RequestData (vtkInformation*,
   vtkInformation *attrInfo = vtkDataObject::GetActiveFieldInformation(outInfo,
       vtkDataObject::FIELD_ASSOCIATION_CELLS, vtkDataSetAttributes::SCALARS);
   if (!attrInfo)
-    {
+  {
     attrInfo = vtkDataObject::GetActiveFieldInformation(outInfo,
         vtkDataObject::FIELD_ASSOCIATION_POINTS, vtkDataSetAttributes::SCALARS);
     if (!attrInfo)
-      {
+    {
       return 0;
       vtkErrorMacro(<< "No information about pQCT data type.");
-      }
     }
+  }
   int scalarType = attrInfo->Get( vtkDataObject::FIELD_ARRAY_TYPE() );
 
   switch( scalarType )
   {
     case VTK_SHORT:
-      {
+    {
       vtkSmartPointer<vtkShortArray> sarray = vtkSmartPointer<vtkShortArray>::New();
       sarray->SetNumberOfComponents(1);
       sarray->SetNumberOfValues(N);
       try
-        {
+      {
         reader.ReadImageData((short*)(sarray->WriteVoidPointer(0,N)), N);
-        }
+      }
       catch (const std::exception& e)
-        {
+      {
         vtkErrorMacro(<< "Error reading " << this->FileName);
         return 0;
-        }
-      dataArray = sarray;
       }
+      dataArray = sarray;
       break;
+    }
 
     default:
       vtkErrorMacro(<< "Unknown pQCT data type.");
@@ -234,14 +234,14 @@ int vtkbonepQCTReader::RequestData (vtkInformation*,
 
   dataArray->SetName("pQCTData");
   if (DataOnCells == 0)  // on Points
-    {
+  {
     out->GetPointData()->SetScalars( dataArray );
-    }
+  }
   else  // on Cells
-    {
+  {
     out->GetCellData()->SetScalars( dataArray );
     out->GetPointData()->SetScalars( NULL );
-    }
+  }
 
   vtkDebugMacro(<< N << " points read.");
 

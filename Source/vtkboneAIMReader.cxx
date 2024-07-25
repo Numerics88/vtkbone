@@ -74,14 +74,14 @@ int vtkboneAIMReader::RequestInformation (
 
   reader.filename = this->FileName;
   try
-    {
+  {
     reader.ReadImageInfo();
-    }
+  }
   catch (const std::exception& e)
-    {
+  {
     vtkErrorMacro(<< "Error reading " << this->FileName);
     return 0;
-    }
+  }
 
   SetProcessingLog (reader.processing_log.c_str());
 
@@ -96,11 +96,11 @@ int vtkboneAIMReader::RequestInformation (
   this->Position[2] = reader.position[2];
 
   if (DataOnCells == -1)
-    {
+  {
     vtkWarningMacro(<< "DataOnCells in vtkboneAIMReader not set.  Defaulting "
                        "to data on points.  This default may change in future.");
     DataOnCells = 0;
-    }
+  }
 
   // AIM 'pos' data is in units of voxels, and converted to vtkImageData->Origin
   // which are in real world coordinates.  Therefore, voxels are converted to
@@ -116,7 +116,7 @@ int vtkboneAIMReader::RequestInformation (
   int extent[6];
   double origin[3];
   if (DataOnCells == 0)  // on Points
-    {
+  {
     extent[0] = 0;   extent[1] = reader.dimensions[0] - 1;
     extent[2] = 0;   extent[3] = reader.dimensions[1] - 1;
     extent[4] = 0;   extent[5] = reader.dimensions[2] - 1;
@@ -124,9 +124,9 @@ int vtkboneAIMReader::RequestInformation (
     origin[0] = (reader.position[0] + 0.5) * reader.element_size[0];
     origin[1] = (reader.position[1] + 0.5) * reader.element_size[1];
     origin[2] = (reader.position[2] + 0.5) * reader.element_size[2];
-    }
+  }
   else // on Cells
-    {
+  {
     extent[0] = 0;   extent[1] = reader.dimensions[0];
     extent[2] = 0;   extent[3] = reader.dimensions[1];
     extent[4] = 0;   extent[5] = reader.dimensions[2];
@@ -134,7 +134,7 @@ int vtkboneAIMReader::RequestInformation (
     origin[0] = reader.position[0] * reader.element_size[0];
     origin[1] = reader.position[1] * reader.element_size[1];
     origin[2] = reader.position[2] * reader.element_size[2];
-    }
+  }
 
   int scalarType;
   switch (reader.buffer_type)
@@ -156,14 +156,14 @@ int vtkboneAIMReader::RequestInformation (
   vtkInformation* outInfo = outputVector->GetInformationObject(0);
 
   if (DataOnCells)
-    {
+  {
     vtkDataObject::SetActiveAttributeInfo(outInfo, vtkDataObject::FIELD_ASSOCIATION_CELLS,
       vtkDataSetAttributes::SCALARS, NULL, scalarType, 1, -1);
-    }
+  }
   else
-    {
+  {
     vtkDataObject::SetPointDataActiveScalarInfo (outInfo, scalarType, 1);
-    }
+  }
 
   outInfo->Set (vtkStreamingDemandDrivenPipeline::WHOLE_EXTENT(), extent, 6);
   outInfo->Set (vtkDataObject::SPACING(), spacing, 3);
@@ -186,14 +186,14 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
   AimIO::AimFile reader;
   reader.filename = this->FileName;
   try
-    {
+  {
     reader.ReadImageInfo();
-    }
+  }
   catch (const std::exception& e)
-    {
+  {
     vtkErrorMacro(<< "Error reading " << this->FileName);
     return 0;
-    }
+  }
 
   this->UpdateProgress(.70);
 
@@ -201,17 +201,17 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
 
   int extent[6];
   if (DataOnCells == 0)  // on Points
-    {
+  {
     extent[0] = 0;   extent[1] = reader.dimensions[0] - 1;
     extent[2] = 0;   extent[3] = reader.dimensions[1] - 1;
     extent[4] = 0;   extent[5] = reader.dimensions[2] - 1;
-    }
+  }
   else // on Cells
-    {
+  {
     extent[0] = 0;   extent[1] = reader.dimensions[0];
     extent[2] = 0;   extent[3] = reader.dimensions[1];
     extent[4] = 0;   extent[5] = reader.dimensions[2];
-    }
+  }
   out->SetExtent(extent);
 
   vtkSmartPointer<vtkDataArray> dataArray;
@@ -219,73 +219,73 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
   vtkInformation *attrInfo = vtkDataObject::GetActiveFieldInformation(outInfo,
       vtkDataObject::FIELD_ASSOCIATION_CELLS, vtkDataSetAttributes::SCALARS);
   if (!attrInfo)
-    {
+  {
     attrInfo = vtkDataObject::GetActiveFieldInformation(outInfo,
         vtkDataObject::FIELD_ASSOCIATION_POINTS, vtkDataSetAttributes::SCALARS);
     if (!attrInfo)
-      {
+    {
       return 0;
       vtkErrorMacro(<< "No information about AIM data type.");
-      }
     }
+  }
   int scalarType = attrInfo->Get( vtkDataObject::FIELD_ARRAY_TYPE() );
 
   switch( scalarType )
   {
 
     case VTK_CHAR:
-      {
+    {
       vtkSmartPointer<vtkCharArray> carray = vtkSmartPointer<vtkCharArray>::New();
       carray->SetNumberOfComponents(1);
       carray->SetNumberOfValues(N);
       try
-        {
+      {
         reader.ReadImageData((char*)(carray->WriteVoidPointer(0,N)), N);
-        }
+      }
       catch (const std::exception& e)
-        {
+      {
         vtkErrorMacro(<< "Error reading " << this->FileName);
         return 0;
-        }
-      dataArray = carray;
       }
+      dataArray = carray;
       break;
+    }
 
     case VTK_SHORT:
-      {
+    {
       vtkSmartPointer<vtkShortArray> sarray = vtkSmartPointer<vtkShortArray>::New();
       sarray->SetNumberOfComponents(1);
       sarray->SetNumberOfValues(N);
       try
-        {
+      {
         reader.ReadImageData((short*)(sarray->WriteVoidPointer(0,N)), N);
-        }
+      }
       catch (const std::exception& e)
-        {
+      {
         vtkErrorMacro(<< "Error reading " << this->FileName);
         return 0;
-        }
-      dataArray = sarray;
       }
+      dataArray = sarray;
       break;
+    }
 
     case VTK_FLOAT:
-      {
+    {
       vtkSmartPointer<vtkFloatArray> farray = vtkSmartPointer<vtkFloatArray>::New();
       farray->SetNumberOfComponents(1);
       farray->SetNumberOfValues(N);
       try
-        {
+      {
         reader.ReadImageData((float*)(farray->WriteVoidPointer(0,N)), N);
-        }
+      }
       catch (const std::exception& e)
-        {
+      {
         vtkErrorMacro(<< "Error reading " << this->FileName);
         return 0;
-        }
-      dataArray = farray;
       }
+      dataArray = farray;
       break;
+    }
 
     default:
       vtkErrorMacro(<< "Unknown AIM data type.");
@@ -295,14 +295,14 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
 
   dataArray->SetName("AIMData");
   if (DataOnCells == 0)  // on Points
-    {
+  {
     out->GetPointData()->SetScalars( dataArray );
-    }
+  }
   else  // on Cells
-    {
+  {
     out->GetCellData()->SetScalars( dataArray );
     out->GetPointData()->SetScalars( NULL );
-    }
+  }
 
   vtkDebugMacro(<< N << " points read.");
 

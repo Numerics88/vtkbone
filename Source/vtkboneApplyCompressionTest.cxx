@@ -30,19 +30,19 @@ vtkboneApplyCompressionTest::vtkboneApplyCompressionTest()
   Pin (0),
   PinCellClosestToXYCenter (1),
   PinCellId (0)
-  {
-  }
+{
+}
 
 
 //----------------------------------------------------------------------------
 vtkboneApplyCompressionTest::~vtkboneApplyCompressionTest()
-  {
-  }
+{
+}
 
 
 //----------------------------------------------------------------------------
 void vtkboneApplyCompressionTest::PrintParameters (ostream& os, vtkIndent indent)
-  {
+{
   os << indent << "AppliedStrain: " << this->AppliedStrain << "\n";
   os << indent << "AppliedDisplacement: " << this->AppliedDisplacement << "\n";
   os << indent << "TopSurfaceContactFriction: " << this->TopSurfaceContactFriction << "\n";
@@ -51,15 +51,15 @@ void vtkboneApplyCompressionTest::PrintParameters (ostream& os, vtkIndent indent
   os << indent << "Pin: " << this->Pin << "\n";
   os << indent << "PinCellClosestToXYCenter: " << this->PinCellClosestToXYCenter << "\n";
   os << indent << "PinCellId: " << this->PinCellId << "\n";
-  }
+}
 
 
 //----------------------------------------------------------------------------
 void vtkboneApplyCompressionTest::PrintSelf (ostream& os, vtkIndent indent)
-  {
+{
   this->Superclass::PrintSelf(os,indent);
   this->PrintParameters(os, indent);
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ int vtkboneApplyCompressionTest::RequestData
     vtkInformationVector **inputVector,
     vtkInformationVector *outputVector
   )
-  {
+{
   vtkboneApplyTestBase::RequestData(request, inputVector, outputVector);
 
   // Only need output object: vtkboneApplyTestBase has already copied the input
@@ -78,28 +78,28 @@ int vtkboneApplyCompressionTest::RequestData
   vtkboneFiniteElementModel *output = vtkboneFiniteElementModel::SafeDownCast(
                             outInfo->Get(vtkDataObject::DATA_OBJECT()));
   if (!output)
-    {
+  {
     vtkErrorMacro("No output object.");
     return 0;
-    }
+  }
 
   return ((this->AddTopAndBottomConstraints(output) == VTK_OK) &&
           (this->AddSideConstraints(output) == VTK_OK) &&
           (this->AddConvergenceSet(output) == VTK_OK) &&
           (this->AddPostProcessingSets(output) == VTK_OK) &&
           (this->AddInformation(output) == VTK_OK));
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplyCompressionTest::PinElement
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   if (this->PinCellClosestToXYCenter)
-    {
+  {
     this->PinCellId = this->GetCellClosestToXYCenter(model);
-    }
+  }
   // Get cell 0
   vtkSmartPointer<vtkIdList> cell0PointList = vtkSmartPointer<vtkIdList>::New();
   model->GetCellPoints(this->PinCellId, cell0PointList);
@@ -122,14 +122,14 @@ int vtkboneApplyCompressionTest::PinElement
       0,
       "pinned_nodes");
   return VTK_OK;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkIdType vtkboneApplyCompressionTest::GetCellClosestToXYCenter
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   double bounds[6];
     // x,y,z are in Test Frame.
   model->GetBounds(bounds);
@@ -140,7 +140,7 @@ vtkIdType vtkboneApplyCompressionTest::GetCellClosestToXYCenter
   double z_min = std::numeric_limits<double>::max();
   double bestCellId = 0;
   for (vtkIdType id=0; id<model->GetNumberOfCells(); id++)
-    {
+  {
     double cellBounds[6];
     model->GetCellBounds(id, cellBounds);
     double x = (TestFrameBound(cellBounds, 0, 0) + TestFrameBound(cellBounds, 0, 1))/2;
@@ -148,35 +148,35 @@ vtkIdType vtkboneApplyCompressionTest::GetCellClosestToXYCenter
     double z = (TestFrameBound(cellBounds, 2, 0) + TestFrameBound(cellBounds, 2, 1))/2;
     double r2 = sqr(x-x_center) + sqr(y-y_center);
     if ((r2 == r2_closest && z < z_min) || (r2 < r2_closest))
-      {
+    {
       bestCellId = id;
       r2_closest = r2;
       z_min = z;
-      }
     }
-  return bestCellId;
   }
+  return bestCellId;
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplyCompressionTest::AddTopAndBottomConstraints
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   double bounds[6];
   model->GetBounds(bounds);
 
   if (this->BottomSurfaceContactFriction)
-    {
+  {
     // Fixed constraints on bottom in all directions
     model->FixNodes("face_z0", "bottom_fixed");
-    }
+  }
   else
-    {
+  {
     // Fixed constraints on bottom in z direction
     model->ApplyBoundaryCondition(
         "face_z0", this->DataFrameSense(2), 0, "bottom_fixed");
-    }
+  }
 
   // Need pin if no fixed nodes in x,y directions.
   // Also fix another point in same cell in one direction only to prevent rotation.
@@ -184,40 +184,40 @@ int vtkboneApplyCompressionTest::AddTopAndBottomConstraints
       !this->BottomSurfaceContactFriction &&
       !this->TopSurfaceContactFriction &&
       !this->ConfineSides)
-    {
+  {
     this->PinElement(model);
-    }
+  }
 
   if (this->TopSurfaceContactFriction)
-    {
+  {
     model->ApplyBoundaryCondition(
         "face_z1", this->DataFrameSense(0), 0, "top_fixed");
     model->ApplyBoundaryCondition(
         "face_z1", this->DataFrameSense(1), 0, "top_fixed");
-    }
+  }
 
   double displacement;
   if (this->AppliedDisplacement == 0)
-    {
+  {
     displacement = (this->TestFrameBound(bounds,2,1) - this->TestFrameBound(bounds,2,0))
                      * this->AppliedStrain;
-    }
+  }
   else
-    {
+  {
     displacement = this->AppliedDisplacement;
-    }
+  }
   model->ApplyBoundaryCondition(
       "face_z1", this->DataFrameSense(2), displacement, "top_displacement");
 
    return VTK_OK;
-   }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplyCompressionTest::AddSideConstraints
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   if (!this->ConfineSides)
     { return VTK_OK; }
 
@@ -231,30 +231,30 @@ int vtkboneApplyCompressionTest::AddSideConstraints
       "face_y1", this->DataFrameSense(1), 0, "face_y1_fixed");
 
   return VTK_OK;
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplyCompressionTest::AddConvergenceSet
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   return model->ConvergenceSetFromConstraint("top_displacement");
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplyCompressionTest::AddPostProcessingSets
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   vtkInformation* info = model->GetInformation();
   vtkboneSolverParameters::POST_PROCESSING_NODE_SETS()->Append(info, "face_z1");
   vtkboneSolverParameters::POST_PROCESSING_NODE_SETS()->Append(info, "face_z0");
   vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS()->Append(info, "face_z1");
   vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS()->Append(info, "face_z0");
   return VTK_OK;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -262,7 +262,7 @@ int vtkboneApplyCompressionTest::AddInformation
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   std::string history = std::string("Model created by vtkboneApplyCompressionTest version ")
       + vtkboneVersion::GetVTKBONEVersion() + " .";
   model->AppendHistory(history.c_str());
@@ -275,5 +275,5 @@ int vtkboneApplyCompressionTest::AddInformation
   model->AppendLog(comments.str().c_str());
 
   return VTK_OK;
-  }
+}
 

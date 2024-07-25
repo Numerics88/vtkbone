@@ -35,7 +35,7 @@
 #include "vtkboneWin32Header.h"
 
 class VTKBONE_EXPORT vtkboneMaximumPrincipalStrainIsotropicMaterial : public vtkboneLinearIsotropicMaterial
-  {
+{
   public:
     static vtkboneMaximumPrincipalStrainIsotropicMaterial* New();
     vtkTypeMacro(vtkboneMaximumPrincipalStrainIsotropicMaterial, vtkboneLinearIsotropicMaterial);
@@ -72,7 +72,7 @@ class VTKBONE_EXPORT vtkboneMaximumPrincipalStrainIsotropicMaterial : public vtk
   private:
     vtkboneMaximumPrincipalStrainIsotropicMaterial(const vtkboneMaximumPrincipalStrainIsotropicMaterial&);  // Not implemented.
     void operator=(const vtkboneMaximumPrincipalStrainIsotropicMaterial&);  // Not implemented.
-  };
+};
 
 #endif
 

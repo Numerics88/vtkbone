@@ -36,18 +36,18 @@ vtkboneApplySymmetricShearTest::~vtkboneApplySymmetricShearTest()
 
 //----------------------------------------------------------------------------
 void vtkboneApplySymmetricShearTest::PrintSelf (ostream& os, vtkIndent indent)
-  {
+{
   this->Superclass::PrintSelf(os,indent);
   this->PrintParameters(os,indent);
-  }
+}
 
 //----------------------------------------------------------------------------
 void vtkboneApplySymmetricShearTest::PrintParameters (ostream& os, vtkIndent indent)
-  {
+{
   os << indent << "ShearStrain: " << this->ShearStrain << "\n";
   os << indent << "ConfineSidesVertically: " << this->ConfineSidesVertically << "\n";
   os << indent << "ConfineTopAndBottomVertically: " << this->ConfineTopAndBottomVertically << "\n";
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -57,7 +57,7 @@ int vtkboneApplySymmetricShearTest::RequestData
     vtkInformationVector **inputVector,
     vtkInformationVector *outputVector
   )
-  {
+{
   vtkboneApplyTestBase::RequestData(request, inputVector, outputVector);
 
   // Only need output object: vtkboneApplyTestBase has already copied the input
@@ -66,24 +66,24 @@ int vtkboneApplySymmetricShearTest::RequestData
   vtkboneFiniteElementModel *output = vtkboneFiniteElementModel::SafeDownCast(
                             outInfo->Get(vtkDataObject::DATA_OBJECT()));
   if (!output)
-    {
+  {
     vtkErrorMacro("No output object.");
     return 0;
-    }
+  }
 
   return ((this->AddSideConstraints(output) == VTK_OK) &&
           (this->AddTopAndBottomConstraints(output) == VTK_OK) &&
           (this->AddConvergenceSet (output) == VTK_OK) &&
           (this->AddPostProcessingSets(output) == VTK_OK) &&
           (this->AddInformation(output) == VTK_OK));
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplySymmetricShearTest::AddSideConstraints
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   double bounds[6];
   model->GetBounds(bounds);
 
@@ -103,7 +103,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
     values->SetName("VALUE");
     values->SetNumberOfValues(2*n);
     for (vtkIdType i=0; i<n; ++i)
-      {
+    {
       vtkIdType id = singleIds->GetValue(i);
       doubledIds->SetValue(2*i, id);
       doubledIds->SetValue(2*i+1, id);
@@ -117,7 +117,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
                   * (testFrameCoords[1] - this->TestFrameBound(bounds,1,0));
       values->SetValue(2*i, dx);
       values->SetValue(2*i+1, 0);
-      }
+    }
     vtkSmartPointer<vtkboneConstraint> constraint = vtkSmartPointer<vtkboneConstraint>::New();
     constraint->SetName("face_x0_lateral");
     constraint->SetIndices(doubledIds);
@@ -143,7 +143,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
     double dy = (0.5*this->ShearStrain)
        * (this->TestFrameBound(bounds,0,1) - this->TestFrameBound(bounds,0,0));
     for (vtkIdType i=0; i<n; ++i)
-      {
+    {
       vtkIdType id = singleIds->GetValue(i);
       doubledIds->SetValue(2*i, id);
       doubledIds->SetValue(2*i+1, id);
@@ -157,7 +157,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
                   * (testFrameCoords[1] - this->TestFrameBound(bounds,1,0));
       values->SetValue(2*i, dx);
       values->SetValue(2*i+1, dy);
-      }
+    }
     vtkSmartPointer<vtkboneConstraint> constraint = vtkSmartPointer<vtkboneConstraint>::New();
     constraint->SetName("face_x1_lateral");
     constraint->SetIndices(doubledIds);
@@ -181,7 +181,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
     values->SetName("VALUE");
     values->SetNumberOfValues(2*n);
     for (vtkIdType i=0; i<n; ++i)
-      {
+    {
       vtkIdType id = singleIds->GetValue(i);
       doubledIds->SetValue(2*i, id);
       doubledIds->SetValue(2*i+1, id);
@@ -195,7 +195,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
                   * (testFrameCoords[0] - this->TestFrameBound(bounds,0,0));
       values->SetValue(2*i, 0);
       values->SetValue(2*i+1, dy);
-      }
+    }
     vtkSmartPointer<vtkboneConstraint> constraint = vtkSmartPointer<vtkboneConstraint>::New();
     constraint->SetName("face_y0_lateral");
     constraint->SetIndices(doubledIds);
@@ -221,7 +221,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
     double dx = (0.5*this->ShearStrain)
        * (this->TestFrameBound(bounds,1,1) - this->TestFrameBound(bounds,1,0));
     for (vtkIdType i=0; i<n; ++i)
-      {
+    {
       vtkIdType id = singleIds->GetValue(i);
       doubledIds->SetValue(2*i, id);
       doubledIds->SetValue(2*i+1, id);
@@ -235,7 +235,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
                   * (testFrameCoords[0] - this->TestFrameBound(bounds,0,0));
       values->SetValue(2*i, dx);
       values->SetValue(2*i+1, dy);
-      }
+    }
     vtkSmartPointer<vtkboneConstraint> constraint = vtkSmartPointer<vtkboneConstraint>::New();
     constraint->SetName("face_y1_lateral");
     constraint->SetIndices(doubledIds);
@@ -247,7 +247,7 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
   }  // end scope
 
   if (this->ConfineSidesVertically)
-    {
+  {
     model->ApplyBoundaryCondition(
       "face_x0", this->DataFrameSense(2), 0, "face_x0_vertical");
     model->ApplyBoundaryCondition(
@@ -256,42 +256,42 @@ int vtkboneApplySymmetricShearTest::AddSideConstraints
       "face_y0", this->DataFrameSense(2), 0, "face_y0_vertical");
     model->ApplyBoundaryCondition(
       "face_y1", this->DataFrameSense(2), 0, "face_y1_vertical");
-    }
+  }
 
   return VTK_OK;
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplySymmetricShearTest::AddTopAndBottomConstraints
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   if (this->ConfineTopAndBottomVertically)
-    {
+  {
     model->ApplyBoundaryCondition(
       "face_z0", this->DataFrameSense(2), 0, "face_z0_vertical");
     model->ApplyBoundaryCondition(
       "face_z1", this->DataFrameSense(2), 0, "face_z1_vertical");
-    }
-  return VTK_OK;
   }
+  return VTK_OK;
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplySymmetricShearTest::AddConvergenceSet
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   return model->ConvergenceSetFromConstraint("face_y0_lateral");
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplySymmetricShearTest::AddPostProcessingSets
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   vtkInformation* info = model->GetInformation();
   vtkboneSolverParameters::POST_PROCESSING_NODE_SETS()->Append(info, "face_x0");
   vtkboneSolverParameters::POST_PROCESSING_NODE_SETS()->Append(info, "face_x1");
@@ -302,7 +302,7 @@ int vtkboneApplySymmetricShearTest::AddPostProcessingSets
   vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS()->Append(info, "face_y0");
   vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS()->Append(info, "face_y1");
   return VTK_OK;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -310,7 +310,7 @@ int vtkboneApplySymmetricShearTest::AddInformation
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   std::string history = std::string("Model created by vtkboneApplySymmetricShearTest version ")
       + vtkboneVersion::GetVTKBONEVersion() + " .";
   model->AppendHistory(history.c_str());
@@ -323,5 +323,5 @@ int vtkboneApplySymmetricShearTest::AddInformation
   model->AppendLog(comments.str().c_str());
 
   return VTK_OK;
-  }
+}
 

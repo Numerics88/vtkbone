@@ -42,7 +42,7 @@ class vtkboneMaterial;
 class vtkboneMaterialArray;
 
 class VTKBONE_EXPORT vtkboneMaterialTable : public vtkDataObject
-  {
+{
   public:
     static vtkboneMaterialTable* New();
     vtkTypeMacro(vtkboneMaterialTable, vtkDataObject);
@@ -166,6 +166,6 @@ class VTKBONE_EXPORT vtkboneMaterialTable : public vtkDataObject
   private:
     vtkboneMaterialTable(const vtkboneMaterialTable&);  // Not implemented.
     void operator=(const vtkboneMaterialTable&);  // Not implemented.
-  };
+};
 
 #endif

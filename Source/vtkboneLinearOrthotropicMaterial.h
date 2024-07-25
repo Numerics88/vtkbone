@@ -33,7 +33,7 @@
 #include "vtkboneWin32Header.h"
 
 class VTKBONE_EXPORT vtkboneLinearOrthotropicMaterial : public vtkboneMaterial
-  {
+{
   public:
     static vtkboneLinearOrthotropicMaterial* New();
     vtkTypeMacro(vtkboneLinearOrthotropicMaterial, vtkboneMaterial);
@@ -113,7 +113,7 @@ class VTKBONE_EXPORT vtkboneLinearOrthotropicMaterial : public vtkboneMaterial
   private:
     vtkboneLinearOrthotropicMaterial(const vtkboneLinearOrthotropicMaterial&);  // Not implemented.
     void operator=(const vtkboneLinearOrthotropicMaterial&);  // Not implemented.
-  };
+};
 
 #endif
 

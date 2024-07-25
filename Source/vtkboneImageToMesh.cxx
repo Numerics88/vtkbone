@@ -56,23 +56,23 @@ int vtkboneImageToMesh::GetInputAsCellScalars
   inputAsCellScalars->Initialize();
 
   if (input->GetCellData()->GetScalars())
-    {
+  {
     if (input->GetPointData()->GetScalars())
-      {
+    {
       vtkWarningMacro(<< "Image data has both Point and Cell scalars.  Using"
                          " the Cell scalar data.\n");
-      }
+    }
     // Scalar data is on the cells, which we want.
     inputAsCellScalars->ShallowCopy(input);
-    }
+  }
   else
-    {
+  {
     // Create a new vtkImageData object with the scalar data on the cells.
     if (!input->GetPointData()->GetScalars())
-      {
+    {
       vtkErrorMacro(<< "Image data has no data.\n");
       return 0;
-      }
+    }
     int dims[3];
     int extents[6];
     double origin[3];
@@ -87,7 +87,7 @@ int vtkboneImageToMesh::GetInputAsCellScalars
                                   origin[1] + (extents[2] - 0.5) * spacing[1],
                                   origin[2] + (extents[4] - 0.5) * spacing[2]);
     inputAsCellScalars->GetCellData()->SetScalars(input->GetPointData()->GetScalars());
-    }
+  }
 
     return 1;
 }
@@ -107,15 +107,15 @@ int vtkboneImageToMesh::GenerateHexahedrons
 
   vtkDataArray* inputScalars = input->GetCellData()->GetScalars();
   if (inputScalars == NULL)
-    {
+  {
     vtkErrorMacro(<< "No data found for input Image.");
     return 0;
-    }
+  }
   if (inputScalars->GetNumberOfTuples() != input->GetNumberOfCells())
-    {
+  {
     vtkErrorMacro(<< "Inconsistent number of cell data values.");
     return 0;
-    }
+  }
 
   vtkIdType numInputCells = input->GetNumberOfCells();
   vtkIdType numInputPoints = input->GetNumberOfPoints();
@@ -125,12 +125,12 @@ int vtkboneImageToMesh::GenerateHexahedrons
   reverseCellMap->Allocate(numInputCells);   // maximum possible
   reverseCellMap->SetNumberOfComponents(1);
   for (int oldId=0; oldId < numInputCells; oldId++)
-    {
+  {
     if (inputScalars->GetTuple1(oldId) != 0)
-      {
+    {
       reverseCellMap->InsertNextValue(oldId);
-      }
     }
+  }
   vtkIdType numOutputCells = reverseCellMap->GetNumberOfTuples();
 
   // Create a map of old Points to new Points.
@@ -138,45 +138,45 @@ int vtkboneImageToMesh::GenerateHexahedrons
   pointMap->SetNumberOfComponents(1);
   pointMap->SetNumberOfTuples(numInputPoints);
   for (vtkIdType i=0; i < numInputPoints; i++)
-    {
+  {
     pointMap->SetValue(i, -1);   // -1 indicates old point not used.
-    }
+  }
   // First step is just to flag points that are used in output.
   {  // scope
   vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
   for (int newCellId=0; newCellId < numOutputCells; newCellId++)
-    {
+  {
     input->GetCellPoints(reverseCellMap->GetValue(newCellId), pointIds);
     for (int p=0; p < pointIds->GetNumberOfIds(); p++)
-      {
+    {
       pointMap->SetValue(pointIds->GetId(p), 1);   // 1 indicates old point is used.
-      }
     }
+  }
   }
   // Now go through and generate actual new Ids for new points (replacing all
   // the 1's).
   vtkIdType numOutputPoints = 0;
   for (vtkIdType i=0; i<pointMap->GetNumberOfTuples(); i++)
-    {
+  {
     if (pointMap->GetValue(i) != -1)
-      {
+    {
       pointMap->SetValue(i, numOutputPoints);
       numOutputPoints++;
-      }
     }
+  }
 
   // Generate the node coordinate list.
   vtkSmartPointer<vtkDoubleArray> pointCoord = vtkSmartPointer<vtkDoubleArray>::New();
   pointCoord->SetNumberOfComponents(3);
   pointCoord->SetNumberOfTuples(numOutputPoints);
   for (vtkIdType oldId=0; oldId < numInputPoints; oldId++)
-    {
+  {
     vtkIdType newId = pointMap->GetValue(oldId);
     if (newId != -1)
-      {
+    {
       pointCoord->SetTuple(newId, input->GetPoint(oldId));
-      }
     }
+  }
 
   vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
   points->SetData(pointCoord);
@@ -190,14 +190,14 @@ int vtkboneImageToMesh::GenerateHexahedrons
   {  // scope
   vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
   for (vtkIdType newCellId=0; newCellId < numOutputCells; newCellId++)
-    {
+  {
     input->GetCellPoints(reverseCellMap->GetValue(newCellId), pointIds);
     for (int p=0; p < pointIds->GetNumberOfIds(); p++)
-      {
+    {
       pointIds->SetId(p, pointMap->GetValue(pointIds->GetId(p)));
-      }
-    cells->InsertNextCell(pointIds);
     }
+    cells->InsertNextCell(pointIds);
+  }
   }
   output->SetCells(VTK_VOXEL, cells);
 
@@ -207,9 +207,9 @@ int vtkboneImageToMesh::GenerateHexahedrons
   outputScalars->SetNumberOfTuples(numOutputCells);
   outputScalars->SetName("MaterialID");
   for (vtkIdType newCellId=0; newCellId < numOutputCells; newCellId++)
-    {
+  {
     outputScalars->SetTuple(newCellId, reverseCellMap->GetValue(newCellId), inputScalars);
-    }
+  }
   output->GetCellData()->SetScalars(outputScalars);
 
   return 1;
@@ -244,15 +244,15 @@ int vtkboneImageToMesh::RequestData(
   input->GetSpacing(spacing);
 
   if ((dims[0]<1) || (dims[1]<1) || (dims[2]<1))
-    {
+  {
     vtkErrorMacro(<<"This filter requires 3D input data.");
     return 0;
-    }
+  }
   if ((spacing[0]<=0.0) || (spacing[1]<=0.0) || (spacing[2]<=0.0))
-    {
+  {
     vtkErrorMacro(<<"Spacing must be greater than or equal to 0.0.");
     return 0;
-    }
+  }
 
   vtkDebugMacro(<<"\n"
                 <<"  Dimensions:    " << dims[0]      << ", " << dims[1]    << ", " << dims[2]    << "\n"

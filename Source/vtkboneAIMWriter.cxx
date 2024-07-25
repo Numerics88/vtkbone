@@ -92,34 +92,34 @@ void vtkboneAIMWriter::WriteData()
   temp_input->GetOrigin(origin);
   temp_input->GetDimensions(dimension);
   if (temp_input->GetPointData()->GetScalars())
-    {
+  {
     input->ShallowCopy(temp_input);
     input->SetOrigin(origin[0] - 0.5*spacing[0],
                      origin[1] - 0.5*spacing[1],
                      origin[2] - 0.5*spacing[2]);
-    }
+  }
   else if (temp_input->GetCellData()->GetScalars())
-    {
+  {
     input->SetSpacing(spacing);
     input->SetOrigin(origin);
     input->SetDimensions(dimension[0] - 1,
                          dimension[1] - 1,
                          dimension[2] - 1);
     input->GetPointData()->SetScalars(temp_input->GetCellData()->GetScalars());
-    }
+  }
   else
-    {
+  {
     vtkErrorMacro(<<"Could not get data from input.");
     return;
-    }
+  }
 
   vtkDebugMacro(<<"Writing AIM file...");
 
   if (!this->FileName)
-    {
+  {
       vtkErrorMacro(<<"An output filename must be specified.");
       return;
-    }
+  }
   writer.filename = this->FileName;
 
   // Do this again - they may have changed.
@@ -243,9 +243,9 @@ void vtkboneAIMWriter::WriteData()
     // newLog << "!-------------------------------------------------------------------------------\n";
 
     if (ProcessingLog)
-      {
+    {
       newLog << ProcessingLog;
-      }
+    }
 
     SetProcessingLog(newLog.str().c_str());
 
@@ -260,7 +260,7 @@ void vtkboneAIMWriter::WriteData()
   // Write the image
   vtkDataArray* data = input->GetPointData()->GetScalars();
   switch (data->GetDataType())
-    {
+  {
     case VTK_CHAR:
       writer.WriteImageData ((char*)(data->WriteVoidPointer(0,0)));
       break;
@@ -273,7 +273,7 @@ void vtkboneAIMWriter::WriteData()
     default:
       vtkErrorMacro(<<"Input must be of type VTK_CHAR, VTK_SHORT or VTK_FLOAT.");
       return;
-    }
+  }
 
   this->UpdateProgress(1.0);
 

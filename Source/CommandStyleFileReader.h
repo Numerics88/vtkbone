@@ -263,12 +263,12 @@ private:
 #define frSetDebugMsgMacro(x)                                \
    {                                                            \
    if (debug)                                                   \
-     {                                                          \
+   {                                                          \
      std::ostringstream msg;                                    \
      msg << "Debug: In " << __FILE__ << ", line " << __LINE__   \
          << "\n" << this << ": " << x << "\n";                  \
      DebugMessage (msg.str());                                  \
-     }                                                          \
+   }                                                          \
    }
 
 //----------------------------------------------------------------------------

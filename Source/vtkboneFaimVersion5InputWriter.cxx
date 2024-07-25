@@ -75,20 +75,20 @@ void vtkboneFaimVersion5InputWriter::WriteData()
 
   vtkboneFiniteElementModel *input = vtkboneFiniteElementModel::SafeDownCast(this->GetInput());
   if (input == NULL)
-    {
+  {
     vtkErrorMacro(<<"No input data");
     return;
-    }
+  }
 
   // Checks and setup.
   int elementType = input->GetElementType();
   if (elementType != vtkboneFiniteElementModel::N88_TETRAHEDRON &&
       elementType != vtkboneFiniteElementModel::N88_HEXAHEDRON)
-    {
+  {
     vtkErrorMacro(<<"The mesh writer currently is designed for either a pure tetrahedron"
                   <<" or hexahedron mesh.");
     return;
-    }
+  }
 
   //
   // Open output file.
@@ -96,10 +96,10 @@ void vtkboneFaimVersion5InputWriter::WriteData()
   std::ofstream fp;
   fp.open (this->FileName, ios::out);
   if (fp.fail())
-    {
+  {
     vtkErrorMacro(<< "Unable to open file " << this->FileName);
     return;
-    }
+  }
 
   vtkDebugMacro(<<"\n  Writing file " << this->FileName << ".");
 
@@ -117,11 +117,11 @@ int vtkboneFaimVersion5InputWriter::WriteNodes (ostream *fp, vtkboneFiniteElemen
   vtkIdType npts = points->GetNumberOfPoints();
 
   for (vtkIdType i=0; i<npts; i++)
-    {
+  {
     double x[3];
     points->GetPoint(i,x);
     *fp << format("%.6f %.6f %.6f\n") % x[0] % x[1] % x[2];
-    }
+  }
 
   return 1;
 }
@@ -145,10 +145,10 @@ int vtkboneFaimVersion5InputWriter::WriteElements
 
   int ncells = model->GetNumberOfCells();
   for (vtkIdType id=0; id<ncells; id++)
-    {
+  {
     int* transform;
     switch (model->GetCellType(id))
-      {
+    {
       case VTK_VOXEL:
         transform = voxelTransform;
         break;
@@ -161,20 +161,20 @@ int vtkboneFaimVersion5InputWriter::WriteElements
       default:
         vtkErrorMacro(<<"Unsupported Element Type");
         return 0;
-      }
+    }
     vtkIdType npts = 0;
     const vtkIdType* pts = nullptr;
     model->GetCellPoints(id, npts, pts);
     for (int p=0; p<npts; p++)
-      {
+    {
       if (p > 0)
-        {
+      {
         *fp << " ";
-        }
-      *fp << pts[transform[p]]+1;  // 1-based
       }
-    *fp << "\n";
+      *fp << pts[transform[p]]+1;  // 1-based
     }
+    *fp << "\n";
+  }
 
   return 1;
 }
@@ -236,15 +236,15 @@ int vtkboneFaimVersion5InputWriter::WriteMeshOutput
         % (model->GetCell(0)->GetBounds()[3] - model->GetCell(0)->GetBounds()[2])
         % (model->GetCell(0)->GetBounds()[5] - model->GetCell(0)->GetBounds()[4]);
 
-    {  // scope
+  {  // scope
     *fp << format("%d %d\n") % 9 % materialTable->GetNumberOfMaterials();
     materialTable->InitTraversal();
     int index = materialTable->GetNextIndex();
     while (index)
-      {
+    {
       if (vtkboneLinearIsotropicMaterial* material =
           vtkboneLinearIsotropicMaterial::SafeDownCast(materialTable->GetCurrentMaterial()))
-        {
+      {
         *fp << format("%d %.4f %.4f %.4f %.6f %.6f %.6f %.4f %.4f %.4f\n")
         % index
         % material->GetYoungsModulus()
@@ -258,10 +258,10 @@ int vtkboneFaimVersion5InputWriter::WriteMeshOutput
         % material->GetShearModulus();
         index = materialTable->GetNextIndex();
         continue;
-        }
+      }
       if (vtkboneLinearOrthotropicMaterial* material =
           vtkboneLinearOrthotropicMaterial::SafeDownCast(materialTable->GetCurrentMaterial()))
-        {
+      {
         *fp << format("%d %.4f %.4f %.4f %.6f %.6f %.6f %.4f %.4f %.4f\n")
         % index
         % material->GetYoungsModulusX()
@@ -275,24 +275,24 @@ int vtkboneFaimVersion5InputWriter::WriteMeshOutput
         % material->GetShearModulusZX();
         index = materialTable->GetNextIndex();
         continue;
-        }
+      }
       vtkErrorMacro(<<"Unsupported material type");
       return 0;
-      }   // while (index)
-    }  //scope
+    }   // while (index)
+  }  //scope
 
   double convergenceTolerance = 0.0001;
   vtkInformationDoubleKey* convergenceToleranceKey = vtkboneSolverParameters::CONVERGENCE_TOLERANCE();
   if (convergenceToleranceKey->Has(info) != 0)
-    {
+  {
     convergenceTolerance = convergenceToleranceKey->Get(info);
-    }
+  }
   int maximumIterations = 30000;
   vtkInformationIntegerKey* maximumIterationsKey = vtkboneSolverParameters::MAXIMUM_ITERATIONS();
   if (maximumIterationsKey->Has(info) != 0)
-    {
+  {
     maximumIterations = maximumIterationsKey->Get(info);
-    }
+  }
   *fp << format("%.8f %d -1E6 1E6 1 1\n")
     % convergenceTolerance
     % maximumIterations;
@@ -306,9 +306,9 @@ int vtkboneFaimVersion5InputWriter::WriteMeshOutput
   int matnumID = model->GetNumberOfCells();                                  // Material IDs
   *fp << "\n# Mat Ids\n";
   for(int k=0; k<matnumID; k++)
-    {
+  {
     *fp << model->GetCellData()->GetScalars()->GetTuple1(k) << endl;
-    }
+  }
 
   *fp << "\n# Boundary conditions\n";                    // Boundary Conditions
 
@@ -323,37 +323,37 @@ int vtkboneFaimVersion5InputWriter::WriteMeshOutput
   // Write node sets
   vtkInformationStringVectorKey* postProcessingNodeSetsKey = vtkboneSolverParameters::POST_PROCESSING_NODE_SETS();
   if (postProcessingNodeSetsKey->Has(info) == 0)
-    {
+  {
     *fp << "0\n";
-    }
+  }
   else
-    {
+  {
     int numNodeSets = postProcessingNodeSetsKey->Length(info);
     *fp << numNodeSets << "\n";
     for (int n=0; n<numNodeSets; n++)
-      {
+    {
       const char* nodeSetName = postProcessingNodeSetsKey->Get(info,n);
       this->WriteNodeSet (fp, model, nodeSetName);
-      }
     }
+  }
 
   // Write elements sets
   // Here we actually get the same node sets, but write the element Ids
   // of all elements that contain a node from the node set.
   if (postProcessingNodeSetsKey->Has(info) == 0)
-    {
+  {
     *fp << "0\n";
-    }
+  }
   else
-    {
+  {
     int numNodeSets = postProcessingNodeSetsKey->Length(info);
     *fp << numNodeSets << "\n";
     for (int n=0; n<numNodeSets; n++)
-      {
+    {
       const char* nodeSetName = postProcessingNodeSetsKey->Get(info,n);
       this->WriteContainingElementSet (fp, model, nodeSetName);
-      }
     }
+  }
 
   return 1;
 }
@@ -367,10 +367,10 @@ int vtkboneFaimVersion5InputWriter::WriteFixedConstraints (ostream *fp, vtkboneF
       vtkSmartPointer<vtkboneConstraint>::Take(
         vtkboneConstraintUtilities::GatherZeroValuedDisplacementConstraints(model, this->DisplacementTolerance));
   if (fixedConstraints.GetPointer() == NULL)
-    {
+  {
     vtkErrorMacro (<< "Error processing fixed constraints.");
     return 0;
-    }
+  }
   vtkIdTypeArray* ids = fixedConstraints->GetIndices();
   vtkDataArray* senses = fixedConstraints->GetAttributes()->GetArray("SENSE");
   // These should never be NULL, but assert that anyway
@@ -380,30 +380,30 @@ int vtkboneFaimVersion5InputWriter::WriteFixedConstraints (ostream *fp, vtkboneF
   vtkIdType N = fixedConstraints->GetNumberOfValues();
   *fp << N << "\n";
   for (vtkIdType i=0; i<N; i++)
-    {
+  {
     // 1-based output
     if (fabs(senses->GetTuple1(i) - 0) < 1E-8)
-      {
+    {
       *fp << format("%d 0 1 1\n") % (ids->GetValue(i)+1);
-      }
+    }
     else if (fabs(senses->GetTuple1(i) - 1) < 1E-8)
-      {
+    {
       *fp << format("%d 1 0 1\n") % (ids->GetValue(i)+1);
-      }
+    }
     else if (fabs(senses->GetTuple1(i) - 2) < 1E-8)
-      {
+    {
       *fp << format("%d 1 1 0\n") % (ids->GetValue(i)+1);
-      }
+    }
     else
-      {
+    {
       vtkErrorMacro (<< "Invalid axis value.");
       return 0;
-      }
     }
+  }
   if (N == 0)
-    {
+  {
     *fp << "\n";
-    }
+  }
 
   return 1;
 }
@@ -417,10 +417,10 @@ int vtkboneFaimVersion5InputWriter::WriteDisplacementConstraints (ostream *fp, v
       vtkSmartPointer<vtkboneConstraint>::Take(
         vtkboneConstraintUtilities::GatherNonzeroDisplacementConstraints(model, this->DisplacementTolerance));
   if (displacementConstraints.GetPointer() == NULL)
-    {
+  {
     vtkErrorMacro (<< "Error processing displacement constraints.");
     return 0;
-    }
+  }
   vtkIdTypeArray* ids = displacementConstraints->GetIndices();
   vtkDataArray* senses = displacementConstraints->GetAttributes()->GetArray("SENSE");
   vtkDataArray* values = displacementConstraints->GetAttributes()->GetArray("VALUE");
@@ -432,15 +432,15 @@ int vtkboneFaimVersion5InputWriter::WriteDisplacementConstraints (ostream *fp, v
   vtkIdType N = displacementConstraints->GetNumberOfValues();
   *fp << N << "\n";
   for (vtkIdType i=0; i<N; i++)
-    {
+  {
     // 1-based output
     *fp << format("%d %d %.6g\n") % (ids->GetValue(i)+1)
         % (int)(senses->GetTuple1(i) + 1) % values->GetTuple1(i);
-    }
+  }
   if (N == 0)
-    {
+  {
     *fp << "\n";
-    }
+  }
 
   return 1;
 }
@@ -454,10 +454,10 @@ int vtkboneFaimVersion5InputWriter::WriteForceConstraints (ostream *fp, vtkboneF
       vtkSmartPointer<vtkboneConstraint>::Take(
         vtkboneConstraintUtilities::DistributeForceConstraintsToNodes(model));
   if (forceConstraints.GetPointer() == NULL)
-    {
+  {
     vtkErrorMacro (<< "Error processing force constraints.");
     return 0;
-    }
+  }
   vtkIdTypeArray* ids = forceConstraints->GetIndices();
   vtkDataArray* senses = forceConstraints->GetAttributes()->GetArray("SENSE");
   vtkDataArray* values = forceConstraints->GetAttributes()->GetArray("VALUE");
@@ -469,15 +469,15 @@ int vtkboneFaimVersion5InputWriter::WriteForceConstraints (ostream *fp, vtkboneF
   vtkIdType N = forceConstraints->GetNumberOfValues();
   *fp << N << "\n";
   for (vtkIdType i=0; i<N; i++)
-    {
+  {
     // 1-based output
     *fp << format("%d %d %.6g\n") % (ids->GetValue(i)+1)
         % (int)(senses->GetTuple1(i) + 1) % values->GetTuple1(i);
-    }
+  }
   if (N == 0)
-    {
+  {
     *fp << "\n";
-    }
+  }
 
   return 1;
 }
@@ -496,21 +496,21 @@ int vtkboneFaimVersion5InputWriter::WriteNodeSet
 
   vtkIdTypeArray* ids  = model->GetNodeSet (setName);
   if (!ids)
-    {
+  {
     vtkWarningMacro(<<"Missing selection: " << setName);
     *fp << "0\n\n";
     return 1;
-    }
+  }
 
   vtkIdType N = ids->GetNumberOfTuples();
   *fp << N << "\n";
 
   for (int i=0; i<N; i++)
-    {
+  {
     if (i>0) *fp << " ";
     *fp << format("%d") % (ids->GetValue(i)+1);  // 1-based
     if (!((i+1)%8) && i!=N-1) *fp << "\n";
-    }
+  }
   *fp << "\n";
 
   return 1;
@@ -530,21 +530,21 @@ int vtkboneFaimVersion5InputWriter::WriteContainingElementSet
 
   vtkIdTypeArray* ids = model->GetAssociatedElementsFromNodeSet (setName);
   if (!ids)
-    {
+  {
     vtkWarningMacro(<<"Missing selection: " << setName);
     *fp << "0\n\n";
     return 1;
-    }
+  }
 
   vtkIdType N = ids->GetNumberOfTuples();
   *fp << N << "\n";
 
   for (int i=0; i<N; i++)
-    {
+  {
     if (i>0) *fp << " ";
     *fp << format("%d") % (ids->GetValue(i)+1);  // 1-based
     if (!((i+1)%8) && i!=N-1) *fp << "\n";
-    }
+  }
   *fp << "\n";
 
   return 1;

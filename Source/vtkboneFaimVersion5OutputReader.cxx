@@ -25,13 +25,13 @@ inline int ReadUntilString (std::istream& stream, const char *searchstring)
   std::string line;
   int i=0;
   while (getline(stream,line).good())
-    {
+  {
     i++;
     if (line.find(searchstring) != std::string::npos)
-      {
+    {
       return i;
-      }
     }
+  }
   return -1;
 }
 
@@ -92,10 +92,10 @@ int vtkboneFaimVersion5OutputReader::RequestData(
   // Open the input file.
   std::ifstream fin (this->FileName);
   if (!fin)
-    {
+  {
     vtkErrorMacro(<<"Error opening file " << this->FileName);
     return 0;
-    }
+  }
   vtkDebugMacro(<<"Reading " << this->FileName << " ...");
 
   std::string line;
@@ -152,7 +152,7 @@ int vtkboneFaimVersion5OutputReader::RequestData(
   vtkSmartPointer<vtkCellArray> cells = vtkSmartPointer<vtkCellArray>::New();
   cells->Allocate(cells->EstimateSize(8,nCells));
   for (int i=0; i<nCells; i++)
-    {
+  {
     long int buffer[8];  // required because vtkIdType is not necessarily long.
     vtkIdType pts[8];
     getline (fin, line);
@@ -169,7 +169,7 @@ int vtkboneFaimVersion5OutputReader::RequestData(
     pts[6] = buffer[5] - 1;
     pts[7] = buffer[6] - 1;
     cells->InsertNextCell(8, pts);
-    }
+  }
   output->SetCells(VTK_VOXEL, cells);
 
   // Read in the nodal displacements
@@ -177,7 +177,7 @@ int vtkboneFaimVersion5OutputReader::RequestData(
   if (this->ReadNodalDisplacements) {
   if (ReadUntilString(fin, "# Nodal displacements") == -1) {
       vtkWarningMacro(<<"\n  Nodal displacement data not found in file.");
-    }
+  }
     vtkSmartPointer<vtkFloatArray> nodaldisplacements = vtkSmartPointer<vtkFloatArray>::New();
     nodaldisplacements->SetNumberOfComponents(3);
     nodaldisplacements->SetNumberOfTuples(nPoints);

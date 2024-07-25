@@ -22,12 +22,12 @@ vtkboneTensor::vtkboneTensor()
 {
   this->T = this->Storage;
   for (int j=0; j<3; j++)
-    {
+  {
     for (int i=0; i<3; i++)
-      {
+    {
       this->T[i+j*3] = 0.0;
-      }
     }
+  }
 }
 
 //----------------------------------------------------------------------------
@@ -36,12 +36,12 @@ void vtkboneTensor::PrintSelf(ostream& os, vtkIndent indent)
   this->Superclass::PrintSelf(os,indent);
 
   for (int j=0; j<3; j++)
-    {
+  {
     os << indent;
     for (int i=0; i<3; i++)
-      {
+    {
       os << this->Storage[i+j*3] << " ";
-      }
-    os << "\n";
     }
+    os << "\n";
+  }
 }

@@ -52,10 +52,10 @@ int vtkboneOrientationFilter::RequestData(
   vtkPolyData* output = vtkPolyData::SafeDownCast (outInfo->Get (vtkDataObject::DATA_OBJECT()));
 
   if (!input || !output)
-    {
+  {
     vtkErrorMacro (<<"Wrong or not enough inputs/outputs");
     return 0;
-    }
+  }
 
   vtkSmartPointer<vtkIdTypeArray> selectedIds = vtkSmartPointer<vtkIdTypeArray>::New();
   // Over-allocate - does no harm on 64 bit systems
@@ -63,7 +63,7 @@ int vtkboneOrientationFilter::RequestData(
 
   // Ensure that we have normals.  If not, we need to generate them.
   if (input->GetCellData()->GetNormals() == NULL)
-    {
+  {
     vtkSmartPointer<vtkPolyDataNormals> normalsGenerator = vtkSmartPointer<vtkPolyDataNormals>::New();
     normalsGenerator->ConsistencyOff();
     normalsGenerator->AutoOrientNormalsOff();
@@ -79,17 +79,17 @@ int vtkboneOrientationFilter::RequestData(
     // to zero during the copying process.
     input->GetCellData()->SetNormals (
                normalsGenerator->GetOutput()->GetCellData()->GetNormals());
-    }
+  }
   vtkDataArray* normals = input->GetCellData()->GetNormals();
 
   // Check dot product of cell normals with specified normal vector
   for (vtkIdType i=0; i<input->GetNumberOfCells(); i++)
-    {
+  {
     if (vtkMath::Dot (normals->GetTuple3(i), this->NormalVector) > 0)
-      {
+    {
       selectedIds->InsertNextValue (i);
-      }
     }
+  }
 
   // Extract all the marked Cells
   vtkSmartPointer<vtkSelection> selection = vtkSmartPointer<vtkSelection>::New();

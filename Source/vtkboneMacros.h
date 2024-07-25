@@ -27,13 +27,13 @@
 const char* classname::Get##enumname##AsString (int arg) \
 { \
   if (arg >=0 && arg < classname::NUMBER_OF_##enumname) \
-    { \
+  { \
     return enumname##_s[arg]; \
-    } \
+  } \
   else \
-    { \
+  { \
     return NULL; \
-    } \
+  } \
 }
 
 //

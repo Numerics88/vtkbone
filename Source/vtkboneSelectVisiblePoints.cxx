@@ -61,13 +61,13 @@ int vtkboneSelectVisiblePoints::FillInputPortInformation
 )
 {
   if (port==0)
-    {
+  {
     info->Set (vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkPolyData");
-    }
+  }
   else
-    {
+  {
     info->Set (vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkDataSet");
-    }
+  }
   return 1;
 }
 
@@ -85,17 +85,17 @@ int vtkboneSelectVisiblePoints::RequestData(
   vtkPolyData* output = vtkPolyData::SafeDownCast (outInfo->Get (vtkDataObject::DATA_OBJECT()));
 
   if (!surface || !pointDataSet || !output)
-    {
+  {
     vtkErrorMacro (<<"Wrong or not enough inputs/outputs");
     return 0;
-    }
+  }
 
   vtkIdType numCandidatePoints = pointDataSet->GetNumberOfPoints();
   vtkSmartPointer<vtkIdTypeArray> visiblePointList = vtkSmartPointer<vtkIdTypeArray>::New();
   if (numCandidatePoints == 0)
-    {
+  {
     return 1;
-    }
+  }
   // Over-allocate.  Does no harm on 64 bit systems.
   visiblePointList->Allocate (numCandidatePoints);
 
@@ -123,7 +123,7 @@ int vtkboneSelectVisiblePoints::RequestData(
   // of the image but in the same x and y position.  The locator checks to see if anything
   // intersects this line.  If not, the point is added to the list.
   for (vtkIdType id = 0; id < numCandidatePoints; id++)
-    {
+  {
     double p0[3];
     pointDataSet->GetPoint(id,p0);
     double s = LineBoundsIntersection (p0, NormalVector, bounds);
@@ -144,7 +144,7 @@ int vtkboneSelectVisiblePoints::RequestData(
     double pcoords[3];
     int subId;
     if (locator->IntersectWithLine(p0,p1,Tolerance,t,x,pcoords,subId) == 0)
-      {
+    {
       visiblePointList->InsertNextValue (id);
 #ifdef TRACE_INTERSECTION_LINES
       vtkIdType begin = visibleIntersectionLineEnds->InsertNextPoint(p0);
@@ -153,18 +153,18 @@ int vtkboneSelectVisiblePoints::RequestData(
       visibleLinesCells->InsertCellPoint(begin);
       visibleLinesCells->InsertCellPoint(end);
 #endif
-      }
+    }
 #ifdef TRACE_INTERSECTION_LINES
     else
-      {
+    {
       vtkIdType begin = hiddenIntersectionLineEnds->InsertNextPoint(p0);
       vtkIdType end = hiddenIntersectionLineEnds->InsertNextPoint(p1);
       hiddenLinesCells->InsertNextCell(2);
       hiddenLinesCells->InsertCellPoint(begin);
       hiddenLinesCells->InsertCellPoint(end);
-      }
-#endif
     }
+#endif
+  }
 
 #ifdef TRACE_INTERSECTION_LINES
   vtkSmartPointer<vtkPolyData> visibleLines = vtkSmartPointer<vtkPolyData>::New();
@@ -209,12 +209,12 @@ int vtkboneSelectVisiblePoints::RequestData(
 
   vtkPointData* pointData = output->GetPointData();
   if (pointData->GetPedigreeIds() == NULL)
-    {
+  {
     // It shouldn't be possible for vtkOriginalPointIds not to exist, as
     // it is added by vtkExtractSelection.  However, if for some reason
     // it doesn't, then PedigreeIds will remain NULL.
     pointData->SetPedigreeIds(pointData->GetArray("vtkOriginalPointIds"));
-    }
+  }
 
   return 1;
 }
@@ -229,33 +229,33 @@ double vtkboneSelectVisiblePoints::LineBoundsIntersection
 {
   double s;
   if (V[0] > 0)
-    {
+  {
     s = (bounds[1] - P[0])/V[0];
-    }
+  }
   else if (V[0] < 0)
-    {
+  {
     s = (bounds[0] - P[0])/V[0];
-    }
+  }
   else
-    {
+  {
     s = std::numeric_limits<double>::infinity();
-    }
+  }
   if (V[1] > 0)
-    {
+  {
     s = std::min(s, (bounds[3] - P[1])/V[1]);
-    }
+  }
   else if (V[1] < 0)
-    {
+  {
     s = std::min(s, (bounds[2] - P[1])/V[1]);
-    }
+  }
   if (V[2] > 0)
-    {
+  {
     s = std::min(s, (bounds[5] - P[2])/V[2]);
-    }
+  }
   else if (V[2] < 0)
-    {
+  {
     s = std::min(s, (bounds[4] - P[2])/V[2]);
-    }
+  }
   return s;
 }
 

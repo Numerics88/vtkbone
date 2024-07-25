@@ -10,17 +10,17 @@ vtkboneMaximumPrincipalStrainIsotropicMaterial::vtkboneMaximumPrincipalStrainIso
   :
   MaximumTensilePrincipalStrain (0.01),
   MaximumCompressivePrincipalStrain (0.01)
-  {
-  }
+{
+}
 
 //----------------------------------------------------------------------------
 vtkboneMaximumPrincipalStrainIsotropicMaterial::~vtkboneMaximumPrincipalStrainIsotropicMaterial()
-  {
-  }
+{
+}
 
 //----------------------------------------------------------------------------
 void vtkboneMaximumPrincipalStrainIsotropicMaterial::PrintSelf (ostream& os, vtkIndent indent)
-  {
+{
   this->Superclass::PrintSelf(os,indent);
   os << indent << "MaximumTensilePrincipalStrain: " << this->MaximumTensilePrincipalStrain << "\n";
   os << indent << "MaximumCompressivePrincipalStrain: " << this->MaximumCompressivePrincipalStrain << "\n";
@@ -28,14 +28,14 @@ void vtkboneMaximumPrincipalStrainIsotropicMaterial::PrintSelf (ostream& os, vtk
 
 //----------------------------------------------------------------------------
 void vtkboneMaximumPrincipalStrainIsotropicMaterial::SetYieldStrains(double eYT, double eYC)
-  {
+{
   this->MaximumTensilePrincipalStrain = eYT;
   this->MaximumCompressivePrincipalStrain = eYC;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneMaterial* vtkboneMaximumPrincipalStrainIsotropicMaterial::Copy()
-  {
+{
   vtkboneMaximumPrincipalStrainIsotropicMaterial* new_mat = vtkboneMaximumPrincipalStrainIsotropicMaterial::New();
   new_mat->SetName(this->Name);
   new_mat->SetYoungsModulus(this->YoungsModulus);
@@ -43,11 +43,11 @@ vtkboneMaterial* vtkboneMaximumPrincipalStrainIsotropicMaterial::Copy()
   new_mat->SetYieldStrains(this->MaximumTensilePrincipalStrain,
                            this->MaximumCompressivePrincipalStrain);
   return new_mat;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneMaterial* vtkboneMaximumPrincipalStrainIsotropicMaterial::ScaledCopy(double factor)
-  {
+{
   vtkboneMaximumPrincipalStrainIsotropicMaterial* new_mat = vtkboneMaximumPrincipalStrainIsotropicMaterial::New();
   new_mat->SetName(this->Name);
   new_mat->SetYoungsModulus(factor*this->YoungsModulus);
@@ -55,4 +55,4 @@ vtkboneMaterial* vtkboneMaximumPrincipalStrainIsotropicMaterial::ScaledCopy(doub
   new_mat->SetYieldStrains(this->MaximumTensilePrincipalStrain,
                            this->MaximumCompressivePrincipalStrain);
   return new_mat;
-  }
+}

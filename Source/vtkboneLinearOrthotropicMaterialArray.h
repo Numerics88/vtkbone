@@ -29,7 +29,7 @@
 class vtkFloatArray;
 
 class VTKBONE_EXPORT vtkboneLinearOrthotropicMaterialArray : public vtkboneMaterialArray
-  {
+{
   public:
     static vtkboneLinearOrthotropicMaterialArray* New();
     vtkTypeMacro(vtkboneLinearOrthotropicMaterialArray, vtkboneMaterialArray);
@@ -121,7 +121,7 @@ class VTKBONE_EXPORT vtkboneLinearOrthotropicMaterialArray : public vtkboneMater
   private:
     vtkboneLinearOrthotropicMaterialArray(const vtkboneLinearOrthotropicMaterialArray&);  // Not implemented.
     void operator=(const vtkboneLinearOrthotropicMaterialArray&);  // Not implemented.
-  };
+};
 
 #endif
 

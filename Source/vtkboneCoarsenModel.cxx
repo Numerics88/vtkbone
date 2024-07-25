@@ -41,51 +41,51 @@ namespace CoarsenModel_Utility
 
 template <typename T>
 T to_homminga_density (T x)
-  {
+{
   if (x == 0) {
     return 0; }
   else if (x < 0) {
     return T(-1) * pow (-x, T(1)/T(homminga_exponent)); }
   else {
     return pow (x, T(1)/T(homminga_exponent)); }
-  }
+}
 
 template <typename T>
 void to_homminga_density_inplace (T& x)
-  {
+{
   x = to_homminga_density (x);
-  }
+}
 
 template <typename T>
 void to_homminga_density_inplace (T* x, size_t count)
-  {
+{
   for (size_t i=0; i<count; ++i) {
     x[i] = to_homminga_density (x[i]); }
-  }
+}
 
 template <typename T>
 T from_homminga_density (T x)
-  {
+{
   if (x == 0 ) {
     return 0; }
   else if (x < 0) {
     return T(-1) * pow (-x, T(homminga_exponent)); }
   else {
     return pow (x, T(homminga_exponent)); }
-  }
+}
 
 template <typename T>
 void from_homminga_density_inplace (T& x)
-  {
+{
   x = from_homminga_density (x);
-  }
+}
 
 template <typename T>
 void from_homminga_density_inplace (T* x, size_t count)
-  {
+{
   for (size_t i=0; i<count; ++i) {
     x[i] = from_homminga_density (x[i]); }
-  }
+}
 
 }  // namespace
 
@@ -140,20 +140,20 @@ void vtkboneCoarsenModel::PrintSelf(ostream& os, vtkIndent indent)
 
 //----------------------------------------------------------------------------
 void vtkboneCoarsenModel::PrintParameters (ostream& os, vtkIndent indent)
-  {
+{
   os << indent << "MaterialAveragingMethod: ";
   if (this->MaterialAveragingMethod == LINEAR)
     { os << "LINEAR"; }
   else if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
     { os << "HOMMINGA_DENSITY"; }
   os << "\n";
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneCoarsenModel::SimpleExecute(
   vtkboneFiniteElementModel* input,
   vtkboneFiniteElementModel* output)
-  {
+{
 
   //   VTK_VOXEL
   //           6---------7
@@ -172,15 +172,15 @@ int vtkboneCoarsenModel::SimpleExecute(
   vtkIdType nInputPoints = input->GetNumberOfPoints();
   vtkIdType nInputCells = input->GetNumberOfCells();
   if (!nInputPoints || !nInputCells)
-    {
+  {
     vtkErrorMacro(<<"vtkboneFiniteElementModel has no Cells or Points.");
     return VTK_ERROR;
-    }
+  }
   if (input->GetCellType(0) != VTK_VOXEL)
-    {
+  {
     vtkErrorMacro(<<"Unsupported cell type");
     return VTK_ERROR;
-    }
+  }
 
   // std::cout << "Number of cells " << nInputCells << "\n";
   // std::cout << "Number of points " << nInputPoints << "\n";
@@ -198,7 +198,7 @@ int vtkboneCoarsenModel::SimpleExecute(
   //           << bounds[5] << "\n";
 
   double inputSpacing[3];
-    {  // scope
+  {  // scope
     vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
     input->GetCellPoints(0, pointIds);
     double p0[3];
@@ -212,7 +212,7 @@ int vtkboneCoarsenModel::SimpleExecute(
     inputSpacing[0] = p1[0] - p0[0];
     inputSpacing[1] = p2[1] - p0[1];
     inputSpacing[2] = p4[2] - p0[2];
-    }
+  }
   // std::cout << "Spacing: "
   //           << inputSpacing[0] << ", "
   //           << inputSpacing[1] << ", "
@@ -234,15 +234,15 @@ int vtkboneCoarsenModel::SimpleExecute(
           inputDims[0]);
   for (size_t i=0; i<inputCellGrid.size(); ++i)
     { inputCellGrid[i] = EMPTY; }
-    { // scope
+  { // scope
     vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
     for (vtkIdType cellId=0; cellId<nInputCells; ++cellId)
-      {
+    {
       if (input->GetCellType(cellId) != VTK_VOXEL)
-        {
+      {
         vtkErrorMacro(<<"Unsupported cell type");
         return VTK_ERROR;
-        }
+      }
       input->GetCellPoints(cellId, pointIds);
       double p0[3];
       input->GetPoint(pointIds->GetId(0),p0);
@@ -250,16 +250,16 @@ int vtkboneCoarsenModel::SimpleExecute(
       unsigned int j = 0.5 + (p0[1] - bounds[2])/inputSpacing[1];
       unsigned int k = 0.5 + (p0[2] - bounds[4])/inputSpacing[2];
       inputCellGrid(k,j,i) = cellId;
-      }
     }
+  }
 
-    {  // scope
+  {  // scope
     size_t count = 0;
     for (size_t i=0; i<inputCellGrid.size(); ++i)
       if (inputCellGrid[i] != EMPTY)
         { ++count; }
     // std::cout << "Number of non-empty cell grid points " << count << "\n";
-    }
+  }
 
   // ---- Generate input point grid
 
@@ -269,25 +269,25 @@ int vtkboneCoarsenModel::SimpleExecute(
           inputDims[0]+1);
   for (size_t i=0; i<inputPointGrid.size(); ++i)
     { inputPointGrid[i] = EMPTY; }
-    {  // scope
+  {  // scope
     for (vtkIdType pointId=0; pointId<nInputPoints; ++pointId)
-      {
+    {
       double p0[3];
       input->GetPoint(pointId,p0);
       unsigned int i = 0.5 + (p0[0] - bounds[0])/inputSpacing[0];
       unsigned int j = 0.5 + (p0[1] - bounds[2])/inputSpacing[1];
       unsigned int k = 0.5 + (p0[2] - bounds[4])/inputSpacing[2];
       inputPointGrid(k,j,i) = pointId;
-      }
     }
+  }
 
-    {  // scope
+  {  // scope
     size_t count = 0;
     for (size_t i=0; i<inputPointGrid.size(); ++i)
       if (inputPointGrid[i] != EMPTY)
         { ++count; }
     // std::cout << "Number of non-empty point grid points " << count << "\n";
-    }
+  }
 
   // ---- Output dimensions
 
@@ -312,10 +312,10 @@ int vtkboneCoarsenModel::SimpleExecute(
           outputDims[1],
           outputDims[0]);
   // identify where we need output cells
-    { // scope
+  { // scope
     vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
     for (vtkIdType cellId=0; cellId<nInputCells; ++cellId)
-      {
+    {
       input->GetCellPoints(cellId, pointIds);
       double p0[3];
       input->GetPoint(pointIds->GetId(0),p0);
@@ -324,25 +324,25 @@ int vtkboneCoarsenModel::SimpleExecute(
       unsigned int j = 0.25 + (p0[1] - bounds[2])/outputSpacing[1];
       unsigned int k = 0.25 + (p0[2] - bounds[4])/outputSpacing[2];
       outputCellGrid(k,j,i) = 1;
-      }
     }
+  }
   // number the output cells
   unsigned int nOutputCells = 0;
-    { // scope
+  { // scope
     vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
     for (size_t i=0; i<outputCellGrid.size(); ++i)
-      {
+    {
       if (outputCellGrid[i])
-        {
+      {
         outputCellGrid[i] = nOutputCells;
         ++nOutputCells;
-        }
+      }
       else
-        {
+      {
         outputCellGrid[i] = EMPTY;
-        }
       }
     }
+  }
   // std::cout << "Number of output cells " << nOutputCells << "\n";
 
   // ---- Generate output point grid
@@ -356,9 +356,9 @@ int vtkboneCoarsenModel::SimpleExecute(
   for (unsigned int k=0; k<outputDims[2]; ++k)
     for (unsigned int j=0; j<outputDims[1]; ++j)
       for (unsigned int i=0; i<outputDims[0]; ++i)
-        {
+      {
         if (outputCellGrid(k,j,i) != EMPTY)
-          {
+        {
           outputPointGrid(k  ,j  ,i  ) = 1;
           outputPointGrid(k  ,j  ,i+1) = 1;
           outputPointGrid(k  ,j+1,i  ) = 1;
@@ -367,35 +367,35 @@ int vtkboneCoarsenModel::SimpleExecute(
           outputPointGrid(k+1,j  ,i+1) = 1;
           outputPointGrid(k+1,j+1,i  ) = 1;
           outputPointGrid(k+1,j+1,i+1) = 1;
-          }
-        }
-  // number the output points
-  unsigned int nOutputPoints = 0;
-    { // scope
-    vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
-    for (size_t i=0; i<outputPointGrid.size(); ++i)
-      {
-      if (outputPointGrid[i])
-        {
-        outputPointGrid[i] = nOutputPoints;
-        ++nOutputPoints;
-        }
-      else
-        {
-        outputPointGrid[i] = EMPTY;
         }
       }
+  // number the output points
+  unsigned int nOutputPoints = 0;
+  { // scope
+    vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
+    for (size_t i=0; i<outputPointGrid.size(); ++i)
+    {
+      if (outputPointGrid[i])
+      {
+        outputPointGrid[i] = nOutputPoints;
+        ++nOutputPoints;
+      }
+      else
+      {
+        outputPointGrid[i] = EMPTY;
+      }
     }
+  }
   // std::cout << "Number of output points " << nOutputPoints << "\n";
 
   // --- Generate reverse cell map (output to input)
 
   n88::array<2,unsigned int> reverseCellMap(nOutputCells,8);
-    {  // scope
+  {  // scope
     size_t a = 0;
     vtkIdType outputCellId = 0;
     for (unsigned int k=0; k<outputDims[2]; ++k)
-      {
+    {
       unsigned int kk = 2*k;
       unsigned int kk_1 = kk+1;
       // Bring back in bounds if at odd-layer face. This has the effect
@@ -403,15 +403,15 @@ int vtkboneCoarsenModel::SimpleExecute(
       if (kk_1 == inputDims[2])
         { kk_1 = kk; }
       for (unsigned int j=0; j<outputDims[1]; ++j)
-        {
+      {
         unsigned int jj = 2*j;
         unsigned int jj_1 = jj+1;
         if (jj_1 == inputDims[1])
           { jj_1 = jj; }
         for (unsigned int i=0; i<outputDims[0]; ++i)
-          {
+        {
           if (outputCellGrid[a] != EMPTY)
-            {
+          {
             n88_assert (outputCellId == outputCellGrid[a]);
             unsigned int ii = 2*i;
             unsigned int ii_1 = ii+1;
@@ -426,12 +426,12 @@ int vtkboneCoarsenModel::SimpleExecute(
             reverseCellMap(outputCellId,6) = inputCellGrid(kk_1,jj_1,ii  );
             reverseCellMap(outputCellId,7) = inputCellGrid(kk_1,jj_1,ii_1);
             ++outputCellId;
-            }
-          ++a;
           }
+          ++a;
         }
       }
     }
+  }
 
   // Done with input cell grid
   inputCellGrid.destruct();
@@ -440,43 +440,43 @@ int vtkboneCoarsenModel::SimpleExecute(
 
   n88::array<1,vtkIdType> cellMap(nInputCells);
   for (vtkIdType outputCellId=0; outputCellId<nOutputCells; ++outputCellId)
-    {
+  {
     for (unsigned int i=0; i<8; ++i)
-      {
+    {
       vtkIdType inputCellID = reverseCellMap(outputCellId,i);
       if (inputCellID != EMPTY)
         { cellMap(inputCellID) = outputCellId; }
-      }
     }
+  }
 
   // --- Generate point map (input to output)
 
   n88::array<1,unsigned int> pointMap(nInputPoints);
-    {  // scope
+  {  // scope
     size_t a = 0;
     vtkIdType inputPointId = 0;
     for (unsigned int k=0; k<=inputDims[2]; ++k)
-      {
+    {
       // Round up beyond the centre (ie. round outwards)
       unsigned int kk = (k + (unsigned int)(2*k > inputDims[2]))/2;
       for (unsigned int j=0; j<=inputDims[1]; ++j)
-        {
+      {
         unsigned int jj = (j + (unsigned int)(2*j > inputDims[1]))/2;
         for (unsigned int i=0; i<=inputDims[0]; ++i)
-          {
+        {
           if (inputPointGrid[a] != EMPTY)
-            {
+          {
             n88_assert (inputPointId == inputPointGrid[a]);
             unsigned int ii = (i + (unsigned int)(2*i > inputDims[0]))/2;
             pointMap[inputPointId] = outputPointGrid(kk,jj,ii);
             n88_assert (pointMap[inputPointId] != EMPTY);
             ++inputPointId;
-            }
-          ++a;
           }
+          ++a;
         }
       }
     }
+  }
 
   // Done with input point grid
   inputPointGrid.destruct();
@@ -522,7 +522,7 @@ int vtkboneCoarsenModel::SimpleExecute(
   if (return_val == 0) { return VTK_ERROR; }
 
   return 1;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -535,7 +535,7 @@ int vtkboneCoarsenModel::GeneratePointCoordinates
   double bounds[6],
   vtkIdType nOutputPoints
   )
-  {
+{
   n88_assert (output != 0);
   n88_assert (outputPointGrid != 0);
   n88_assert (outputDims[0] > 0 &&
@@ -545,31 +545,31 @@ int vtkboneCoarsenModel::GeneratePointCoordinates
   vtkSmartPointer<vtkFloatArray> pointCoord = vtkSmartPointer<vtkFloatArray>::New();
   pointCoord->SetNumberOfComponents(3);
   pointCoord->SetNumberOfTuples(nOutputPoints);
-    {  // scope
+  {  // scope
     size_t a = 0;
     for (unsigned int k=0; k<=outputDims[2]; ++k)
-      {
+    {
       double z = bounds[4] + outputSpacing[2]*k;
       for (unsigned int j=0; j<=outputDims[1]; ++j)
-        {
+      {
         double y = bounds[2] + outputSpacing[1]*j;
         for (unsigned int i=0; i<=outputDims[0]; ++i)
-          {
+        {
           if (outputPointGrid[a] != EMPTY)
-            {
+          {
             double x = bounds[0] + outputSpacing[0]*i;
             pointCoord->SetTuple3(outputPointGrid[a],x,y,z);
-            }
-          ++a;
           }
+          ++a;
         }
       }
     }
+  }
   vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
   points->SetData(pointCoord);
   output->SetPoints(points);
   return 1;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -581,7 +581,7 @@ int vtkboneCoarsenModel::GenerateCells
   unsigned int outputDims[3],
   vtkIdType nOutputCells
   )
-  {
+{
   n88_assert (output != 0);
   n88_assert (outputPointGrid_ptr != 0);
   n88_assert (outputCellGrid != 0);
@@ -599,18 +599,18 @@ int vtkboneCoarsenModel::GenerateCells
   // The following allocation is exact
   const int pointsPerCell = 8;
   cells->Allocate(cells->EstimateSize(nOutputCells, pointsPerCell));
-    {  // scope
+  {  // scope
     size_t a = 0;
     vtkSmartPointer<vtkIdList> pointIds = vtkSmartPointer<vtkIdList>::New();
     pointIds->SetNumberOfIds(pointsPerCell);
     for (unsigned int k=0; k<outputDims[2]; ++k)
-      {
+    {
       for (unsigned int j=0; j<outputDims[1]; ++j)
-        {
+      {
         for (unsigned int i=0; i<outputDims[0]; ++i)
-          {
+        {
           if (outputCellGrid[a] != EMPTY)
-            {
+          {
             pointIds->SetId (0, outputPointGrid(k  ,j  ,i  ));
             pointIds->SetId (1, outputPointGrid(k  ,j  ,i+1));
             pointIds->SetId (2, outputPointGrid(k  ,j+1,i  ));
@@ -628,15 +628,15 @@ int vtkboneCoarsenModel::GenerateCells
                         pointIds->GetId(6) != EMPTY &&
                         pointIds->GetId(7) != EMPTY);
             cells->InsertNextCell(pointIds);
-            }
-          ++a;
           }
+          ++a;
         }
       }
     }
+  }
   output->SetCells(VTK_VOXEL, cells);
   return 1;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -646,7 +646,7 @@ int vtkboneCoarsenModel::GenerateMaterials
   vtkboneFiniteElementModel* input,
   const unsigned int* reverseCellMap_ptr
   )
-  {
+{
   vtkboneMaterialTable* inputMaterialTable = input->GetMaterialTable();
 
   // Check if we have a single material, and can use the special method
@@ -656,22 +656,22 @@ int vtkboneCoarsenModel::GenerateMaterials
   while (inputMaterialTable->GetNextUniqueIndex())
     { ++numberUniqueMaterials; }
   if (numberUniqueMaterials == 0)
-    {
+  {
     vtkErrorMacro(<<"Empty material table.");
     return VTK_ERROR;
-    }
+  }
   if (numberUniqueMaterials == 1)
-    {
+  {
     // Need additionally to verify that this material is not a material array.
     inputMaterialTable->InitTraversal();
     inputMaterialTable->GetNextIndex();
     vtkboneMaterial* material = inputMaterialTable->GetCurrentMaterial();
     if (vtkboneMaterialArray::SafeDownCast(material) == 0)
-      {
+    {
       return this->GenerateMaterialsSingleInputMaterial(
                     output, input, reverseCellMap_ptr);
-      }
     }
+  }
 
   vtkIdType nOutputCells = output->GetNumberOfCells();
   n88::const_array<2,unsigned int> reverseCellMap (reverseCellMap_ptr, nOutputCells, 8);
@@ -682,14 +682,14 @@ int vtkboneCoarsenModel::GenerateMaterials
   vtkSmartPointer<vtkUnsignedIntArray> outputScalars = vtkSmartPointer<vtkUnsignedIntArray>::New();
   outputScalars->SetNumberOfTuples(nOutputCells);
   outputScalars->SetName("MaterialID");
-    {  // scope
+  {  // scope
     vtkIdType count = 1;
     for (vtkIdType cellId=0; cellId < nOutputCells; ++cellId)
-      {
+    {
       outputScalars->SetComponent(cellId, 0, count);
       ++count;
-      }
     }
+  }
   output->GetCellData()->SetScalars(outputScalars);
 
   // ---- Determine what kind of material array to hold all defined materials
@@ -698,26 +698,26 @@ int vtkboneCoarsenModel::GenerateMaterials
   bool have_anisotropic = false;
   inputMaterialTable->InitTraversal();
   while (int index = inputMaterialTable->GetNextUniqueIndex())
-    {
+  {
     vtkboneMaterial* material = inputMaterialTable->GetCurrentMaterial();
     if (vtkboneLinearAnisotropicMaterial::SafeDownCast(material) ||
         vtkboneLinearAnisotropicMaterialArray::SafeDownCast(material))
-      {
+    {
       have_anisotropic = true;
       break;
-      }
+    }
     if (vtkboneLinearOrthotropicMaterial::SafeDownCast(material) ||
         vtkboneLinearOrthotropicMaterialArray::SafeDownCast(material))
-      {
+    {
       have_orthotropic = true;
-      }
     }
+  }
 
   // ---- Now populate the material array by averaging over 2x2x2 input cells
 
   // Even in orthotropic case, use anisotropic for output: more sensible averaging.
   if (have_anisotropic || have_orthotropic)
-    {
+  {
     vtkSmartPointer<vtkboneLinearAnisotropicMaterialArray> anisoMaterials =
         vtkSmartPointer<vtkboneLinearAnisotropicMaterialArray>::New();
     anisoMaterials->Resize(nOutputCells);
@@ -727,15 +727,15 @@ int vtkboneCoarsenModel::GenerateMaterials
     vtkSmartPointer<vtkboneStressStrainMatrix> stressStrain =
         vtkSmartPointer<vtkboneStressStrainMatrix>::New();
     for (unsigned int oel=0; oel<nOutputCells; ++oel)
-      {
+    {
       for (unsigned int k=0; k<21; ++k)
         { sum_D[k] = 0; }
       unsigned int count = 0;
       for (unsigned int i=0; i<8; ++i)
-        {
+      {
         unsigned int iel = reverseCellMap(oel,i);
         if (iel != EMPTY)
-          {
+        {
           int id = input->GetCellData()->GetScalars()->GetComponent(iel,0);
           vtkboneMaterial* material = NULL;
           int offset = 0;
@@ -743,18 +743,18 @@ int vtkboneCoarsenModel::GenerateMaterials
           n88_assert (material);
           if (vtkboneLinearAnisotropicMaterial* m =
                 vtkboneLinearAnisotropicMaterial::SafeDownCast(material))
-            {
+          {
             stressStrain->SetStressStrainMatrix (m->GetStressStrainMatrix());
-            }
+          }
           else if (vtkboneLinearAnisotropicMaterialArray* m =
                 vtkboneLinearAnisotropicMaterialArray::SafeDownCast(material))
-            {
+          {
             n88_assert (m->GetSize() > offset);
             stressStrain->SetUpperTriangularPacked (m->GetItemUpperTriangular (offset));
-            }
+          }
           else if (vtkboneLinearOrthotropicMaterial* m =
                 vtkboneLinearOrthotropicMaterial::SafeDownCast(material))
-            {
+          {
             stressStrain->SetOrthotropic (m->GetYoungsModulusX(),
                                           m->GetYoungsModulusY(),
                                           m->GetYoungsModulusZ(),
@@ -764,10 +764,10 @@ int vtkboneCoarsenModel::GenerateMaterials
                                           m->GetShearModulusYZ(),
                                           m->GetShearModulusZX(),
                                           m->GetShearModulusXY());
-            }
+          }
           else if (vtkboneLinearOrthotropicMaterialArray* m =
                 vtkboneLinearOrthotropicMaterialArray::SafeDownCast(material))
-            {
+          {
             n88_assert (m->GetSize() > offset);
             stressStrain->SetOrthotropic (
                      m->GetYoungsModulus()->GetComponent (offset, 0),
@@ -779,68 +779,68 @@ int vtkboneCoarsenModel::GenerateMaterials
                      m->GetShearModulus()->GetComponent (offset, 0),
                      m->GetShearModulus()->GetComponent (offset, 1),
                      m->GetShearModulus()->GetComponent (offset, 2));
-            }
+          }
           else if (vtkboneLinearIsotropicMaterial* m =
                 vtkboneLinearIsotropicMaterial::SafeDownCast(material))
-            {
+          {
             stressStrain->SetIsotropic (m->GetYoungsModulus(),
                                         m->GetPoissonsRatio());
-            }
+          }
           else if (vtkboneLinearIsotropicMaterialArray* m =
                 vtkboneLinearIsotropicMaterialArray::SafeDownCast(material))
-            {
+          {
             n88_assert (m->GetSize() > offset);
             stressStrain->SetIsotropic (
                      m->GetYoungsModulus()->GetComponent (offset, 0),
                      m->GetPoissonsRatio()->GetComponent (offset, 0));
-            }
+          }
           else
-            {
+          {
             throw_n88_exception ("Internal error.");
-            }
+          }
           stressStrain->GetUpperTriangularPacked(&(D[0]));
           if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
-            {
+          {
             for (unsigned int k=0; k<21; ++k)
-              {
+            {
               sum_D[k] += to_homminga_density(D[k]);
-              }
             }
-          else
-            {
-            for (unsigned int k=0; k<21; ++k)
-              {
-              sum_D[k] += D[k];
-              }
-            }
-          ++count;
           }
+          else
+          {
+            for (unsigned int k=0; k<21; ++k)
+            {
+              sum_D[k] += D[k];
+            }
+          }
+          ++count;
         }
+      }
       n88_assert (count); // Must be at least one input element corresponding to output element
       anisoMaterials->SetScaledItemUpperTriangular (oel,&(sum_D[0]), 1.0/8.0);
       if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
-        {
+      {
         from_homminga_density_inplace (anisoMaterials->GetItemUpperTriangular(oel), 21);
-        }
       }
     }
+  }
 
   else  // Only isotropic materials
-    {
+  {
     vtkSmartPointer<vtkboneLinearIsotropicMaterialArray> isoMaterials =
         vtkSmartPointer<vtkboneLinearIsotropicMaterialArray>::New();
     isoMaterials->Resize(nOutputCells);
     output->GetMaterialTable()->AddMaterial(1, isoMaterials);
     for (unsigned int oel=0; oel<nOutputCells; ++oel)
-      {
+    {
       double E=0;
       double nu=0;
       unsigned int count = 0;
       for (unsigned int i=0; i<8; ++i)
-        {
+      {
         unsigned int iel = reverseCellMap(oel,i);
         if (iel != EMPTY)
-          {
+        {
           int id = input->GetCellData()->GetScalars()->GetComponent(iel,0);
           vtkboneMaterial* material = NULL;
           int offset = 0;
@@ -848,53 +848,53 @@ int vtkboneCoarsenModel::GenerateMaterials
           n88_assert (material);
           if (vtkboneLinearIsotropicMaterial* m =
                 vtkboneLinearIsotropicMaterial::SafeDownCast(material))
-            {
+          {
             n88_assert (offset == 0);
             if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
-              {
+            {
               E += to_homminga_density (m->GetYoungsModulus());
-              }
-            else
-              {
-              E += m->GetYoungsModulus();
-              }
-            nu += m->GetPoissonsRatio();
             }
+            else
+            {
+              E += m->GetYoungsModulus();
+            }
+            nu += m->GetPoissonsRatio();
+          }
           else if (vtkboneLinearIsotropicMaterialArray* m =
                 vtkboneLinearIsotropicMaterialArray::SafeDownCast(material))
-            {
+          {
             n88_assert (m->GetSize() > offset);
             if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
-              {
-              E += to_homminga_density (m->GetYoungsModulus()->GetComponent(offset,0));
-              }
-            else
-              {
-              E += m->GetYoungsModulus()->GetComponent(offset,0);
-              }
-            nu += m->GetPoissonsRatio()->GetComponent(offset,0);
-            }
-          else
             {
-            throw_n88_exception ("Internal error.");
+              E += to_homminga_density (m->GetYoungsModulus()->GetComponent(offset,0));
             }
-          ++count;
+            else
+            {
+              E += m->GetYoungsModulus()->GetComponent(offset,0);
+            }
+            nu += m->GetPoissonsRatio()->GetComponent(offset,0);
           }
+          else
+          {
+            throw_n88_exception ("Internal error.");
+          }
+          ++count;
         }
+      }
       n88_assert (count); // Must be at least one input element corresponding to output element
       E /= 8;
       if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
-        {
+      {
         E = from_homminga_density (E);
-        }
+      }
       nu /= count;
       isoMaterials->GetYoungsModulus()->SetComponent(oel,0,E);
       isoMaterials->GetPoissonsRatio()->SetComponent(oel,0,nu);
-      }
     }
+  }
 
   return 1;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -904,7 +904,7 @@ int vtkboneCoarsenModel::GenerateMaterialsSingleInputMaterial
   vtkboneFiniteElementModel* input,
   const unsigned int* reverseCellMap_ptr
   )
-  {
+{
   vtkIdType nOutputCells = output->GetNumberOfCells();
   n88::const_array<2,unsigned int> reverseCellMap (reverseCellMap_ptr, nOutputCells, 8);
 
@@ -927,67 +927,67 @@ int vtkboneCoarsenModel::GenerateMaterialsSingleInputMaterial
   // --- Populate output material array with 8 possible materials
 
   if (aniso_material)
-    {
+  {
     vtkSmartPointer<vtkboneLinearAnisotropicMaterialArray> anisoMaterials =
         vtkSmartPointer<vtkboneLinearAnisotropicMaterialArray>::New();
     anisoMaterials->Resize(8);
     output->GetMaterialTable()->AddMaterial(1, anisoMaterials);
     for (unsigned int m=0; m<8; ++m)
-      {
+    {
       if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
-        {
+      {
         anisoMaterials->SetScaledItem (m, aniso_material, pow ((m+1)/8.0, homminga_exponent));
-        }
+      }
       else
-        {
+      {
         anisoMaterials->SetScaledItem (m, aniso_material, (m+1)/8.0);
-        }
       }
     }
+  }
 
   else if (ortho_material)
-    {
+  {
     vtkSmartPointer<vtkboneLinearOrthotropicMaterialArray> orthoMaterials =
         vtkSmartPointer<vtkboneLinearOrthotropicMaterialArray>::New();
     orthoMaterials->Resize(8);
     output->GetMaterialTable()->AddMaterial(1, orthoMaterials);
     for (unsigned int m=0; m<8; ++m)
-      {
+    {
       if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
-        {
+      {
         orthoMaterials->SetScaledItem (m, ortho_material, pow ((m+1)/8.0, homminga_exponent));
-        }
+      }
       else
-        {
+      {
         orthoMaterials->SetScaledItem (m, ortho_material, (m+1)/8.0);
-        }
       }
     }
+  }
 
   else if (iso_material)
-    {
+  {
     vtkSmartPointer<vtkboneLinearIsotropicMaterialArray> isoMaterials =
         vtkSmartPointer<vtkboneLinearIsotropicMaterialArray>::New();
     isoMaterials->Resize(8);
     output->GetMaterialTable()->AddMaterial(1, isoMaterials);
     for (unsigned int m=0; m<8; ++m)
-      {
+    {
       if (this->MaterialAveragingMethod == HOMMINGA_DENSITY)
-        {
+      {
         isoMaterials->SetScaledItem (m, iso_material, pow ((m+1)/8.0, homminga_exponent));
-        }
+      }
       else
-        {
+      {
         isoMaterials->SetScaledItem (m, iso_material, (m+1)/8.0);
-        }
       }
     }
+  }
 
   else
-    {
+  {
     vtkErrorMacro(<<"Unknown material.");
     return VTK_ERROR;
-    }
+  }
 
   // ---- Generate cell scalars (valid values 1-8)
 
@@ -997,22 +997,22 @@ int vtkboneCoarsenModel::GenerateMaterialsSingleInputMaterial
   output->GetCellData()->SetScalars(outputScalars);
 
   for (unsigned int oel=0; oel<nOutputCells; ++oel)
-    {
+  {
     unsigned int count = 0;
     for (unsigned int i=0; i<8; ++i)
-      {
+    {
       unsigned int iel = reverseCellMap(oel,i);
       if (iel != EMPTY)
-        {
+      {
         ++count;
-        }
       }
+    }
     n88_assert (count); // Must be at least one input element corresponding to output element
     outputScalars->SetComponent(oel, 0, count);
-    }
+  }
 
   return 1;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -1022,13 +1022,13 @@ int vtkboneCoarsenModel::GenerateConstraints
   vtkboneFiniteElementModel* input,
   const unsigned int* pointMap
   )
-  {
+{
   vtkboneConstraintCollection* inputConstraints = input->GetConstraints();
   inputConstraints->InitTraversal();
   while (vtkboneConstraint* inputConstraint = inputConstraints->GetNextItem())
-    {
+  {
     if (inputConstraint->GetConstraintAppliedTo() == vtkboneConstraint::NODES)
-      {
+    {
       vtkSmartPointer<vtkboneConstraint> outputConstraint =
           vtkSmartPointer<vtkboneConstraint>::New();
       outputConstraint->SetName (inputConstraint->GetName());
@@ -1047,31 +1047,31 @@ int vtkboneCoarsenModel::GenerateConstraints
       outputConstraint->SetConstraintType (inputConstraint->GetConstraintType());
       vtkDataArray* sense = inputConstraint->GetAttributes()->GetArray("SENSE");
       if (sense == NULL)
-        {
+      {
         vtkErrorMacro(<<"Missing constraint attribute array SENSE.");
         return VTK_ERROR;
-        }
+      }
       n88_assert (sense->GetNumberOfTuples() == N);
       outputConstraint->GetAttributes()->AddArray (sense);
       vtkDataArray* value = inputConstraint->GetAttributes()->GetArray("VALUE");
       if (value == NULL)
-        {
+      {
         vtkErrorMacro(<<"Missing constraint attribute array VALUE.");
         return VTK_ERROR;
-        }
+      }
       n88_assert (value->GetNumberOfTuples() == N);
       outputConstraint->GetAttributes()->AddArray (value);
       output->GetConstraints()->AddItem(outputConstraint);
-      }
+    }
     else
-      {
+    {
       vtkErrorMacro (<< "Cannot handle element constraints.");
       return VTK_ERROR;
-      }
     }
+  }
 
   return 1;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -1081,12 +1081,12 @@ int vtkboneCoarsenModel::GenerateConvergenceSet
   vtkboneFiniteElementModel* input,
   const unsigned int* pointMap
   )
-  {
+{
   vtkboneConstraint* inputConvergenceSet = input->GetConvergenceSet();
   if (inputConvergenceSet)
-    {
+  {
     if (inputConvergenceSet->GetConstraintAppliedTo() == vtkboneConstraint::NODES)
-      {
+    {
       vtkSmartPointer<vtkboneConstraint> outputConvergenceSet =
           vtkSmartPointer<vtkboneConstraint>::New();
       outputConvergenceSet->SetName (inputConvergenceSet->GetName());
@@ -1105,31 +1105,31 @@ int vtkboneCoarsenModel::GenerateConvergenceSet
       outputConvergenceSet->SetConstraintType (inputConvergenceSet->GetConstraintType());
       vtkDataArray* sense = inputConvergenceSet->GetAttributes()->GetArray("SENSE");
       if (sense == NULL)
-        {
+      {
         vtkErrorMacro(<<"Missing constraint attribute array SENSE.");
         return VTK_ERROR;
-        }
+      }
       n88_assert (sense->GetNumberOfTuples() == N);
       outputConvergenceSet->GetAttributes()->AddArray (sense);
       vtkDataArray* value = inputConvergenceSet->GetAttributes()->GetArray("VALUE");
       if (value == NULL)
-        {
+      {
         vtkErrorMacro(<<"Missing constraint attribute array VALUE.");
         return VTK_ERROR;
-        }
+      }
       n88_assert (value->GetNumberOfTuples() == N);
       outputConvergenceSet->GetAttributes()->AddArray (value);
       output->SetConvergenceSet(outputConvergenceSet);
-      }
+    }
     else
-      {
+    {
       vtkErrorMacro (<< "Cannot handle element constraints.");
       return 0;
-      }
     }
+  }
 
   return 1;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -1140,17 +1140,17 @@ int vtkboneCoarsenModel::GenerateNodeAndElementSets
   const unsigned int* pointMap,
   const vtkIdType* cellMap
   )
-  {
+{
   for (int n=0; n < input->GetNodeSets()->GetNumberOfItems(); n++)
-    {
+  {
     vtkIdTypeArray* inputIds = vtkIdTypeArray::SafeDownCast (input->GetNodeSets()->GetItem(n));
     const char* name = inputIds->GetName();
     // Use std::set to eliminate duplicates and to sort.
     std::set<vtkIdType> deduped_set;
     for (vtkIdType i=0; i<inputIds->GetNumberOfTuples(); ++i)
-      {
+    {
       deduped_set.insert(pointMap[inputIds->GetValue(i)]);
-      }
+    }
     vtkSmartPointer<vtkIdTypeArray> outputIds = vtkSmartPointer<vtkIdTypeArray>::New();
     outputIds->SetName (name);
     outputIds->SetNumberOfTuples (deduped_set.size());
@@ -1158,23 +1158,23 @@ int vtkboneCoarsenModel::GenerateNodeAndElementSets
     for (std::set<vtkIdType>::const_iterator it = deduped_set.begin();
          it != deduped_set.end();
          ++it)
-      {
+    {
       outputIds->SetValue(i,*it);
       ++i;
-      }
-    output->GetNodeSets()->AddItem(outputIds);
     }
+    output->GetNodeSets()->AddItem(outputIds);
+  }
 
   for (int n=0; n < input->GetElementSets()->GetNumberOfItems(); n++)
-    {
+  {
     vtkIdTypeArray* inputIds = vtkIdTypeArray::SafeDownCast (input->GetElementSets()->GetItem(n));
     const char* name = inputIds->GetName();
     // Use std::set to eliminate duplicates and to sort.
     std::set<vtkIdType> deduped_set;
     for (vtkIdType i=0; i<inputIds->GetNumberOfTuples(); ++i)
-      {
+    {
       deduped_set.insert(cellMap[inputIds->GetValue(i)]);
-      }
+    }
     vtkSmartPointer<vtkIdTypeArray> outputIds = vtkSmartPointer<vtkIdTypeArray>::New();
     outputIds->SetName (name);
     outputIds->SetNumberOfTuples (deduped_set.size());
@@ -1182,15 +1182,15 @@ int vtkboneCoarsenModel::GenerateNodeAndElementSets
     for (std::set<vtkIdType>::const_iterator it = deduped_set.begin();
          it != deduped_set.end();
          ++it)
-      {
+    {
       outputIds->SetValue(i,*it);
       ++i;
-      }
-    output->GetElementSets()->AddItem(outputIds);
     }
+    output->GetElementSets()->AddItem(outputIds);
+  }
 
   return 1;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -1199,39 +1199,39 @@ int vtkboneCoarsenModel::GenerateAdditionalInformation
   vtkboneFiniteElementModel* output,
   vtkboneFiniteElementModel* input
   )
-  {
+{
   vtkInformation* inputInfo = input->GetInformation();
   vtkInformation* outputInfo = output->GetInformation();
   vtkInformationStringVectorKey* postProcessingNodeSetsKey =
                          vtkboneSolverParameters::POST_PROCESSING_NODE_SETS();
   if (postProcessingNodeSetsKey->Has(inputInfo))
-    {
+  {
     int numNodeSets = postProcessingNodeSetsKey->Length(inputInfo);
     for (int n=0; n<numNodeSets; ++n)
-      {
+    {
       const char* setName = postProcessingNodeSetsKey->Get(inputInfo,n);
       vtkboneSolverParameters::POST_PROCESSING_NODE_SETS()->Append(outputInfo, setName);
-      }
     }
+  }
   vtkInformationStringVectorKey* postProcessingElementSetsKey =
                          vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS();
   if (postProcessingElementSetsKey->Has(inputInfo))
-    {
+  {
     int numElementSets = postProcessingElementSetsKey->Length(inputInfo);
     for (int n=0; n<numElementSets; ++n)
-      {
+    {
       const char* setName = postProcessingElementSetsKey->Get(inputInfo,n);
       vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS()->Append(outputInfo, setName);
-      }
     }
+  }
 
   vtkInformationDoubleVectorKey* rotationCenterKey =
                          vtkboneSolverParameters::ROTATION_CENTER();
   if (rotationCenterKey->Has(inputInfo))
-    {
+  {
     vtkboneSolverParameters::ROTATION_CENTER()->Set(outputInfo,
         vtkboneSolverParameters::ROTATION_CENTER()->Get(inputInfo), 3);
-    }
+  }
 
   std::string history = std::string("Model created by vtkboneCoarsenModel version ")
       + vtkboneVersion::GetVTKBONEVersion();
@@ -1244,4 +1244,4 @@ int vtkboneCoarsenModel::GenerateAdditionalInformation
   output->AppendLog(comments.str().c_str());
 
   return 1;
-  }
+}

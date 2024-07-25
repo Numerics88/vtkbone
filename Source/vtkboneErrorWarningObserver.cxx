@@ -21,34 +21,34 @@ vtkboneErrorWarningObserver::~vtkboneErrorWarningObserver()
 void vtkboneErrorWarningObserver::AppendErrorDescriptions(const char* newMsg)
 {
   if (this->GetErrorDescriptions())
-    {
+  {
     std::string s;
     s += this->GetErrorDescriptions();
     s += "\n";
     s += newMsg;
     this->SetErrorDescriptions(s.c_str());
-    }
+  }
   else
-    {
+  {
     this->SetErrorDescriptions(newMsg);
-    }
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkboneErrorWarningObserver::AppendWarningDescriptions(const char* newMsg)
 {
   if (this->GetWarningDescriptions())
-    {
+  {
     std::string s;
     s += this->GetWarningDescriptions();
     s += "\n";
     s += newMsg;
     this->SetWarningDescriptions(s.c_str());
-    }
+  }
   else
-    {
+  {
     this->SetWarningDescriptions(newMsg);
-    }
+  }
 }
 
 //----------------------------------------------------------------------------
@@ -84,12 +84,12 @@ void vtkboneErrorWarningObserver::Execute
     { return; }
   const char* details = (const char*)callData;
   switch (eventId)
-    {
+  {
     case vtkCommand::ErrorEvent:
       this->AppendErrorDescriptions(details);
       break;
     case vtkCommand::WarningEvent:
       this->AppendWarningDescriptions(details);
       break;
-    }
+  }
 }

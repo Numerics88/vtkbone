@@ -34,7 +34,7 @@
 #include "vtkboneWin32Header.h"
 
 class VTKBONE_EXPORT vtkboneMohrCoulombIsotropicMaterial : public vtkboneLinearIsotropicMaterial
-  {
+{
   public:
     static vtkboneMohrCoulombIsotropicMaterial* New();
     vtkTypeMacro(vtkboneMohrCoulombIsotropicMaterial, vtkboneLinearIsotropicMaterial);
@@ -79,7 +79,7 @@ class VTKBONE_EXPORT vtkboneMohrCoulombIsotropicMaterial : public vtkboneLinearI
   private:
     vtkboneMohrCoulombIsotropicMaterial(const vtkboneMohrCoulombIsotropicMaterial&);  // Not implemented.
     void operator=(const vtkboneMohrCoulombIsotropicMaterial&);  // Not implemented.
-  };
+};
 
 #endif
 

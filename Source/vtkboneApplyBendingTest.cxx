@@ -26,33 +26,33 @@ vtkboneApplyBendingTest::vtkboneApplyBendingTest()
   :
   NeutralAxisAngle (1.5707963267948966),   // pi/2
   BendingAngle (0.017453292519943295)  // One degree.
-  {
+{
   this->NeutralAxisOrigin[0] = 0;
   this->NeutralAxisOrigin[1] = 0;
-  }
+}
 
 
 //----------------------------------------------------------------------------
 vtkboneApplyBendingTest::~vtkboneApplyBendingTest()
-  {
-  }
+{
+}
 
 
 //----------------------------------------------------------------------------
 void vtkboneApplyBendingTest::PrintSelf (ostream& os, vtkIndent indent)
-  {
+{
   this->Superclass::PrintSelf(os,indent);
   this->PrintParameters(os,indent);
-  }
+}
 
 //----------------------------------------------------------------------------
 void vtkboneApplyBendingTest::PrintParameters (ostream& os, vtkIndent indent)
-  {
+{
   os << indent << "NeutralAxisOrigin: " << this->NeutralAxisOrigin[0] << ", "
                                         << this->NeutralAxisOrigin[1] << "\n";
   os << indent << "NeutralAxisAngle: " << this->NeutralAxisAngle << "\n";
   os << indent << "BendingAngle: " << this->BendingAngle << "\n";
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ int vtkboneApplyBendingTest::RequestData
     vtkInformationVector **inputVector,
     vtkInformationVector *outputVector
   )
-  {
+{
   vtkboneApplyTestBase::RequestData(request, inputVector, outputVector);
 
   // Only need output object: vtkboneApplyTestBase has already copied the input
@@ -71,23 +71,23 @@ int vtkboneApplyBendingTest::RequestData
   vtkboneFiniteElementModel *output = vtkboneFiniteElementModel::SafeDownCast(
                             outInfo->Get(vtkDataObject::DATA_OBJECT()));
   if (!output)
-    {
+  {
     vtkErrorMacro("No output object.");
     return 0;
-    }
+  }
 
   return ((this->AddTopAndBottomConstraints(output) == VTK_OK) &&
           (this->AddConvergenceSet(output) == VTK_OK) &&
           (this->AddPostProcessingSets(output) == VTK_OK) &&
           (this->AddInformation(output) == VTK_OK));
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplyBendingTest::AddTopAndBottomConstraints
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   double bounds[6];
   model->GetBounds(bounds);
 
@@ -112,7 +112,7 @@ int vtkboneApplyBendingTest::AddTopAndBottomConstraints
    double deflectionSlope = tan(this->BendingAngle/2.0);
 
     // Top nodes bending constraint
-    { // scope
+   { // scope
     vtkSmartPointer<vtkIdTypeArray> nodes = vtkSmartPointer<vtkIdTypeArray>::New();
     vtkSmartPointer<vtkCharArray> senses = vtkSmartPointer<vtkCharArray>::New();
     senses->SetName("SENSE");
@@ -120,7 +120,7 @@ int vtkboneApplyBendingTest::AddTopAndBottomConstraints
     values->SetName("VALUE");
     vtkIdTypeArray* faceTopNodes = model->GetNodeSet("face_z1");
     for (vtkIdType i=0; i < faceTopNodes->GetNumberOfTuples(); i++)
-      {
+    {
       vtkIdType iNode = faceTopNodes->GetValue(i);
       double* ptDataFrame = model->GetPoint(iNode);
       double pt[2];
@@ -143,12 +143,12 @@ int vtkboneApplyBendingTest::AddTopAndBottomConstraints
                                      - normalVector[1]*nau[0];
       // cout << "distanceFromNeutralAxis: " << distanceFromNeutralAxis << "\n";
       values->InsertNextValue(deflectionSlope*distanceFromNeutralAxis);
-      }
+    }
     model->ApplyBoundaryCondition(nodes, senses, values, "top_displacement");
-    } // scope
+   } // scope
 
     // Bottom nodes bending constraint
-    { // scope
+   { // scope
     vtkSmartPointer<vtkIdTypeArray> nodes = vtkSmartPointer<vtkIdTypeArray>::New();
     vtkSmartPointer<vtkCharArray> senses = vtkSmartPointer<vtkCharArray>::New();
     senses->SetName("SENSE");
@@ -156,7 +156,7 @@ int vtkboneApplyBendingTest::AddTopAndBottomConstraints
     values->SetName("VALUE");
     vtkIdTypeArray* faceTopNodes = model->GetNodeSet("face_z0");
     for (vtkIdType i=0; i < faceTopNodes->GetNumberOfTuples(); i++)
-      {
+    {
       vtkIdType iNode = faceTopNodes->GetValue(i);
       double* ptDataFrame = model->GetPoint(iNode);
       double pt[2];
@@ -179,28 +179,28 @@ int vtkboneApplyBendingTest::AddTopAndBottomConstraints
                                      - normalVector[1]*nau[0];
       // cout << "distanceFromNeutralAxis: " << distanceFromNeutralAxis << "\n";
       values->InsertNextValue(-deflectionSlope*distanceFromNeutralAxis);
-      }
+    }
     model->ApplyBoundaryCondition(nodes, senses, values, "bottom_displacement");
-    } // scope
+   } // scope
 
   return VTK_OK;
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplyBendingTest::AddConvergenceSet
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   return model->ConvergenceSetFromConstraint("top_displacement");
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneApplyBendingTest::AddPostProcessingSets
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   vtkInformation* info = model->GetInformation();
   vtkboneSolverParameters::POST_PROCESSING_NODE_SETS()->Append(info, "face_z1");
   vtkboneSolverParameters::POST_PROCESSING_NODE_SETS()->Append(info, "face_z0");
@@ -208,20 +208,20 @@ int vtkboneApplyBendingTest::AddPostProcessingSets
   vtkboneSolverParameters::POST_PROCESSING_ELEMENT_SETS()->Append(info, "face_z0");
   double rotationCenter[3];
   for (int i=0; i<3; ++i)
-    {
+  {
     int testFrameSense = this->TestFrameSense(i);
     if (testFrameSense < 2)
       { rotationCenter[i] = this->NeutralAxisOrigin[testFrameSense]; }
     else
-      {
+    {
       double bounds[6];
       model->GetBounds(bounds);
       rotationCenter[i] = (bounds[2*i] + bounds[2*i+1])/2;
-      }
     }
+  }
   vtkboneSolverParameters::ROTATION_CENTER()->Set(info, rotationCenter, 3);
   return VTK_OK;
-  }
+}
 
 
 //----------------------------------------------------------------------------
@@ -229,7 +229,7 @@ int vtkboneApplyBendingTest::AddInformation
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
 	std::string history = std::string("Model created by vtkboneApplyBendingTest version ")
       + vtkboneVersion::GetVTKBONEVersion() + " .";
   model->AppendHistory(history.c_str());
@@ -242,5 +242,5 @@ int vtkboneApplyBendingTest::AddInformation
   model->AppendLog(comments.str().c_str());
 
   return VTK_OK;
-  }
+}
 

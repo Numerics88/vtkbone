@@ -16,17 +16,17 @@ vtkboneLinearOrthotropicMaterial::vtkboneLinearOrthotropicMaterial()
   ShearModulusYZ (6829.0 / (2*(1.0 + 0.3))),
   ShearModulusZX (6829.0 / (2*(1.0 + 0.3))),
   ShearModulusXY (6829.0 / (2*(1.0 + 0.3)))
-  {
-  }
+{
+}
 
 //----------------------------------------------------------------------------
 vtkboneLinearOrthotropicMaterial::~vtkboneLinearOrthotropicMaterial()
-  {
-  }
+{
+}
 
 //----------------------------------------------------------------------------
 void vtkboneLinearOrthotropicMaterial::PrintSelf (ostream& os, vtkIndent indent)
-  {
+{
   this->Superclass::PrintSelf(os,indent);
   os << indent << "YoungsModulusX: " << this->YoungsModulusX << "\n";
   os << indent << "YoungsModulusY: " << this->YoungsModulusY << "\n";
@@ -37,29 +37,29 @@ void vtkboneLinearOrthotropicMaterial::PrintSelf (ostream& os, vtkIndent indent)
   os << indent << "ShearModulusYZ: " << this->ShearModulusYZ << "\n";
   os << indent << "ShearModulusZX: " << this->ShearModulusZX << "\n";
   os << indent << "ShearModulusXY: " << this->ShearModulusXY << "\n";
-  }
+}
 
 //----------------------------------------------------------------------------
 double vtkboneLinearOrthotropicMaterial::GetPoissonsRatioZY()
-  {
+{
   return this->PoissonsRatioYZ * this->YoungsModulusZ / this->YoungsModulusY;
-  }
+}
 
 //----------------------------------------------------------------------------
 double vtkboneLinearOrthotropicMaterial::GetPoissonsRatioXZ()
-  {
+{
   return this->PoissonsRatioZX * this->YoungsModulusX / this->YoungsModulusZ;
-  }
+}
 
 //----------------------------------------------------------------------------
 double vtkboneLinearOrthotropicMaterial::GetPoissonsRatioYX()
-  {
+{
   return this->PoissonsRatioXY * this->YoungsModulusY / this->YoungsModulusX;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneMaterial* vtkboneLinearOrthotropicMaterial::Copy()
-  {
+{
   vtkboneLinearOrthotropicMaterial* new_mat = vtkboneLinearOrthotropicMaterial::New();
   new_mat->SetName(this->Name);
   new_mat->SetYoungsModulusX(this->YoungsModulusX);
@@ -72,11 +72,11 @@ vtkboneMaterial* vtkboneLinearOrthotropicMaterial::Copy()
   new_mat->SetShearModulusZX(this->ShearModulusZX);
   new_mat->SetShearModulusXY(this->ShearModulusXY);
   return new_mat;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneMaterial* vtkboneLinearOrthotropicMaterial::ScaledCopy(double factor)
-  {
+{
   vtkboneLinearOrthotropicMaterial* new_mat = vtkboneLinearOrthotropicMaterial::New();
   new_mat->SetName(this->Name);
   new_mat->SetYoungsModulusX(factor*this->YoungsModulusX);
@@ -89,4 +89,4 @@ vtkboneMaterial* vtkboneLinearOrthotropicMaterial::ScaledCopy(double factor)
   new_mat->SetShearModulusZX(factor*this->ShearModulusZX);
   new_mat->SetShearModulusXY(factor*this->ShearModulusXY);
   return new_mat;
-  }
+}

@@ -65,9 +65,9 @@ public:
   vtkBooleanMacro(AddPedigreeIdArrays, int);
 
   void SetModelSourceDescription(const char*)
-    {
+  {
  	vtkWarningMacro(<< "SetModelSourceDescription is deprecated.\n");
-	}
+  }
 
 protected:
   vtkboneFiniteElementModelGenerator();

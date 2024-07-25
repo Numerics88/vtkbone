@@ -27,47 +27,47 @@ vtkStandardNewMacro(vtkboneInterpolateCoarseSolution);
 vtkboneInterpolateCoarseSolution::vtkboneInterpolateCoarseSolution()
   :
   SolutionArray (NULL)
-  {
+{
   this->SetNumberOfInputPorts(2);
   this->SetNumberOfOutputPorts(0);
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneInterpolateCoarseSolution::~vtkboneInterpolateCoarseSolution()
-  {
+{
   if (this->SolutionArray) { this->SolutionArray->Delete(); }
-  }
+}
 
 //----------------------------------------------------------------------------
 void vtkboneInterpolateCoarseSolution::PrintSelf(ostream& os, vtkIndent indent)
-  {
+{
   this->Superclass::PrintSelf(os, indent);
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneInterpolateCoarseSolution::FillInputPortInformation(int port, vtkInformation *info)
-  {
+{
   if (port == 0)
-    {
+  {
     info->Set(vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkboneFiniteElementModel");
-    }
-  if (port == 1)
-    {
-    info->Set(vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkboneFiniteElementModel");
-    }
-  else
-    {
-    return 0;
-    }
-  return 1;
   }
+  if (port == 1)
+  {
+    info->Set(vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkboneFiniteElementModel");
+  }
+  else
+  {
+    return 0;
+  }
+  return 1;
+}
 
 template <typename T> bool rel_comp(const T x, const T y, const T tol)
-  {
+{
   if (x==0) return (x==y);
   T d = std::abs((x-y)/x);
   return (d < tol);
-  }
+}
 
 //----------------------------------------------------------------------------
 int vtkboneInterpolateCoarseSolution::RequestData
@@ -84,17 +84,17 @@ int vtkboneInterpolateCoarseSolution::RequestData
   vtkboneFiniteElementModel* reduced_model =
     vtkboneFiniteElementModel::SafeDownCast(inInfo1->Get(vtkDataObject::DATA_OBJECT()));
   if (!full_model || !reduced_model)
-    {
+  {
     vtkErrorMacro("Missing input object.");
     return 0;
-    }
+  }
 
   if (full_model->GetNumberOfCells() == 0 ||
   	  reduced_model->GetNumberOfCells() == 0)
-    {
+  {
     vtkWarningMacro("Zero elements on input to vtkboneInterpolateCoarseSolution");
     return 0;
-    }
+  }
 
   //   VTK_VOXEL
   //           6---------7
@@ -112,10 +112,10 @@ int vtkboneInterpolateCoarseSolution::RequestData
 
   vtkCell* cell = full_model->GetCell(0);
   if (cell->GetCellType() != VTK_VOXEL)
-    {
+  {
     vtkErrorMacro(<<"Unsupported Cell Type.");
     return VTK_ERROR;
-    }
+  }
   double full_spacing[3];
   full_spacing[0] = full_model->GetPoint(cell->GetPointId(1))[0] - full_model->GetPoint(cell->GetPointId(0))[0];
   full_spacing[1] = full_model->GetPoint(cell->GetPointId(2))[1] - full_model->GetPoint(cell->GetPointId(0))[1];
@@ -127,10 +127,10 @@ int vtkboneInterpolateCoarseSolution::RequestData
 
   cell = reduced_model->GetCell(0);
   if (cell->GetCellType() != VTK_VOXEL)
-    {
+  {
     vtkErrorMacro(<<"Unsupported Cell Type.");
     return VTK_ERROR;
-    }
+  }
   double reduced_spacing[3];
   reduced_spacing[0] = reduced_model->GetPoint(cell->GetPointId(1))[0] - reduced_model->GetPoint(cell->GetPointId(0))[0];
   reduced_spacing[1] = reduced_model->GetPoint(cell->GetPointId(2))[1] - reduced_model->GetPoint(cell->GetPointId(0))[1];
@@ -170,10 +170,10 @@ int vtkboneInterpolateCoarseSolution::RequestData
 
   vtkDataArray* reduced_data = reduced_model->GetPointData()->GetArray("Displacement");
   if (!reduced_data)
-    {
+  {
     vtkErrorMacro(<<"Solution not found in reduced model.");
     return VTK_ERROR;
-    }
+  }
 
   // To easily index the values of the reduced model, we will put on a regular grid.
   // x fastest, z slowest
@@ -186,12 +186,12 @@ int vtkboneInterpolateCoarseSolution::RequestData
   // Set all to EMPTY in order to trap incorrect indices
   float EMPTY = std::numeric_limits<float>::max();
   for (size_t i=0; i<reduced_grid.size(); ++i)
-    {
+  {
     reduced_grid[i] = EMPTY;
-    }
+  }
 
   for (vtkIdType p=0; p<reduced_model->GetNumberOfPoints(); ++p)
-    {
+  {
     double* coords = reduced_model->GetPoint(p);
     size_t index[3];
     index[0] = size_t(round((coords[0] - reduced_bounds[0])/reduced_spacing[0]));
@@ -201,7 +201,7 @@ int vtkboneInterpolateCoarseSolution::RequestData
     reduced_grid(index[2],index[1],index[0],0) = displacement[0];
     reduced_grid(index[2],index[1],index[0],1) = displacement[1];
     reduced_grid(index[2],index[1],index[0],2) = displacement[2];
-    }
+  }
 
   vtkFloatArray* full_data = vtkFloatArray::New();
   full_data->SetNumberOfComponents(3);
@@ -215,7 +215,7 @@ int vtkboneInterpolateCoarseSolution::RequestData
   {
 
     for (vtkIdType p=0; p<full_model->GetNumberOfPoints(); ++p)
-      {
+    {
       double* coords = full_model->GetPoint(p);
       size_t index[3];
       index[0] = size_t(round((coords[0] - full_bounds[0])/full_spacing[0]));
@@ -232,40 +232,40 @@ int vtkboneInterpolateCoarseSolution::RequestData
       n88_assert (index[1] < reduced_grid.dims()[1]);
       n88_assert (index[2] < reduced_grid.dims()[0]);
       if (!odd[0] && !odd[1] && !odd[2])
-        {
+      {
         for (size_t i=0; i<3; ++i) {
           n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
           full_data->SetComponent(p,i,reduced_grid(index[2],index[1],index[0],i)); }
-        }
+      }
       else if (odd[0] && !odd[1] && !odd[2])
-        {
+      {
         for (size_t i=0; i<3; ++i) {
           n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
           n88_assert (reduced_grid(index[2],index[1],index[0]+1,i) != EMPTY);
           full_data->SetComponent(p,i,
             (reduced_grid(index[2],index[1],index[0]  ,i) +
              reduced_grid(index[2],index[1],index[0]+1,i))/2); }
-        }
+      }
       else if (!odd[0] && odd[1] && !odd[2])
-        {
+      {
         for (size_t i=0; i<3; ++i) {
           n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
           n88_assert (reduced_grid(index[2],index[1]+1,index[0],i) != EMPTY);
           full_data->SetComponent(p,i,
             (reduced_grid(index[2],index[1]  ,index[0],i) +
              reduced_grid(index[2],index[1]+1,index[0],i))/2); }
-        }
+      }
       else if (!odd[0] && !odd[1] && odd[2])
-        {
+      {
         for (size_t i=0; i<3; ++i) {
           n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
           n88_assert (reduced_grid(index[2]+1,index[1],index[0],i) != EMPTY);
           full_data->SetComponent(p,i,
             (reduced_grid(index[2]  ,index[1],index[0],i) +
              reduced_grid(index[2]+1,index[1],index[0],i))/2); }
-        }
+      }
       else if (!odd[0] && odd[1] && odd[2])
-        {
+      {
         for (size_t i=0; i<3; ++i) {
           n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
           n88_assert (reduced_grid(index[2],index[1]+1,index[0],i) != EMPTY);
@@ -276,9 +276,9 @@ int vtkboneInterpolateCoarseSolution::RequestData
              reduced_grid(index[2]  ,index[1]+1,index[0],i) +
              reduced_grid(index[2]+1,index[1]  ,index[0],i) +
              reduced_grid(index[2]+1,index[1]+1,index[0],i))/4); }
-        }
+      }
       else if (odd[0] && !odd[1] && odd[2])
-        {
+      {
         for (size_t i=0; i<3; ++i) {
           n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
           n88_assert (reduced_grid(index[2],index[1],index[0]+1,i) != EMPTY);
@@ -289,9 +289,9 @@ int vtkboneInterpolateCoarseSolution::RequestData
              reduced_grid(index[2]  ,index[1],index[0]+1,i) +
              reduced_grid(index[2]+1,index[1],index[0]  ,i) +
              reduced_grid(index[2]+1,index[1],index[0]+1,i))/4); }
-        }
+      }
       else if (odd[0] && odd[1] && !odd[2])
-        {
+      {
         for (size_t i=0; i<3; ++i) {
           n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
           n88_assert (reduced_grid(index[2],index[1],index[0]+1,i) != EMPTY);
@@ -302,9 +302,9 @@ int vtkboneInterpolateCoarseSolution::RequestData
              reduced_grid(index[2],index[1]  ,index[0]+1,i) +
              reduced_grid(index[2],index[1]+1,index[0]  ,i) +
              reduced_grid(index[2],index[1]+1,index[0]+1,i))/4); }
-        }
+      }
       else // all odd
-        {
+      {
         for (size_t i=0; i<3; ++i) {
           n88_assert (reduced_grid(index[2],index[1],index[0],i) != EMPTY);
           n88_assert (reduced_grid(index[2],index[1],index[0]+1,i) != EMPTY);
@@ -323,16 +323,16 @@ int vtkboneInterpolateCoarseSolution::RequestData
              reduced_grid(index[2]+1,index[1]  ,index[0]+1,i) +
              reduced_grid(index[2]+1,index[1]+1,index[0]  ,i) +
              reduced_grid(index[2]+1,index[1]+1,index[0]+1,i))/8); }
-        }
       }
     }
+  }
   catch (n88::n88_exception e)
-    {
+  {
     vtkErrorMacro(<<"Exception: " << e.what()
                   << " FILE: " << e.file()
                   << " LINE: " << e.line());
     return VTK_ERROR;
-    }
+  }
 
   if (this->SolutionArray) { this->SolutionArray->Delete(); }
   this->SolutionArray = full_data;

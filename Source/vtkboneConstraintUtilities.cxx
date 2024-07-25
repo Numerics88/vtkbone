@@ -47,16 +47,16 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateBoundaryCondition
 {
   if (!vtkFloatArray::SafeDownCast(displacements) &&
       !vtkDoubleArray::SafeDownCast(displacements))
-    {
+  {
     return NULL;
-    }
+  }
 
   vtkIdType N = ids->GetNumberOfTuples();
   if (senses->GetNumberOfTuples() != N ||
       displacements->GetNumberOfTuples() != N)
-    {
+  {
     return NULL;
-    }
+  }
 
   vtkboneConstraint* constraint = vtkboneConstraint::New();
   constraint->SetName(name);
@@ -87,15 +87,15 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateBoundaryCondition
   vtkSmartPointer<vtkCharArray> senses = vtkSmartPointer<vtkCharArray>::New();
   senses->SetNumberOfValues(N);
   for (vtkIdType i=0; i<N; ++i)
-    {
+  {
     senses->SetValue(i, sense);
-    }
+  }
   vtkSmartPointer<vtkDoubleArray> displacements = vtkSmartPointer<vtkDoubleArray>::New();
   displacements->SetNumberOfValues(N);
   for (vtkIdType i=0; i<N; ++i)
-    {
+  {
     displacements->SetValue(i, displacement);
-    }
+  }
 
   return CreateBoundaryCondition(ids, senses, displacements, name);
 }
@@ -144,35 +144,35 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateFixedNodes
   senses->SetNumberOfValues(N*senseCount);
   vtkIdType j=0;
   for (vtkIdType i=0; i<N; ++i)
-    {
+  {
     vtkIdType id = ids->GetValue(i);
     if (xFlag)
-      {
+    {
       expandedIds->SetValue(j, id);
       senses->SetValue(j, 0);
       ++j;
-      }
+    }
     if (yFlag)
-      {
+    {
       expandedIds->SetValue(j, id);
       senses->SetValue(j, 1);
       ++j;
-      }
+    }
     if (zFlag)
-      {
+    {
       expandedIds->SetValue(j, id);
       senses->SetValue(j, 2);
       ++j;
-      }
     }
+  }
   assert(j == N*senseCount);
 
   vtkSmartPointer<vtkDoubleArray> displacements = vtkSmartPointer<vtkDoubleArray>::New();
   displacements->SetNumberOfValues(senseCount*N);
   for (vtkIdType i=0; i<senseCount*N; ++i)
-    {
+  {
     displacements->SetValue(i, 0.0);
-    }
+  }
 
   return CreateBoundaryCondition(expandedIds, senses, displacements, name);
 }
@@ -200,20 +200,20 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateAppliedLoad
   vtkDataArray* forces,
   const char* name
   )
-  {
+{
   if (!vtkFloatArray::SafeDownCast(forces) &&
       !vtkDoubleArray::SafeDownCast(forces))
-    {
+  {
     return NULL;
-    }
+  }
 
   vtkIdType N = ids->GetNumberOfTuples();
   if (distributions->GetNumberOfTuples() != N ||
       senses->GetNumberOfTuples() != N ||
       forces->GetNumberOfTuples() != N)
-    {
+  {
     return NULL;
-    }
+  }
 
   vtkboneConstraint* constraint = vtkboneConstraint::New();
   constraint->SetName(name);
@@ -231,7 +231,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateAppliedLoad
   constraint->GetAttributes()->AddArray(forces);
 
   return constraint;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::CreateAppliedLoad
@@ -242,18 +242,18 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateAppliedLoad
   vtkDataArray* forces,
   const char* name
   )
-  {
+{
   vtkIdType N = ids->GetNumberOfTuples();
 
   vtkSmartPointer<vtkCharArray> distributions = vtkSmartPointer<vtkCharArray>::New();
   distributions->SetNumberOfValues(N);
   for (vtkIdType i=0; i<N; ++i)
-    {
+  {
     distributions->SetValue(i, distribution);
-    }
+  }
 
   return CreateAppliedLoad(ids, distributions, senses, forces, name);
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::CreateAppliedLoad
@@ -264,30 +264,30 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateAppliedLoad
   double force,
   const char* name
   )
-  {
+{
   vtkIdType N = ids->GetNumberOfTuples();
 
   vtkSmartPointer<vtkCharArray> distributions = vtkSmartPointer<vtkCharArray>::New();
   distributions->SetNumberOfValues(N);
   for (vtkIdType i=0; i<N; ++i)
-    {
+  {
     distributions->SetValue(i, distribution);
-    }
+  }
   vtkSmartPointer<vtkCharArray> senses = vtkSmartPointer<vtkCharArray>::New();
   senses->SetNumberOfValues(N);
   for (vtkIdType i=0; i<N; ++i)
-    {
+  {
     senses->SetValue(i, sense);
-    }
+  }
   vtkSmartPointer<vtkDoubleArray> forces = vtkSmartPointer<vtkDoubleArray>::New();
   forces->SetNumberOfValues(N);
   for (vtkIdType i=0; i<N; ++i)
-    {
+  {
     forces->SetValue(i, force);
-    }
+  }
 
   return CreateAppliedLoad(ids, distributions, senses, forces, name);
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::CreateAppliedLoad
@@ -298,7 +298,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateAppliedLoad
   double force,
   const char* name
   )
-  {
+{
   vtkSmartPointer<vtkIdTypeArray> ids = vtkSmartPointer<vtkIdTypeArray>::New();
   ids->SetNumberOfValues(1);
   ids->SetValue(0, id);
@@ -313,7 +313,7 @@ vtkboneConstraint* vtkboneConstraintUtilities::CreateAppliedLoad
   forces->SetValue(0, force);
 
   return CreateAppliedLoad(ids, distributions, senses, forces, name);
-  }
+}
 
 //----------------------------------------------------------------------------
 // This is some utility stuff needed by DistributeConstraintOnElementsToNodes.
@@ -323,17 +323,17 @@ namespace vtkboneConstraintUtilitiesHelper
   // We will want to index node constraints in a std::map object by
   // both Id and sense, so create a struct to hold these as one item.
   struct NodeKey
-    {
+  {
     vtkIdType id;
     int sense;
     NodeKey(vtkIdType a, int b) : id(a), sense(b) {}
-    };
+  };
   // Define an ordering for NodeKey.
   struct NodeKeyCompare
-    {
+  {
     bool operator() (const NodeKey& lhs, const NodeKey& rhs) const
     {return lhs.id==rhs.id ? lhs.sense<rhs.sense : lhs.id<rhs.id;}
-    };
+  };
 
   class vtkboneexception : public std::exception
   {
@@ -342,9 +342,9 @@ namespace vtkboneConstraintUtilitiesHelper
       : description(descr) {}
     virtual ~vtkboneexception() throw() {}
     virtual const char* what() const throw()
-      {
+    {
       return this->description.c_str();
-      }
+    }
     std::string description;
   };
 
@@ -357,7 +357,7 @@ namespace vtkboneConstraintUtilitiesHelper
     vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes
     )
-    {
+  {
     vtkIdTypeArray* ids = constraint->GetIndices();
     vtkDataArray* senses = constraint->GetAttributes()->GetArray("SENSE");
     if (!senses)
@@ -373,14 +373,14 @@ namespace vtkboneConstraintUtilitiesHelper
 
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
-      {
+    {
       vtkIdType nodeId = ids->GetValue(i);
       int sense = senses->GetTuple1(i);
       NodeKey node_key(nodeId, sense);
       double val = values->GetTuple1(i);
       constrained_nodes[node_key] = val;
-      }
     }
+  }
 
   // Create a of list of constrained nodes.  We will step through the nodes
   // and add items to the list; later items will replace earlier ones.
@@ -390,7 +390,7 @@ namespace vtkboneConstraintUtilitiesHelper
     constraint_nodes_t& constrained_nodes,
     double tol
     )
-    {
+  {
     vtkIdTypeArray* ids = constraint->GetIndices();
     vtkDataArray* senses = constraint->GetAttributes()->GetArray("SENSE");
     if (!senses)
@@ -406,17 +406,17 @@ namespace vtkboneConstraintUtilitiesHelper
 
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
-      {
+    {
       vtkIdType nodeId = ids->GetValue(i);
       int sense = senses->GetTuple1(i);
       double val = values->GetTuple1(i);
       if (fabs(val) < tol)
-        {
+      {
         NodeKey node_key(nodeId, sense);
         constrained_nodes[node_key] = val;
-        }
       }
     }
+  }
 
   // Create a of list of constrained nodes.  We will step through the nodes
   // and add items to the list; later items will replace earlier ones.
@@ -426,7 +426,7 @@ namespace vtkboneConstraintUtilitiesHelper
     constraint_nodes_t& constrained_nodes,
     double tol
     )
-    {
+  {
     vtkIdTypeArray* ids = constraint->GetIndices();
     vtkDataArray* senses = constraint->GetAttributes()->GetArray("SENSE");
     if (!senses)
@@ -442,17 +442,17 @@ namespace vtkboneConstraintUtilitiesHelper
 
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
-      {
+    {
       vtkIdType nodeId = ids->GetValue(i);
       int sense = senses->GetTuple1(i);
       double val = values->GetTuple1(i);
       if (fabs(val) >= tol)
-        {
+      {
         NodeKey node_key(nodeId, sense);
         constrained_nodes[node_key] = val;
-        }
       }
     }
+  }
 
   // Create a of list of constrained nodes.  We will step through the nodes
   // and add items to the list, or add contributions to existing items
@@ -462,7 +462,7 @@ namespace vtkboneConstraintUtilitiesHelper
     vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes
     )
-    {
+  {
     vtkIdTypeArray* ids = constraint->GetIndices();
     vtkDataArray* senses = constraint->GetAttributes()->GetArray("SENSE");
     if (!senses)
@@ -478,21 +478,21 @@ namespace vtkboneConstraintUtilitiesHelper
 
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
-      {
+    {
       vtkIdType nodeId = ids->GetValue(i);
       int sense = senses->GetTuple1(i);
       NodeKey node_key(nodeId, sense);
       double val = values->GetTuple1(i);
       if (constrained_nodes.count(node_key))
-        {
+      {
         constrained_nodes[node_key] += val;
-        }
+      }
       else
-        {
+      {
         constrained_nodes[node_key] = val;
-        }
       }
     }
+  }
 
   // Create a of list of constrained nodes.  We will step through the elements
   // and add items to the list, or add contributions to existing items
@@ -503,7 +503,7 @@ namespace vtkboneConstraintUtilitiesHelper
     vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes
     )
-    {
+  {
     vtkIdTypeArray* ids = constraint->GetIndices();
     vtkDataArray* senses = constraint->GetAttributes()->GetArray("SENSE");
     if (!senses)
@@ -523,7 +523,7 @@ namespace vtkboneConstraintUtilitiesHelper
 
     std::vector<vtkIdType> node_list;
     for (vtkIdType i=0; i<N; ++i)
-      {
+    {
       vtkIdType cellId = ids->GetValue(i);
       if (geometry->GetCellType(cellId) != VTK_VOXEL)
         throw vtkboneexception("DistributeConstraintOnElementsToNodes only supports VTK_VOXEL type cells.");
@@ -532,7 +532,7 @@ namespace vtkboneConstraintUtilitiesHelper
       vtkSmartPointer<vtkIdList> cellPoints = vtkSmartPointer<vtkIdList>::New();
       geometry->GetCellPoints(cellId, cellPoints);
       switch((int)(distributions->GetTuple1(i)))
-        {
+      {
         case vtkboneConstraint::FACE_X0_DISTRIBUTION:
           node_list.push_back(cellPoints->GetId(0));
           node_list.push_back(cellPoints->GetId(2));
@@ -581,27 +581,27 @@ namespace vtkboneConstraintUtilitiesHelper
           break;
         default:
           throw vtkboneexception("Invalid DISTRIBUTION value.");
-        }
+      }
       // Add each node in node_list to constrained_nodes.
       int nodes_in_cell = node_list.size();
       int sense = senses->GetTuple1(i);
       for (std::vector<vtkIdType>::const_iterator nodeId = node_list.begin();
            nodeId != node_list.end();
            ++nodeId)
-        {
+      {
         NodeKey node_key(*nodeId, sense);
         double val = values->GetTuple1(i)/nodes_in_cell;
         if (constrained_nodes.count(node_key))
-          {
+        {
           constrained_nodes[node_key] += val;
-          }
+        }
         else
-          {
+        {
           constrained_nodes[node_key] = val;
-          }
         }
       }
     }
+  }
 
   void GenerateConstrainedNodeList
     (
@@ -609,16 +609,16 @@ namespace vtkboneConstraintUtilitiesHelper
     vtkboneConstraint* constraint,
     constraint_nodes_t& constrained_nodes
     )
-    {
+  {
     if (constraint->GetConstraintAppliedTo() == vtkboneConstraint::ELEMENTS)
-      {
+    {
       GenerateConstrainedNodeListFromElements(geometry, constraint, constrained_nodes);
-      }
-    else
-      {
-      GenerateConstrainedNodeListFromNodes(constraint, constrained_nodes);
-      }
     }
+    else
+    {
+      GenerateConstrainedNodeListFromNodes(constraint, constrained_nodes);
+    }
+  }
 
   vtkboneConstraint* ConvertConstrainedNodesListToConstraint
     (
@@ -626,7 +626,7 @@ namespace vtkboneConstraintUtilitiesHelper
     int type,
     const char* name
     )
-    {
+  {
     size_t N = constrained_nodes.size();
     vtkSmartPointer<vtkIdTypeArray> ids = vtkSmartPointer<vtkIdTypeArray>::New();
     ids->SetNumberOfValues(N);
@@ -640,12 +640,12 @@ namespace vtkboneConstraintUtilitiesHelper
     for (constraint_nodes_t::const_iterator node_key = constrained_nodes.begin();
          node_key != constrained_nodes.end();
          ++node_key)
-      {
+    {
       ids->SetValue(i, node_key->first.id);
       senses->SetValue(i, node_key->first.sense);
       values->SetValue(i, node_key->second);
       ++i;
-      }
+    }
     assert(i == N);
     vtkboneConstraint* constraint = vtkboneConstraint::New();
     constraint->SetName(name);
@@ -656,7 +656,7 @@ namespace vtkboneConstraintUtilitiesHelper
     constraint->GetAttributes()->AddArray(values);
 
     return constraint;
-    }
+  }
 
 }
 
@@ -665,89 +665,89 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherDisplacementConstraints
   (
   vtkboneConstraint* constraint
   )
-  {
+{
   using namespace vtkboneConstraintUtilitiesHelper;
   if (constraint->GetConstraintType() != vtkboneConstraint::DISPLACEMENT)
-    {
+  {
     // Not a displacement constraint - Just return empty vtkboneConstraint
     return vtkboneConstraint::New();
-    }
+  }
 
   constraint_nodes_t constrained_nodes;
   try
-    {
+  {
     GenerateDisplacementConstrainedNodeList(constraint, constrained_nodes);
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   vtkboneConstraint* sortedConstraint = NULL;
   try
-    {
+  {
     sortedConstraint = ConvertConstrainedNodesListToConstraint(
         constrained_nodes,
         vtkboneConstraint::DISPLACEMENT,
         "GATHERED DISPLACED NODES");
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   return sortedConstraint;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::GatherDisplacementConstraints
   (
   vtkboneConstraintCollection* constraints
   )
-  {
+{
   using namespace vtkboneConstraintUtilitiesHelper;
 
   constraint_nodes_t constrained_nodes;
   for (int i=0; i<constraints->GetNumberOfItems(); ++i)
-    {
+  {
     vtkboneConstraint* constraint = constraints->GetItem(i);
     if (constraint->GetConstraintType() == vtkboneConstraint::DISPLACEMENT)
-      {
+    {
       try
-        {
+      {
         GenerateDisplacementConstrainedNodeList(constraint, constrained_nodes);
-        }
+      }
       catch(std::exception& e)
-        {
+      {
         return NULL;
-        }
       }
     }
+  }
 
   vtkboneConstraint* sortedConstraint = NULL;
   try
-    {
+  {
     sortedConstraint = ConvertConstrainedNodesListToConstraint(
         constrained_nodes,
         vtkboneConstraint::DISPLACEMENT,
         "GATHERED DISPLACED NODES");
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   return sortedConstraint;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::GatherDisplacementConstraints
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   return GatherDisplacementConstraints(model->GetConstraints());
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConstraints
@@ -755,39 +755,39 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConst
   vtkboneConstraint* constraint,
   double tol
   )
-  {
+{
   using namespace vtkboneConstraintUtilitiesHelper;
   if (constraint->GetConstraintType() != vtkboneConstraint::DISPLACEMENT)
-    {
+  {
     // Not a displacement constraint - Just return empty vtkboneConstraint
     return vtkboneConstraint::New();
-    }
+  }
 
   constraint_nodes_t constrained_nodes;
   try
-    {
+  {
     GenerateZeroValuedDisplacementConstrainedNodeList(constraint, constrained_nodes, tol);
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   vtkboneConstraint* sortedConstraint = NULL;
   try
-    {
+  {
     sortedConstraint = ConvertConstrainedNodesListToConstraint(
         constrained_nodes,
         vtkboneConstraint::DISPLACEMENT,
         "GATHERED DISPLACED NODES");
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   return sortedConstraint;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConstraints
@@ -795,41 +795,41 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConst
   vtkboneConstraintCollection* constraints,
   double tol
   )
-  {
+{
   using namespace vtkboneConstraintUtilitiesHelper;
 
   constraint_nodes_t constrained_nodes;
   for (int i=0; i<constraints->GetNumberOfItems(); ++i)
-    {
+  {
     vtkboneConstraint* constraint = constraints->GetItem(i);
     if (constraint->GetConstraintType() == vtkboneConstraint::DISPLACEMENT)
-      {
+    {
       try
-        {
+      {
         GenerateZeroValuedDisplacementConstrainedNodeList(constraint, constrained_nodes, tol);
-        }
+      }
       catch(std::exception& e)
-        {
+      {
         return NULL;
-        }
       }
     }
+  }
 
   vtkboneConstraint* sortedConstraint = NULL;
   try
-    {
+  {
     sortedConstraint = ConvertConstrainedNodesListToConstraint(
         constrained_nodes,
         vtkboneConstraint::DISPLACEMENT,
         "GATHERED DISPLACED NODES");
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   return sortedConstraint;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConstraints
@@ -837,9 +837,9 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherZeroValuedDisplacementConst
   vtkboneFiniteElementModel* model,
   double tol
   )
-  {
+{
   return GatherZeroValuedDisplacementConstraints(model->GetConstraints(), tol);
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstraints
@@ -847,39 +847,39 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstrai
   vtkboneConstraint* constraint,
   double tol
   )
-  {
+{
   using namespace vtkboneConstraintUtilitiesHelper;
   if (constraint->GetConstraintType() != vtkboneConstraint::DISPLACEMENT)
-    {
+  {
     // Not a displacement constraint - Just return empty vtkboneConstraint
     return vtkboneConstraint::New();
-    }
+  }
 
   constraint_nodes_t constrained_nodes;
   try
-    {
+  {
     GenerateNonzeroDisplacementConstrainedNodeList(constraint, constrained_nodes, tol);
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   vtkboneConstraint* sortedConstraint = NULL;
   try
-    {
+  {
     sortedConstraint = ConvertConstrainedNodesListToConstraint(
         constrained_nodes,
         vtkboneConstraint::DISPLACEMENT,
         "GATHERED DISPLACED NODES");
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   return sortedConstraint;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstraints
@@ -887,41 +887,41 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstrai
   vtkboneConstraintCollection* constraints,
   double tol
   )
-  {
+{
   using namespace vtkboneConstraintUtilitiesHelper;
 
   constraint_nodes_t constrained_nodes;
   for (int i=0; i<constraints->GetNumberOfItems(); ++i)
-    {
+  {
     vtkboneConstraint* constraint = constraints->GetItem(i);
     if (constraint->GetConstraintType() == vtkboneConstraint::DISPLACEMENT)
-      {
+    {
       try
-        {
+      {
         GenerateNonzeroDisplacementConstrainedNodeList(constraint, constrained_nodes, tol);
-        }
+      }
       catch(std::exception& e)
-        {
+      {
         return NULL;
-        }
       }
     }
+  }
 
   vtkboneConstraint* sortedConstraint = NULL;
   try
-    {
+  {
     sortedConstraint = ConvertConstrainedNodesListToConstraint(
         constrained_nodes,
         vtkboneConstraint::DISPLACEMENT,
         "GATHERED DISPLACED NODES");
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   return sortedConstraint;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstraints
@@ -929,9 +929,9 @@ vtkboneConstraint* vtkboneConstraintUtilities::GatherNonzeroDisplacementConstrai
   vtkboneFiniteElementModel* model,
   double tol
   )
-  {
+{
   return GatherNonzeroDisplacementConstraints(model->GetConstraints(), tol);
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::DistributeConstraintToNodes
@@ -939,34 +939,34 @@ vtkboneConstraint* vtkboneConstraintUtilities::DistributeConstraintToNodes
   vtkUnstructuredGrid* geometry,
   vtkboneConstraint* constraint
   )
-  {
+{
   using namespace vtkboneConstraintUtilitiesHelper;
 
   constraint_nodes_t constrained_nodes;
   try
-    {
+  {
     GenerateConstrainedNodeList(geometry, constraint, constrained_nodes);
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   vtkboneConstraint* constraintOnNodes = NULL;
   try
-    {
+  {
     constraintOnNodes = ConvertConstrainedNodesListToConstraint(
         constrained_nodes,
         vtkboneConstraint::FORCE,
         "CONSTRAINT DISTRIBUTED TO NODES");
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   return constraintOnNodes;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::DistributeForceConstraintsToNodes
@@ -974,47 +974,47 @@ vtkboneConstraint* vtkboneConstraintUtilities::DistributeForceConstraintsToNodes
   vtkUnstructuredGrid* geometry,
   vtkboneConstraintCollection* constraints
   )
-  {
+{
   using namespace vtkboneConstraintUtilitiesHelper;
 
   constraint_nodes_t constrained_nodes;
   for (int i=0; i<constraints->GetNumberOfItems(); ++i)
-    {
+  {
     vtkboneConstraint* constraint = constraints->GetItem(i);
     if (constraint->GetConstraintType() == vtkboneConstraint::FORCE)
-      {
+    {
       try
-        {
+      {
         GenerateConstrainedNodeList(geometry, constraint, constrained_nodes);
-        }
+      }
       catch(std::exception& e)
-        {
+      {
         return NULL;
-        }
       }
     }
+  }
 
   vtkboneConstraint* constraintOnNodes = NULL;
   try
-    {
+  {
     constraintOnNodes = ConvertConstrainedNodesListToConstraint(
         constrained_nodes,
         vtkboneConstraint::FORCE,
         "FORCE CONSTRAINTS DISTRIBUTED TO NODES");
-    }
+  }
   catch(std::exception& e)
-    {
+  {
     return NULL;
-    }
+  }
 
   return constraintOnNodes;
-  }
+}
 
 //----------------------------------------------------------------------------
 vtkboneConstraint* vtkboneConstraintUtilities::DistributeForceConstraintsToNodes
   (
   vtkboneFiniteElementModel* model
   )
-  {
+{
   return DistributeForceConstraintsToNodes(model, model->GetConstraints());
-  }
+}

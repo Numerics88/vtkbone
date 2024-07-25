@@ -48,11 +48,11 @@ void vtkboneNodeSetsByGeometry::DetermineMaterialBounds
   using std::numeric_limits;
 
   if (specificMaterial == -1)
-    {
+  {
     geometry->GetBounds(bounds);
-    }
+  }
   else
-    {
+  {
     bounds[0] =  numeric_limits<double>::infinity();
     bounds[1] = -numeric_limits<double>::infinity();
     bounds[2] =  numeric_limits<double>::infinity();
@@ -61,13 +61,13 @@ void vtkboneNodeSetsByGeometry::DetermineMaterialBounds
     bounds[5] = -numeric_limits<double>::infinity();
     vtkSmartPointer<vtkIdList> cellIds = vtkSmartPointer<vtkIdList>::New();
     for (vtkIdType i=0; i<geometry->GetNumberOfPoints(); i++)
-      {
+    {
       geometry->GetPointCells(i,cellIds);
       for (int j=0; j<cellIds->GetNumberOfIds(); j++)
-        {
+      {
         int material = geometry->GetCellData()->GetScalars()->GetTuple1(cellIds->GetId(j));
         if (material == specificMaterial)
-          {
+        {
           double point[3];
           geometry->GetPoint(i,point);
           bounds[0] = std::min(bounds[0], point[0]);
@@ -77,10 +77,10 @@ void vtkboneNodeSetsByGeometry::DetermineMaterialBounds
           bounds[4] = std::min(bounds[4], point[2]);
           bounds[5] = std::max(bounds[5], point[2]);
           break;
-          }
         }
       }
     }
+  }
 
   return;
 }
@@ -93,31 +93,31 @@ int vtkboneNodeSetsByGeometry::FilterPointListByCellScalar
   vtkDataSet *data,
   int targetCellScalar
   )
-  {
+{
   output_ids->Initialize();
   output_ids->Allocate(input_ids->GetNumberOfTuples());
   vtkSmartPointer<vtkIdList> cellIds = vtkSmartPointer<vtkIdList>::New();
   for (vtkIdType i=0; i<input_ids->GetNumberOfTuples(); i++)
-    {
+  {
     vtkIdType pointId = input_ids->GetValue(i);
     data->GetPointCells(pointId, cellIds);
     int haveMatch = 0;
     for (int j=0; j<cellIds->GetNumberOfIds(); j++)
-      {
+    {
       int val = data->GetCellData()->GetScalars()->GetTuple1(cellIds->GetId(j));
       if (val == targetCellScalar)
-        {
+      {
         haveMatch = 1;
         break;
-        }
-      }
-    if (haveMatch)
-      {
-      output_ids->InsertNextValue(pointId);
       }
     }
-  return VTK_OK;
+    if (haveMatch)
+    {
+      output_ids->InsertNextValue(pointId);
+    }
   }
+  return VTK_OK;
+}
 
 //----------------------------------------------------------------------------
 int vtkboneNodeSetsByGeometry::FindNodesOnPlane
@@ -166,9 +166,9 @@ int vtkboneNodeSetsByGeometry::AddNodesOnPlane
   vtkSmartPointer<vtkIdTypeArray> ids = vtkSmartPointer<vtkIdTypeArray>::New();
   ids->SetName (name);
   if (FindNodesOnPlane (axis, val, ids, model, specificMaterial) != VTK_OK)
-    {
+  {
     return VTK_ERROR;
-    }
+  }
   model->AddNodeSet (ids);
   return VTK_OK;
 }
@@ -244,9 +244,9 @@ int vtkboneNodeSetsByGeometry::AddNodesIntersectingTwoPlanes
   vtkSmartPointer<vtkIdTypeArray> ids = vtkSmartPointer<vtkIdTypeArray>::New();
   ids->SetName (name);
   if (FindNodesIntersectingTwoPlanes (axis1, val1, axis2, val2, ids, model, specificMaterial) != VTK_OK)
-    {
+  {
     return VTK_ERROR;
-    }
+  }
   model->AddNodeSet (ids);
   return VTK_OK;
 }
@@ -329,9 +329,9 @@ int vtkboneNodeSetsByGeometry::AddNodesIntersectingThreePlanes
   vtkSmartPointer<vtkIdTypeArray> ids = vtkSmartPointer<vtkIdTypeArray>::New();
   ids->SetName (name);
   if (FindNodesIntersectingThreePlanes (axis1, val1, axis2, val2, axis3, val3, ids, model, specificMaterial) != VTK_OK)
-    {
+  {
     return VTK_ERROR;
-    }
+  }
   model->AddNodeSet (ids);
   return VTK_OK;
 }
@@ -404,12 +404,12 @@ int vtkboneNodeSetsByGeometry::FindNodesOnVisibleSurface
 
   vtkSmartPointer<vtkDataSet> pointDataSet;
   if (specificMaterial == -1)
-    {
+  {
     // We want to consider points with any material, so just use exteriorOrientedPolys.
     pointDataSet = exteriorOrientedPolys;
-    }
+  }
   else
-    {
+  {
     // Create Selection object to filter only those cells with the specified
     // specificMaterial .
     vtkSmartPointer<vtkSelectionNode> selectionNode = vtkSmartPointer<vtkSelectionNode>::New();
@@ -429,7 +429,7 @@ int vtkboneNodeSetsByGeometry::FindNodesOnVisibleSurface
     extractor->SetInputData (1, selection);
     extractor->Update();
     pointDataSet = vtkDataSet::SafeDownCast(extractor->GetOutput());  // Increments reference count.
-    }
+  }
 
   vtkSmartPointer<vtkboneSelectVisiblePoints> visibilitySelector = vtkSmartPointer<vtkboneSelectVisiblePoints>::New();
   visibilitySelector->SetInputData (0, exteriorOrientedPolys);
@@ -438,21 +438,21 @@ int vtkboneNodeSetsByGeometry::FindNodesOnVisibleSurface
   visibilitySelector->Update();
   vtkPolyData* result = visibilitySelector->GetOutput();
   if (result->GetNumberOfPoints() == 0)
-    {
+  {
     // No points pass, so return an empty list.
     visibleNodesIds->Initialize();
-    }
+  }
   else if (result->GetPointData()->GetPedigreeIds())
-    {
+  {
     visibleNodesIds->DeepCopy (result->GetPointData()->GetPedigreeIds());
-    }
+  }
   else
-    {
+  {
     // Shouldn't ever get here, because the selector should always attach
     // at least a PedigreeIds array.
     cerr << "Internal Error.  No PedigreeIds found\n";
     return VTK_ERROR;
-    }
+  }
 
   return VTK_OK;
 }
@@ -468,9 +468,9 @@ int vtkboneNodeSetsByGeometry::AddNodesOnVisibleSurface
 {
   vtkSmartPointer<vtkIdTypeArray> visibleNodesIds = vtkSmartPointer<vtkIdTypeArray>::New();
   if (FindNodesOnVisibleSurface (visibleNodesIds, model, normalVector, specificMaterial) != VTK_OK)
-    {
+  {
     return VTK_ERROR;
-    }
+  }
   visibleNodesIds->SetName (name);
 
   model->AddNodeSet (visibleNodesIds);

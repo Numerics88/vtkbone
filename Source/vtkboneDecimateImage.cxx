@@ -37,38 +37,38 @@ int vtkboneDecimateImage::RequestInformation(
   inDims[2] = (inExt[5] - inExt[4] + 1);
 
   for (int k = 0; k < 3; k++)
-    {
+  {
     outSpacing[k] = inSpacing[k] * 2;
-    }
+  }
 
   if (input->GetCellData()->GetScalars())
+  {
+    for (int k = 0; k < 3; k++)
     {
-    for (int k = 0; k < 3; k++)
-      {
       outOrigin[k] = inOrigin[k] + inExt[2*k]*inSpacing[k];
-      }
+    }
     for (int k = 0; k < 3; k++)
-      {
+    {
       //  Round up to even cells (points-1), then add one more point at boundary.
       outDims[k] = 1 + inDims[k] / 2;
-      }
     }
+  }
   else
-    {
+  {
     for (int k = 0; k < 3; k++)
-      {
+    {
       outOrigin[k] = inOrigin[k] + (inExt[2*k] + 0.5) * inSpacing[k];
-      }
-    for (int k = 0; k < 3; k++)
-      {
-      outDims[k] = (inDims[k]+1) / 2;  // Round up to even points
-      }
     }
-  for (int k = 0; k < 3; k++)
+    for (int k = 0; k < 3; k++)
     {
+      outDims[k] = (inDims[k]+1) / 2;  // Round up to even points
+    }
+  }
+  for (int k = 0; k < 3; k++)
+  {
     outExt[2*k] = 0;
     outExt[2*k+1] = outDims[k] - 1;
-    }
+  }
 
   // set the output information
   outInfo->Set(vtkStreamingDemandDrivenPipeline::WHOLE_EXTENT(), outExt, 6);
@@ -113,15 +113,15 @@ int vtkboneDecimateImage::RequestData(
   if (inExt[1] < inExt[0] ||
       inExt[3] < inExt[2] ||
       inExt[5] < inExt[4])
-    {
+  {
     return 1;
-    }
+  }
 
   // Set the extent of the output and allocate memory.
   output->SetExtent(
     outInfo->Get(vtkStreamingDemandDrivenPipeline::WHOLE_EXTENT()));
   if (input->GetCellData()->GetScalars())
-    {
+  {
     int numComp = 1;
     int dataType = input->GetCellData()->GetScalars()->GetDataType();
     int dims[3];
@@ -134,15 +134,15 @@ int vtkboneDecimateImage::RequestData(
     vtkDataArray *scalars = output->GetCellData()->GetScalars();
     if (scalars && scalars->GetDataType() == dataType
         && scalars->GetReferenceCount() == 1)
-      {
+    {
       scalars->SetNumberOfComponents(numComp);
       scalars->SetNumberOfTuples(imageSize);
       // Since the execute method will be modifying the scalars
       // directly.
       scalars->Modified();
-      }
+    }
     else
-      {
+    {
       // allocate the new scalars
       scalars = vtkDataArray::CreateDataArray(dataType);
       scalars->SetNumberOfComponents(numComp);
@@ -151,12 +151,12 @@ int vtkboneDecimateImage::RequestData(
       scalars->SetNumberOfTuples(imageSize);
       output->GetCellData()->SetScalars(scalars);
       scalars->Delete();
-      }
     }
+  }
   else
-    {
+  {
     output->AllocateScalars(outInfo);
-    }
+  }
 
   return this->SimpleExecute(input, output);
 }
@@ -181,23 +181,23 @@ void ImplementDataCopy (
 
   // Output value is maximum in 2x2x2 input equivalent volume.
   for (int k=0; k<idims[2]; ++k)
-    {
+  {
     int kk = k/2;
     for (int j=0; j<idims[1]; ++j)
-      {
+    {
       int jj = j/2;
       for (int i=0; i<idims[0]; ++i)
-        {
+      {
         int ii = i/2;
         out(kk,jj,ii) = std::max(out(kk,jj,ii),in(k,j,i));
-        }
       }
     }
+  }
 }
 
 //----------------------------------------------------------------------------
 int vtkboneDecimateImage::SimpleExecute(vtkImageData* input, vtkImageData* output)
-  {
+{
   vtkDataArray* idata = NULL;
   vtkDataArray* odata = NULL;
   int idims[3];
@@ -206,17 +206,17 @@ int vtkboneDecimateImage::SimpleExecute(vtkImageData* input, vtkImageData* outpu
   output->GetDimensions(odims);
 
   if (input->GetCellData()->GetScalars())
-    {
+  {
     idata = input->GetCellData()->GetScalars();
     odata = output->GetCellData()->GetScalars();
     for (int i=0; i<3; ++i) {--idims[i];}
     for (int i=0; i<3; ++i) {--odims[i];}
-    }
+  }
   else
-    {
+  {
     idata = input->GetPointData()->GetScalars();
     odata = output->GetPointData()->GetScalars();
-    }
+  }
 
   void* iraw = idata->WriteVoidPointer(0,0);
   void* oraw = odata->WriteVoidPointer(0,0);
@@ -226,7 +226,7 @@ int vtkboneDecimateImage::SimpleExecute(vtkImageData* input, vtkImageData* outpu
   n88_assert(odata->GetNumberOfTuples() == odims[0]*odims[1]*odims[2]);
 
   switch (idata->GetDataType())
-    {
+  {
     case VTK_FLOAT:
       ImplementDataCopy (reinterpret_cast<float*>(iraw), idims,
                          reinterpret_cast<float*>(oraw), odims);
@@ -264,7 +264,7 @@ int vtkboneDecimateImage::SimpleExecute(vtkImageData* input, vtkImageData* outpu
       vtkErrorMacro("Unhandled data type in vtkboneDecimateImage.");
       return 0;
       break;
-    }
+  }
 
   return 1;
-  }
+}

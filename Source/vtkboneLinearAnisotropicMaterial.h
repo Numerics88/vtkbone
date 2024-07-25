@@ -36,7 +36,7 @@
 class vtkDataArray;
 
 class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterial : public vtkboneMaterial
-  {
+{
   public:
     static vtkboneLinearAnisotropicMaterial* New();
     vtkTypeMacro(vtkboneLinearAnisotropicMaterial, vtkboneMaterial);
@@ -91,7 +91,7 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterial : public vtkboneMaterial
   private:
     vtkboneLinearAnisotropicMaterial(const vtkboneLinearAnisotropicMaterial&);  // Not implemented.
     void operator=(const vtkboneLinearAnisotropicMaterial&);  // Not implemented.
-  };
+};
 
 #endif
 

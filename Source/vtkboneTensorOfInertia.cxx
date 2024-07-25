@@ -69,20 +69,20 @@ int vtkboneTensorOfInertia::FillInputPortInformation(
 vtkboneTensorOfInertia::~vtkboneTensorOfInertia()
 {
   if (TensorOfInertia)
-    {
+  {
     TensorOfInertia->Delete();
     TensorOfInertia = NULL;
-    }
+  }
   if (TensorOfInertiaAboutOrigin)
-    {
+  {
     TensorOfInertiaAboutOrigin->Delete();
     TensorOfInertiaAboutOrigin = NULL;
-    }
+  }
   if (Eigenvectors)
-    {
+  {
     Eigenvectors->Delete();
     Eigenvectors = NULL;
-    }
+  }
 }
 
 //----------------------------------------------------------------------------
@@ -114,9 +114,9 @@ int vtkboneTensorOfInertia::ProcessRequest(vtkInformation* request,
 {
   // generate the data
   if(request->Has(vtkDemandDrivenPipeline::REQUEST_DATA()))
-    {
+  {
     return this->RequestData(request, inputVector, outputVector);
-    }
+  }
 
   return this->Superclass::ProcessRequest(request, inputVector, outputVector);
 }
@@ -151,43 +151,43 @@ int vtkboneTensorOfInertia::ProcessImage(
   vtkDataArray* scalars = image->GetPointData()->GetScalars();
   int scalarsOnImageCells = 0;
   if (image->GetCellData()->GetScalars())
-    {
+  {
     if (scalars)
-      {
+    {
       vtkWarningMacro(<<"Image data has both point and cell scalars");
-      }
+    }
     scalars = image->GetCellData()->GetScalars();
     scalarsOnImageCells = 1;
-    }
+  }
 
   if (scalars->GetNumberOfComponents() != 1)
-    {
+  {
     vtkErrorMacro(<<"Those aren't very scalar scalars");
     return VTK_ERROR;
-    }
+  }
 
   vtkIdType numScalars = scalars->GetNumberOfTuples();
   if (numScalars < 1)
-    {
+  {
     vtkErrorMacro( << "No data to measure...!");
     return VTK_ERROR;
-    }
+  }
 
   int extent[6];
   image->GetExtent(extent);
   vtkIdType dims[3];
   if (scalarsOnImageCells)
-    {
+  {
     dims[0] = extent[1] - extent[0];
     dims[1] = extent[3] - extent[2];
     dims[2] = extent[5] - extent[4];
-    }
+  }
   else
-    {
+  {
     dims[0] = extent[1] - extent[0] + 1;
     dims[1] = extent[3] - extent[2] + 1;
     dims[2] = extent[5] - extent[4] + 1;
-    }
+  }
   assert (numScalars == dims[0]*dims[1]*dims[2]);
   double spacing[3];
   image->GetSpacing(spacing);
@@ -195,11 +195,11 @@ int vtkboneTensorOfInertia::ProcessImage(
   image->GetOrigin(origin);
   // In vtkImageData, origin is always w.r.t. the points.
   if (scalarsOnImageCells)
-    {
+  {
     origin[0] += 0.5*spacing[0];
     origin[1] += 0.5*spacing[1];
     origin[2] += 0.5*spacing[2];
-    }
+  }
 
   //>>> TO DO : In principle, can do this all in one pass, but that is not
   //            working correctly.
@@ -212,7 +212,7 @@ int vtkboneTensorOfInertia::ProcessImage(
   for (int k=0; k < dims[2]; k++)
     for (int j=0; j < dims[1]; j++)
       for (int i=0; i < dims[0]; i++)
-        {
+      {
         double val = scalars->GetTuple1(cellId);
         int flag = 1;
         if ((val == 0) ||
@@ -220,7 +220,7 @@ int vtkboneTensorOfInertia::ProcessImage(
             (UseThresholds && (val < LowerThreshold || val > UpperThreshold)))
           {flag = 0;}
         if (flag)
-          {
+        {
           this->Count++;
           double x = origin[0] + i*spacing[0];
           double y = origin[1] + j*spacing[1];
@@ -228,9 +228,9 @@ int vtkboneTensorOfInertia::ProcessImage(
           sum_x += x;
           sum_y += y;
           sum_z += z;
-          }
-        cellId++;
         }
+        cellId++;
+      }
 
   double voxelVolume = spacing[0]*spacing[1]*spacing[2];
 
@@ -256,7 +256,7 @@ int vtkboneTensorOfInertia::ProcessImage(
   for (int k=0; k < dims[2]; k++)
     for (int j=0; j < dims[1]; j++)
       for (int i=0; i < dims[0]; i++)
-        {
+      {
         double val = scalars->GetTuple1(cellId);
         int flag = 1;
         if ((val == 0) ||
@@ -264,7 +264,7 @@ int vtkboneTensorOfInertia::ProcessImage(
             (UseThresholds && (val < LowerThreshold || val > UpperThreshold)))
           {flag = 0;}
         if (flag)
-          {
+        {
           double x = com_origin[0] + i*spacing[0];
           double y = com_origin[1] + j*spacing[1];
           double z = com_origin[2] + k*spacing[2];
@@ -274,9 +274,9 @@ int vtkboneTensorOfInertia::ProcessImage(
           sum_Ixy -= x*y;
           sum_Iyz -= y*z;
           sum_Izx -= z*x;
-          }
-        cellId++;
         }
+        cellId++;
+      }
 
   sum_Ixx *= voxelVolume;
   sum_Iyy *= voxelVolume;
@@ -344,9 +344,9 @@ int vtkboneTensorOfInertia::ProcessUnstructuredGrid(
   vtkIdType cellid = 0;
   double sum_centers[3] = {0, 0, 0};
   while (cells->GetNextCell(npts, pts))
-    {
+  {
     switch (grid->GetCellType(cellid))
-      {
+    {
       case VTK_VOXEL:
         this->Volume += (points->GetPoint(pts[1])[0] - points->GetPoint(pts[0])[0])
                       * (points->GetPoint(pts[2])[1] - points->GetPoint(pts[0])[1])
@@ -358,9 +358,9 @@ int vtkboneTensorOfInertia::ProcessUnstructuredGrid(
       default:
         vtkErrorMacro(<<"Unsupported Element Type.");
         return VTK_ERROR;
-      }
-    ++cellid;
     }
+    ++cellid;
+  }
 
   this->CenterOfMass[0] = sum_centers[0] / this->Count;
   this->CenterOfMass[1] = sum_centers[1] / this->Count;
@@ -377,11 +377,11 @@ int vtkboneTensorOfInertia::ProcessUnstructuredGrid(
   cells->InitTraversal();
   cellid = 0;
   while (cells->GetNextCell(npts, pts))
-    {
+  {
     switch (grid->GetCellType(cellid))
-      {
+    {
       case VTK_VOXEL:
-        { // scope for temp variable definition within switch
+      { // scope for temp variable definition within switch
         double volume = (points->GetPoint(pts[1])[0] - points->GetPoint(pts[0])[0])
                       * (points->GetPoint(pts[2])[1] - points->GetPoint(pts[0])[1])
                       * (points->GetPoint(pts[4])[2] - points->GetPoint(pts[0])[2]);
@@ -397,14 +397,14 @@ int vtkboneTensorOfInertia::ProcessUnstructuredGrid(
         sum_Ixy -= volume * (x*y);
         sum_Iyz -= volume * (y*z);
         sum_Izx -= volume * (z*x);
-        }
         break;
+      }
       default:
         vtkErrorMacro(<<"Unsupported Element Type.");
         return VTK_ERROR;
-      }
-    ++cellid;
     }
+    ++cellid;
+  }
 
   this->TensorOfInertia->Initialize();
   this->TensorOfInertia->SetComponent (0, 0, sum_Ixx);
