@@ -11,36 +11,38 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneFaimVersion5InputWriter - writes faim finite element input file.
-// .SECTION Description
-// Takes as input a vtkboneFiniteElementModel and writes as output a file suitable for
-// input to the faim finite element solver.
-//
-// Note that the output file format is 1-indexed.  (vtkboneFiniteElementModel is 0-indexed.)
-//
-// Note that the topology of hexahedral cells is different for faim than it
-// is for vtkboneFiniteElementModel.  This is automatically translated.  Refer
-// to vtkboneFiniteElementModel for the topology of its elements.  The figure
-// below shows the topology of the hexahedral elements as written to the faim
-// data file (shown 1-indexed because faim is 1-indexed).
-//
-// @verbatim
-//           6---------7
-//          /|        /|
-//         / |       / |
-//        /  |      /  |
-//       2---------3   |
-//       |   |     |   |
-//       |   5-----|---8
-//       |  /      |  /
-//       |/        | /     z  y
-//       1---------4/      | /
-//                         |/
-//                         .--->x
-// @endverbatim
-//
-// .SECTION See Also
-// vtkboneFiniteElementModel vtkboneFiniteElementModelGenerator
+/*! @class   vtkboneFaimVersion5InputWriter
+    @brief   writes faim finite element input file.
+
+ Takes as input a vtkboneFiniteElementModel and writes as output a file suitable for
+ input to the faim finite element solver.
+
+ Note that the output file format is 1-indexed.  (vtkboneFiniteElementModel is 0-indexed.)
+
+ Note that the topology of hexahedral cells is different for faim than it
+ is for vtkboneFiniteElementModel.  This is automatically translated.  Refer
+ to vtkboneFiniteElementModel for the topology of its elements.  The figure
+ below shows the topology of the hexahedral elements as written to the faim
+ data file (shown 1-indexed because faim is 1-indexed).
+
+ @verbatim
+           6---------7
+          /|        /|
+         / |       / |
+        /  |      /  |
+       2---------3   |
+       |   |     |   |
+       |   5-----|---8
+       |  /      |  /
+       |/        | /     z  y
+       1---------4/      | /
+                         |/
+                         .--->x
+ @endverbatim
+
+    @sa
+ vtkboneFiniteElementModel vtkboneFiniteElementModelGenerator
+*/
 
 #ifndef __vtkboneFaimVersion5InputWriter_h
 #define __vtkboneFaimVersion5InputWriter_h
@@ -64,17 +66,18 @@ public:
   vtkTypeMacro(vtkboneFaimVersion5InputWriter, vtkWriter);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Specify file name of file to write.
+  //@{
+  /*! Specify file name of file to write. */
   vtkSetStringMacro(FileName);
   vtkGetStringMacro(FileName);
+  //@}
 
-  // Description:
-  // Set the tolerance for distinguishing between non-zero Displacement
-  // contraints and Fixed constraints.
-  // Default is 1E-8 .
+  //@{
+  /*! Set the tolerance for distinguishing between non-zero Displacement
+      contraints and Fixed constraints. Default is 1E-8 . */
   vtkSetMacro(DisplacementTolerance, double);
   vtkGetMacro(DisplacementTolerance, double);
+  //@}
 
 protected:
   vtkboneFaimVersion5InputWriter();

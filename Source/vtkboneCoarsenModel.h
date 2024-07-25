@@ -11,38 +11,40 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneCoarsenModel - Generates a reduced-resolution FE model.
-//
-// .SECTION Description
-// vtkbonevtkboneCoarsenModel takes as input a vtkboneFiniteElementModel, and
-// generates a new vtkboneFiniteElement model that has elements (vtkCells)
-// that have twice the linear dimension (so 8 times the volume). Every
-// essential feature of the FE model is translated to these new larger
-// elements, including Constraints such as boundary conditions, and
-// associated element and node sets.
-//
-// 2x2x2 groups of input elements
-// are mapped onto a single output element. As long as at least
-// one of the locations in the corresponding 2x2x2 input region actually
-// has a element (Cell), then an output element (Cell) will be
-// generated there. If there is an odd number of cells along a dimension,
-// the input model is padded out to an even dimension by duplicating
-// the outer-most layer of cells.
-//
-// Material properties are averaged over the corresponding
-// 2x2x2 input elements (Cells), for which a non-present element is treated
-// as value zero for the purposes of calculating the average.
-// If the input model has exactly one input material, then the output
-// model will have 8 materials (implemented as a material array).
-// Otherwise, a material array will be used that has length equal
-// to the number of output elements, and every output element will be
-// assigned its own material properties.
-//
-// Currently, elastoplastic materials in the input are converted to
-// linear materials for the output.
-//
-// .SECTION See Also
-// vtkboneFiniteElementModel vtkboneInterpolateCoarseSolution
+/*! @class   vtkboneCoarsenModel
+    @brief   Generates a reduced-resolution FE model.
+
+
+ vtkbonevtkboneCoarsenModel takes as input a vtkboneFiniteElementModel, and
+ generates a new vtkboneFiniteElement model that has elements (vtkCells)
+ that have twice the linear dimension (so 8 times the volume). Every
+ essential feature of the FE model is translated to these new larger
+ elements, including Constraints such as boundary conditions, and
+ associated element and node sets.
+
+ 2x2x2 groups of input elements
+ are mapped onto a single output element. As long as at least
+ one of the locations in the corresponding 2x2x2 input region actually
+ has a element (Cell), then an output element (Cell) will be
+ generated there. If there is an odd number of cells along a dimension,
+ the input model is padded out to an even dimension by duplicating
+ the outer-most layer of cells.
+
+ Material properties are averaged over the corresponding
+ 2x2x2 input elements (Cells), for which a non-present element is treated
+ as value zero for the purposes of calculating the average.
+ If the input model has exactly one input material, then the output
+ model will have 8 materials (implemented as a material array).
+ Otherwise, a material array will be used that has length equal
+ to the number of output elements, and every output element will be
+ assigned its own material properties.
+
+ Currently, elastoplastic materials in the input are converted to
+ linear materials for the output.
+
+    @sa
+ vtkboneFiniteElementModel vtkboneInterpolateCoarseSolution
+*/
 
 #ifndef __vtkboneCoarsenModel_h
 #define __vtkboneCoarsenModel_h
@@ -64,16 +66,17 @@ public:
     NUMBER_OF_MaterialAveragingMethod
   };
 
-  // Description:
-  // Set/Get how materials are averaged. If set to LINEAR, stress-strain
-  // matrices are linearly averaged. If set to HOMMINGA_DENSITY,
-  // Young's modulii are converted to a density according to
-  // Homminga's formula, which is averaged before being converted back
-  // to a Young's modulus. For orthotropic and anisotropic materials,
-  // the same transformations are applied to the entire stress-strain matrix.
+  //@{
+  /*! Set/Get how materials are averaged. If set to LINEAR, stress-strain
+      matrices are linearly averaged. If set to HOMMINGA_DENSITY, Young's
+      modulii are converted to a density according to Homminga's formula,
+      which is averaged before being converted back to a Young's modulus.
+      For orthotropic and anisotropic materials, the same transformations
+      are applied to the entire stress-strain matrix. */
   vtkSetClampMacro(MaterialAveragingMethod,
                    int, 0, NUMBER_OF_MaterialAveragingMethod);
   vtkGetMacro(MaterialAveragingMethod, int);
+  //@}
 
 
 protected:

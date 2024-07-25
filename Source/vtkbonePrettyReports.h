@@ -11,15 +11,17 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkbonePrettyReports - provides nice user-targetted summary of
-//  vtkbone and some vtk objects.
-//
-// .SECTION Description
-// Provides a output generating functions for some vtk objects.
-// These are in the namespace vtkbonePrettyReports, and are all called Print.
-// They are overloaded with various classes as input.
-// For vtkbone classes, similar calls are implemented directly in the
-// corresponding classes' .h/.cxx files.
+/*! @class   vtkbonePrettyReports
+    @brief   provides nice user-targetted summary of
+  vtkbone and some vtk objects.
+
+
+ Provides a output generating functions for some vtk objects.
+ These are in the namespace vtkbonePrettyReports, and are all called Print.
+ They are overloaded with various classes as input.
+ For vtkbone classes, similar calls are implemented directly in the
+ corresponding classes' .h/.cxx files.
+*/
 
 #ifndef __vtkbonePrettyReports_h
 #define __vtkbonePrettyReports_h

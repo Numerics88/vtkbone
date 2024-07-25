@@ -11,10 +11,12 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneWin32Header - manage Windows system differences
-// .SECTION Description
-// The vtkboneWin32Header captures some system differences between Unix
-// and Windows operating systems.
+/*! @class   vtkboneWin32Header
+    @brief   manage Windows system differences
+
+ The vtkboneWin32Header captures some system differences between Unix
+ and Windows operating systems.
+*/
 
 #ifndef __vtkboneWin32Header_h
 #define __vtkboneWin32Header_h

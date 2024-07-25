@@ -11,18 +11,20 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneImageConnectivityMap - mark regions of image data based on geometric connectivity
-//
-// .SECTION Description
-//
-// This filter generates a mask based on connectivity of the scalar values of
-// the image.  Connectivity is considered only across faces, not across edges
-// or corners.
-//
-// This filter accepts image scalars on either the cells or the points; the
-// output will have scalars with the same association.
-//
-// The output scalar data type is always vtkUnsignedInt.
+/*! @class   vtkboneImageConnectivityMap
+    @brief   mark regions of image data based on geometric connectivity
+
+
+
+ This filter generates a mask based on connectivity of the scalar values of
+ the image.  Connectivity is considered only across faces, not across edges
+ or corners.
+
+ This filter accepts image scalars on either the cells or the points; the
+ output will have scalars with the same association.
+
+ The output scalar data type is always vtkUnsignedInt.
+*/
 
 #ifndef __vtkboneImageConnectivityMap_h
 #define __vtkboneImageConnectivityMap_h
@@ -42,9 +44,10 @@ public:
                        vtkSimpleImageToImageFilter);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Return the number of identified regions.
+  //@{
+  /*! Return the number of identified regions. */
   vtkGetMacro(NumberOfRegions, unsigned int);
+  //@}
 
 protected:
   vtkboneImageConnectivityMap();

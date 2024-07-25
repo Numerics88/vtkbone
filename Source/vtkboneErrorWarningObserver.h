@@ -11,12 +11,13 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneErrorWarningObserver - a simple observer to catch VTK warnings and errors.
-//
-// .SECTION Description
-// This class takes no action except to save the description of the error
-// so that it can be retreived later.
+/*! @class   vtkboneErrorWarningObserver
+    @brief   a simple observer to catch VTK warnings and errors.
 
+
+ This class takes no action except to save the description of the error
+ so that it can be retreived later.
+*/
 
 #ifndef __vtkboneErrorWarningObserver_h
 #define __vtkboneErrorWarningObserver_h
@@ -36,28 +37,27 @@ public:
 
   virtual void Execute(vtkObject* caller, unsigned long eventId, void* callData);
 
-  // Description:
-  // Set/Get error descriptions.
+  //@{
+  /*! Set/Get error descriptions. */
   vtkboneSetStringMacro(ErrorDescriptions);
   vtkboneGetStringMacro(ErrorDescriptions);
   virtual void AppendErrorDescriptions(const char* newMsg);
+  //@}
 
-  // Description:
-  // Set/Get warning descriptions.
+  //@{
+  /*! Set/Get warning descriptions. */
   vtkboneSetStringMacro(WarningDescriptions);
   vtkboneGetStringMacro(WarningDescriptions);
   virtual void AppendWarningDescriptions(const char* newMsg);
+  //@}
 
-  // Description:
-  // Returns 1 if error occurred.
+  /*! Returns 1 if error occurred. */
   virtual int ErrorOccurred();
 
-  // Description:
-  // Returns 1 if warning occurred.
+  /*! Returns 1 if warning occurred. */
   virtual int WarningOccurred();
 
-  // Description:
-  // Clears stored error and warnings.
+  /*! Clears stored error and warnings. */
   virtual void Reset();
 
   // Dummy method required by Set/Get string macros

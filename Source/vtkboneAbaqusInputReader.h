@@ -11,35 +11,37 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneAbaqusInputReader - A class to read Abaqus input files.
-// .SECTION Description
-//
-// The data will be written in a VTK object of type vtkboneFiniteElementModel.
-//
-// This object supports only a limited subset of Abaqus features.  The
-// following Abaqus keywords are supported.  Note that note every optional
-// parameter for the keywords is supported:
-//  - HEADING
-//  - NODE
-//  - ELEMENT
-//  - NSET
-//  - ELSET
-//  - MATERIAL
-//  - ELASTIC
-//  - SOLID SECTION
-//  - STEP
-//  - STATIC
-//  - BOUNDARY
-//  - CLOAD
-//
-// Unrecognized keywords and parameters will be ignored.
-//
-// NOTE:    If you have a data file that you expect can be represented as
-//          a vtkboneFiniteElementModel, but are unable to read it with
-//          this class, please contact Numerics88 Solution Ltd.
-//
-// .SECTION See Also
-// vtkboneFiniteElementModel vtkboneAbaqusInputWriter
+/*! @class   vtkboneAbaqusInputReader
+    @brief   A class to read Abaqus input files.
+
+
+ The data will be written in a VTK object of type vtkboneFiniteElementModel.
+
+ This object supports only a limited subset of Abaqus features.  The
+ following Abaqus keywords are supported.  Note that note every optional
+ parameter for the keywords is supported:
+  - HEADING
+  - NODE
+  - ELEMENT
+  - NSET
+  - ELSET
+  - MATERIAL
+  - ELASTIC
+  - SOLID SECTION
+  - STEP
+  - STATIC
+  - BOUNDARY
+  - CLOAD
+
+ Unrecognized keywords and parameters will be ignored.
+
+ NOTE:    If you have a data file that you expect can be represented as
+          a vtkboneFiniteElementModel, but are unable to read it with
+          this class, please contact Numerics88 Solution Ltd.
+
+    @sa
+ vtkboneFiniteElementModel vtkboneAbaqusInputWriter
+*/
 
 #ifndef __vtkboneAbaqusInputReader_h
 #define __vtkboneAbaqusInputReader_h
@@ -55,10 +57,11 @@ public:
   vtkTypeMacro(vtkboneAbaqusInputReader,vtkboneFiniteElementModelAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Set/get the file name of the ABAQUS Input file to read.
+  //@{
+  /*! Set/get the file name of the ABAQUS Input file to read. */
   vtkSetStringMacro(FileName);
   vtkGetStringMacro(FileName);
+  //@}
 
   //BTX
   static void DebugMessage (vtkObject* self, const std::string& msg);

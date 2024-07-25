@@ -11,19 +11,21 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneLinearAnisotropicMaterial - An object representing a
-// linear anisotropic material.
-//
-// .SECTION Description
-// vtkboneLinearAnisotropicMaterial stores the parameters for a
-// linear anisotropic material.
-//
-// .SECTION See Also
-// vtkboneMaterialTable vtkboneFiniteElementModel
-// vtkboneGenerateHomogeneousLinearIsotropicMaterialTable
-// vtkboneGenerateHommingaMaterialTable
-// vtkboneLinearIsotropicMaterial
-// vtkboneLinearOrthotropicMaterial
+/*! @class   vtkboneLinearAnisotropicMaterial
+    @brief   An object representing a
+ linear anisotropic material.
+
+
+ vtkboneLinearAnisotropicMaterial stores the parameters for a
+ linear anisotropic material.
+
+    @sa
+ vtkboneMaterialTable vtkboneFiniteElementModel
+ vtkboneGenerateHomogeneousLinearIsotropicMaterialTable
+ vtkboneGenerateHommingaMaterialTable
+ vtkboneLinearIsotropicMaterial
+ vtkboneLinearOrthotropicMaterial
+*/
 
 #ifndef __vtkboneLinearAnisotropicMaterial_h
 #define __vtkboneLinearAnisotropicMaterial_h
@@ -42,44 +44,35 @@ class VTKBONE_EXPORT vtkboneLinearAnisotropicMaterial : public vtkboneMaterial
     vtkTypeMacro(vtkboneLinearAnisotropicMaterial, vtkboneMaterial);
     void PrintSelf(ostream& os, vtkIndent indent) override;
 
-    // Description:
-    // Sets the stress-strain matrix. Arguement should be 36 values,
-    // corresponding to 6x6 symmetric matrix.
+    /*! Sets the stress-strain matrix. Arguement should be 36 values,
+	corresponding to 6x6 symmetric matrix. */
     void SetStressStrainMatrix (const double* k);
 
-    // Description:
-    // Sets the stress-strain matrix. Arguement should be 36 values,
-    // corresponding to 6x6 symmetric matrix.
+    /*! Sets the stress-strain matrix. Arguement should be 36 values,
+	corresponding to 6x6 symmetric matrix. */
     void SetStressStrainMatrix (vtkDataArray* k);
 
-    // Description:
-    // Gets a pointer to the stress-strain matrix, which is 36 values,
-    // Copies the stress-strain matrix to k as 36 values,
-    // corresponding to 6x6 symmetric matrix.
+    /*! Gets a pointer to the stress-strain matrix, which is 36 values,
+	Copies the stress-strain matrix to k as 36 values, corresponding to
+	6x6 symmetric matrix. */
     double* GetStressStrainMatrix() {return this->StressStrainMatrix; };
 
-    // Description:
-    // Copies the stress-strain matrix to k as 36 values,
-    // corresponding to 6x6 symmetric matrix.
-    // k must be allocated beforehand.
+    /*! Copies the stress-strain matrix to k as 36 values, corresponding to
+	6x6 symmetric matrix. k must be allocated beforehand. */
     void GetStressStrainMatrix (double* k);
 
-    // Description:
-    // Copies the stress-strain matrix to k as 36 values,
-    // corresponding to 6x6 symmetric matrix.
-    // k will be resized to 6x6.
+    /*! Copies the stress-strain matrix to k as 36 values, corresponding to
+	6x6 symmetric matrix. k will be resized to 6x6. */
     void GetStressStrainMatrix (vtkDataArray* k);
 
-    // Description:
-    // Creates a copy of this object.
-    // You should almost certainly give the copy or the original a new name.
+    /*! Creates a copy of this object. You should almost certainly give the
+	copy or the original a new name. */
     virtual vtkboneMaterial* Copy() override;
 
-    // Description:
-    // Creates a copy of this object, with all the modulii scaled by
-    // factor.
-    // You should almost certainly give the copy or the original a new name.
-    // Note that you will have to delete the pointer when finished with it.
+    /*! Creates a copy of this object, with all the modulii scaled by
+	factor. You should almost certainly give the copy or the original a
+	new name. Note that you will have to delete the pointer when
+	finished with it. */
     virtual vtkboneMaterial* ScaledCopy(double factor) override;
 
   protected:

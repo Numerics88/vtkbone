@@ -11,16 +11,17 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneN88ModelReader - read n88model files
-// .SECTION Description
-// vtkboneN88ModelReader is a source object that reads .n88model files that
-// represent finite element models.
-//
-// vtkboneN88ModelReader creates a vtkboneFiniteElementModel dataset.
-//
-// .SECTION See Also
-// vtkboneFiniteElementModel vtkboneN88ModelWriter
+/*! @class   vtkboneN88ModelReader
+    @brief   read n88model files
 
+ vtkboneN88ModelReader is a source object that reads .n88model files that
+ represent finite element models.
+
+ vtkboneN88ModelReader creates a vtkboneFiniteElementModel dataset.
+
+    @sa
+ vtkboneFiniteElementModel vtkboneN88ModelWriter
+*/
 
 #ifndef __vtkboneN88ModelReader_h
 #define __vtkboneN88ModelReader_h
@@ -39,30 +40,35 @@ public:
   vtkTypeMacro(vtkboneN88ModelReader, vtkboneFiniteElementModelAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Set/get the file name of the file to read.
+  //@{
+  /*! Set/get the file name of the file to read. */
   vtkSetStringMacro(FileName);
   vtkGetStringMacro(FileName);
+  //@}
 
-  // Description:
-  // Set/get whether to read the MaterialTable.
+  //@{
+  /*! Set/get whether to read the MaterialTable. */
   vtkSetMacro(ReadMaterials, int);
   vtkGetMacro(ReadMaterials, int);
   vtkBooleanMacro(ReadMaterials, int);
+  //@}
 
-  // Description:
-  // Get the active problem name.
+  //@{
+  /*! Get the active problem name. */
   vtkGetStringMacro(ActiveSolution);
+  //@}
 
-  // Description:
-  // Get the active problem name.
-  // Note that if an ActiveSolution exists in the file, then the ActiveProblem
-  // will be set from that, and not from the ActiveProblem attribute.
+  //@{
+  /*! Get the active problem name. Note that if an ActiveSolution exists in
+      the file, then the ActiveProblem will be set from that, and not from
+      the ActiveProblem attribute. */
   vtkGetStringMacro(ActiveProblem);
+  //@}
 
-  // Description:
-  // Get the active part name used by the ActiveProblem.
+  //@{
+  /*! Get the active part name used by the ActiveProblem. */
   vtkGetStringMacro(ActivePart);
+  //@}
 
 protected:
   vtkboneN88ModelReader();

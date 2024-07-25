@@ -11,11 +11,13 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneFaimVersion5OutputReader - read results file from FAIM finite element solver
-// .SECTION Description
-// vtkboneFaimVersion5OutputReader is a source object that reads .dat files output by faim.
-//
-// vtkboneFaimVersion5OutputReader creates a vtkboneFiniteElementModel dataset.
+/*! @class   vtkboneFaimVersion5OutputReader
+    @brief   read results file from FAIM finite element solver
+
+ vtkboneFaimVersion5OutputReader is a source object that reads .dat files output by faim.
+
+ vtkboneFaimVersion5OutputReader creates a vtkboneFiniteElementModel dataset.
+*/
 
 #ifndef __vtkboneFaimVersion5OutputReader_h
 #define __vtkboneFaimVersion5OutputReader_h
@@ -33,34 +35,39 @@ public:
   vtkTypeMacro(vtkboneFaimVersion5OutputReader, vtkboneFiniteElementModelAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Set/get the file name of the FAIM output file to read.
+  //@{
+  /*! Set/get the file name of the FAIM output file to read. */
   vtkSetStringMacro(FileName);
   vtkGetStringMacro(FileName);
+  //@}
 
-  // Description:
-  // Get the nodal displacements (mm).  Default is on.
+  //@{
+  /*! Get the nodal displacements (mm).  Default is on. */
   vtkSetMacro(ReadNodalDisplacements, int);
   vtkGetMacro(ReadNodalDisplacements, int);
   vtkBooleanMacro(ReadNodalDisplacements, int);
+  //@}
 
-  // Description:
-  // Get the nodal reaction forces (N).  Default is on.
+  //@{
+  /*! Get the nodal reaction forces (N).  Default is on. */
   vtkSetMacro(ReadNodalReactionForces, int);
   vtkGetMacro(ReadNodalReactionForces, int);
   vtkBooleanMacro(ReadNodalReactionForces, int);
+  //@}
 
-  // Description:
-  // Get the element stresses (N/mm2).  Default is on.
+  //@{
+  /*! Get the element stresses (N/mm2).  Default is on. */
   vtkSetMacro(ReadElementStresses, int);
   vtkGetMacro(ReadElementStresses, int);
   vtkBooleanMacro(ReadElementStresses, int);
+  //@}
 
-  // Description:
-  // Get the element strains (N/mm2).  Default is on.
+  //@{
+  /*! Get the element strains (N/mm2).	Default is on. */
   vtkSetMacro(ReadElementStrains, int);
   vtkGetMacro(ReadElementStrains, int);
   vtkBooleanMacro(ReadElementStrains, int);
+  //@}
 
 protected:
   vtkboneFaimVersion5OutputReader();

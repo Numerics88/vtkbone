@@ -11,13 +11,15 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneAbaqusInputWriter - writes an Abaqus input file.
-// .SECTION Description
-// Takes as input a vtkboneFiniteElementModel and writes as output an
-// Abaqus input file.
-//
-// .SECTION See Also
-// vtkboneFiniteElementModel vtkboneN88ModelWriter vtkboneAbaqusInputReader
+/*! @class   vtkboneAbaqusInputWriter
+    @brief   writes an Abaqus input file.
+
+ Takes as input a vtkboneFiniteElementModel and writes as output an
+ Abaqus input file.
+
+    @sa
+ vtkboneFiniteElementModel vtkboneN88ModelWriter vtkboneAbaqusInputReader
+*/
 
 #ifndef __vtkboneAbaqusInputWriter_h
 #define __vtkboneAbaqusInputWriter_h
@@ -41,10 +43,11 @@ public:
   vtkTypeMacro(vtkboneAbaqusInputWriter, vtkWriter);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Specify file name of file to write.
+  //@{
+  /*! Specify file name of file to write. */
   vtkSetStringMacro(FileName);
   vtkGetStringMacro(FileName);
+  //@}
 
 protected:
   vtkboneAbaqusInputWriter();

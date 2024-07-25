@@ -11,22 +11,24 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneMaterial - An abstract base class for materials used in
-// finite element models
-//
-// .SECTION Description
-// This base class may be derived to define arbitrary types of materials.
-//
-// All materials are required to have unique names.
-// Materials are named as "NewMaterial%d" when constructed, where %d is a
-// number assigned by a static counter.  This will usually ensure conflict-free
-// names, however it is not thread safe.  It is recommended that you assign
-// informative names using SetName.
-//
-// .SECTION See Also
-// vtkboneLinearIsotropicMaterial vtkboneLinearOrthotropicMaterial vtkboneMaterialTable
-// vtkboneGenerateHomogeneousLinearIsotropicMaterialTable
-// vtkboneGenerateHommingaMaterialTable
+/*! @class   vtkboneMaterial
+    @brief   An abstract base class for materials used in
+ finite element models
+
+
+ This base class may be derived to define arbitrary types of materials.
+
+ All materials are required to have unique names.
+ Materials are named as "NewMaterial%d" when constructed, where %d is a
+ number assigned by a static counter.  This will usually ensure conflict-free
+ names, however it is not thread safe.  It is recommended that you assign
+ informative names using SetName.
+
+    @sa
+ vtkboneLinearIsotropicMaterial vtkboneLinearOrthotropicMaterial vtkboneMaterialTable
+ vtkboneGenerateHomogeneousLinearIsotropicMaterialTable
+ vtkboneGenerateHommingaMaterialTable
+*/
 
 #ifndef __vtkboneMaterial_h
 #define __vtkboneMaterial_h
@@ -42,21 +44,20 @@ class VTKBONE_EXPORT vtkboneMaterial : public vtkObject
     vtkTypeMacro(vtkboneMaterial, vtkObject);
     void PrintSelf(ostream& os, vtkIndent indent) override;
 
-    // Description:
-    // Set/get the name of the material.
+    //@{
+    /*! Set/get the name of the material. */
     vtkSetStringMacro(Name);
     vtkGetStringMacro(Name);
+    //@}
 
-    // Description:
-    // Creates a copy of this object.
-    // You should almost certainly give the copy or the original a new name.
+    /*! Creates a copy of this object. You should almost certainly give the
+	copy or the original a new name. */
     virtual vtkboneMaterial* Copy();
 
-    // Description:
-    // Creates a copy of this object, with all the modulii scaled by
-    // factor.
-    // You should almost certainly give the copy or the original a new name.
-    // Note that you will have to delete the pointer when finished with it.
+    /*! Creates a copy of this object, with all the modulii scaled by
+	factor. You should almost certainly give the copy or the original a
+	new name. Note that you will have to delete the pointer when
+	finished with it. */
     virtual vtkboneMaterial* ScaledCopy(double factor);
 
   protected:

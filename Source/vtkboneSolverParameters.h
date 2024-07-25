@@ -11,15 +11,17 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneSolverParameters - Description of a finite element test.
-//
-// .SECTION Description
-// This class is not intended to be instantiated.  It merely exists to
-// provide somewhere to define a number of InformationKeys which are of
-// use in specifying parameters for the solver.
-//
-// .SECTION See Also
-// vtkboneFiniteElementModel vtkboneFiniteElementModel
+/*! @class   vtkboneSolverParameters
+    @brief   Description of a finite element test.
+
+
+ This class is not intended to be instantiated.  It merely exists to
+ provide somewhere to define a number of InformationKeys which are of
+ use in specifying parameters for the solver.
+
+    @sa
+ vtkboneFiniteElementModel vtkboneFiniteElementModel
+*/
 
 #ifndef __vtkboneSolverParameters_h
 #define __vtkboneSolverParameters_h

@@ -11,9 +11,11 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneVersion - Versioning class for vtkbone
-// .SECTION Description
-// Methods for determining the vtkbone version.
+/*! @class   vtkboneVersion
+    @brief   Versioning class for vtkbone
+
+ Methods for determining the vtkbone version.
+*/
 
 #ifndef __vtkboneVersion_h
 #define __vtkboneVersion_h
@@ -27,25 +29,29 @@ public:
   static vtkboneVersion* New();
   vtkTypeMacro(vtkboneVersion,vtkObject);
 
-  // Description:
-  // Return a string identifier of the version of vtkbone.
+  //@{
+  /*! Return a string identifier of the version of vtkbone. */
   static const char *GetVTKBONEVersion();
   static const char *GetvtkboneVersion();
+  //@}
 
-  // Description:
-  // Return the major version of vtkbone.
+  //@{
+  /*! Return the major version of vtkbone. */
   static int GetVTKBONEMajorVersion();
   static int GetvtkboneMajorVersion();
+  //@}
 
-  // Description:
-  // Return the minor version of vtkbone.
+  //@{
+  /*! Return the minor version of vtkbone. */
   static int GetVTKBONEMinorVersion();
   static int GetvtkboneMinorVersion();
+  //@}
 
-  // Description:
-  // Return the minor minor version of vtkbone.
+  //@{
+  /*! Return the minor minor version of vtkbone. */
   static int GetVTKBONEMinorMinorVersion();
   static int GetvtkboneMinorMinorVersion();
+  //@}
 
 protected:
   vtkboneVersion() {};

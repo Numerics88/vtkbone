@@ -11,17 +11,19 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneImageConnectivityFilter - mask regions of image data based on geometric connectivity
-//
-// .SECTION Description
-//
-// This filter uses vtkboneImageConnectivityMap to generate a mask based on
-// connectivity of the scalar values of the image.  Specified components
-// can then be zeroed out of the image.
-//
-// This filter accepts image scalars on either the cells or the points; the
-// output will have scalars with the same association.
-//
+/*! @class   vtkboneImageConnectivityFilter
+    @brief   mask regions of image data based on geometric connectivity
+
+
+
+ This filter uses vtkboneImageConnectivityMap to generate a mask based on
+ connectivity of the scalar values of the image.  Specified components
+ can then be zeroed out of the image.
+
+ This filter accepts image scalars on either the cells or the points; the
+ output will have scalars with the same association.
+
+*/
 
 #ifndef __vtkboneImageConnectivityFilter_h
 #define __vtkboneImageConnectivityFilter_h
@@ -52,9 +54,9 @@ public:
     EXTRACT_REGIONS_OF_SPECIFIED_SIZE = 7
   };
 
-  // Description:
-  // Control the extraction of connected regions.
-  // The default is EXTRACT_LARGEST_REGION.
+  //@{
+  /*! Control the extraction of connected regions. The default is
+      EXTRACT_LARGEST_REGION. */
   vtkSetClampMacro(ExtractionMode,int,
             EXTRACT_SEEDED_REGIONS,EXTRACT_REGIONS_OF_SPECIFIED_SIZE);
   vtkGetMacro(ExtractionMode,int);
@@ -71,46 +73,44 @@ public:
   void SetExtractionModeToRegionsOfSpecifiedSize()
     {this->SetExtractionMode(EXTRACT_REGIONS_OF_SPECIFIED_SIZE);};
   const char *GetExtractionModeAsString();
+  //@}
 
-  // Description:
-  // Initialize list of point ids/cell ids used to seed regions.
+  /*! Initialize list of point ids/cell ids used to seed regions. */
   void InitializeSeedList();
 
-  // Description:
-  // Add a seed id (point or cell id). Note: ids are 0-offset.
+  /*! Add a seed id (point or cell id). Note: ids are 0-offset. */
   void AddSeed(vtkIdType id);
 
-  // Description:
-  // Delete a seed id (point or cell id). Note: ids are 0-offset.
+  /*! Delete a seed id (point or cell id). Note: ids are 0-offset. */
   void DeleteSeed(vtkIdType id);
 
-  // Description:
-  // Initialize list of region ids to extract.
+  /*! Initialize list of region ids to extract. */
   void InitializeSpecifiedRegionList();
 
-  // Description:
-  // Add a region id to extract. Note: ids are 0-offset.
+  /*! Add a region id to extract. Note: ids are 0-offset. */
   void AddSpecifiedRegion(int id);
 
-  // Description:
-  // Delete a region id to extract. Note: ids are 0-offset.
+  /*! Delete a region id to extract. Note: ids are 0-offset. */
   void DeleteSpecifiedRegion(int id);
 
-  // Description:
-  // Use to specify x-y-z point coordinates when extracting the region
-  // closest to a specified point.
+  //@{
+  /*! Use to specify x-y-z point coordinates when extracting the region
+      closest to a specified point. */
   vtkSetVector3Macro(ClosestPoint,double);
   vtkGetVectorMacro(ClosestPoint,double,3);
+  //@}
 
-  // Description:
-  // Use to specify the minimum region size when extracting the regions
-  // by specific size.
+  //@{
+  /*! Use to specify the minimum region size when extracting the regions by
+      specific size. */
   vtkSetMacro(MinimumRegionSize,vtkIdType);
   vtkGetMacro(MinimumRegionSize,vtkIdType);
+  //@}
 
-  // Description:
-  // Obtain the number of connected regions.
+  //@{
+  /*! Obtain the number of connected regions. */
   vtkGetMacro(NumberOfExtractedRegions,unsigned int);
+  //@}
 
 protected:
   vtkboneImageConnectivityFilter();

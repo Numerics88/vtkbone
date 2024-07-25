@@ -11,23 +11,24 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneFaimVersion5InputReader - read input files for FAIM finite element solver
-// .SECTION Description
-// vtkboneFaimVersion5InputReader is a source object that reads .inp files for FAIM.
-//
-// vtkboneFaimVersion5InputReader creates a vtkboneFiniteElementModel dataset.
-//
-// Constraints if present will be added with the following names:
-//   "FIXED CONSTRAINTS"
-//   "DISPLACEMENT CONSTRAINTS"
-//   "FORCE CONSTRAINTS"
-//
-// Node sets if present will be added with the names "NODE SET 1",
-// "NODE SET 2", etc...
-//
-// .SECTION See Also
-// vtkboneFiniteElementModel vtkboneN88ModelWriter
+/*! @class   vtkboneFaimVersion5InputReader
+    @brief   read input files for FAIM finite element solver
 
+ vtkboneFaimVersion5InputReader is a source object that reads .inp files for FAIM.
+
+ vtkboneFaimVersion5InputReader creates a vtkboneFiniteElementModel dataset.
+
+ Constraints if present will be added with the following names:
+   "FIXED CONSTRAINTS"
+   "DISPLACEMENT CONSTRAINTS"
+   "FORCE CONSTRAINTS"
+
+ Node sets if present will be added with the names "NODE SET 1",
+ "NODE SET 2", etc...
+
+    @sa
+ vtkboneFiniteElementModel vtkboneN88ModelWriter
+*/
 
 #ifndef __vtkboneFaimVersion5InputReader_h
 #define __vtkboneFaimVersion5InputReader_h
@@ -45,10 +46,11 @@ public:
   vtkTypeMacro(vtkboneFaimVersion5InputReader, vtkboneFiniteElementModelAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Set/get the file name of the FAIM output file to read.
+  //@{
+  /*! Set/get the file name of the FAIM output file to read. */
   vtkSetStringMacro(FileName);
   vtkGetStringMacro(FileName);
+  //@}
 
 protected:
   vtkboneFaimVersion5InputReader();

@@ -11,21 +11,23 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneMaximumPrincipalStrainIsotropicMaterial - An object representing an
-//  isotropic maximum principal strain elastoplastic material.
-//
-// .SECTION Description
-// vtkboneMaximumPrincipalStrainIsotropicMaterial stores the parameters for an
-// isotropic material with maximum principal strain elastoplastic properties.
-//
-// .SECTION See Also
-// vtkboneMaterialTable vtkboneFiniteElementModel
-// vtkboneGenerateHomogeneousMaximumPrincipalStrainIsotropicMaterialTable
-// vtkboneGenerateHommingaMaterialTable
-// vtkboneLinearOrthotropicMaterial
-// vtkboneLinearAnistropicMaterial
-// vtkboneVonMisesIsotropicMaterial
-// vtkboneMohrCoulombIsotropicMaterial
+/*! @class   vtkboneMaximumPrincipalStrainIsotropicMaterial
+    @brief   An object representing an
+  isotropic maximum principal strain elastoplastic material.
+
+
+ vtkboneMaximumPrincipalStrainIsotropicMaterial stores the parameters for an
+ isotropic material with maximum principal strain elastoplastic properties.
+
+    @sa
+ vtkboneMaterialTable vtkboneFiniteElementModel
+ vtkboneGenerateHomogeneousMaximumPrincipalStrainIsotropicMaterialTable
+ vtkboneGenerateHommingaMaterialTable
+ vtkboneLinearOrthotropicMaterial
+ vtkboneLinearAnistropicMaterial
+ vtkboneVonMisesIsotropicMaterial
+ vtkboneMohrCoulombIsotropicMaterial
+*/
 
 #ifndef __vtkboneMaximumPrincipalStrainIsotropicMaterial_h
 #define __vtkboneMaximumPrincipalStrainIsotropicMaterial_h
@@ -41,25 +43,24 @@ class VTKBONE_EXPORT vtkboneMaximumPrincipalStrainIsotropicMaterial : public vtk
     vtkTypeMacro(vtkboneMaximumPrincipalStrainIsotropicMaterial, vtkboneLinearIsotropicMaterial);
     void PrintSelf(ostream& os, vtkIndent indent) override;
 
-    // Description:
-    // Set the yield strains in tension and compression.
+    //@{
+    /*! Set the yield strains in tension and compression. */
     virtual void SetYieldStrains (
       double MaximumTensilePrincipalStrain,
       double MaximumCompressivePrincipalStrain);
+    //@}
 
     vtkGetMacro(MaximumTensilePrincipalStrain, double);
     vtkGetMacro(MaximumCompressivePrincipalStrain, double);
 
-    // Description:
-    // Creates a copy of this object.
-    // You should almost certainly give the copy or the original a new name.
+    /*! Creates a copy of this object. You should almost certainly give the
+	copy or the original a new name. */
     virtual vtkboneMaterial* Copy() override;
 
-    // Description:
-    // Creates a copy of this object, with all the modulii scaled by
-    // factor.
-    // You should almost certainly give the copy or the original a new name.
-    // Note that you will have to delete the pointer when finished with it.
+    /*! Creates a copy of this object, with all the modulii scaled by
+	factor. You should almost certainly give the copy or the original a
+	new name. Note that you will have to delete the pointer when
+	finished with it. */
     virtual vtkboneMaterial* ScaledCopy(double factor) override;
 
   protected:

@@ -11,15 +11,17 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneTensorOfInertia - calculates the tensor of inertia.
-//
-// .SECTION Description
-// Accepts either vtkImageData or vtkUnstructuredGrid as input.
-//
-// vtkUnstructuredGrid inputs must consists of only cells of type VTK_VOXEL.
-//
-// .SECTION See Also
-// vtkMassProperties
+/*! @class   vtkboneTensorOfInertia
+    @brief   calculates the tensor of inertia.
+
+
+ Accepts either vtkImageData or vtkUnstructuredGrid as input.
+
+ vtkUnstructuredGrid inputs must consists of only cells of type VTK_VOXEL.
+
+    @sa
+ vtkMassProperties
+*/
 
 #ifndef __vtkboneTensorOfInertia_h
 #define __vtkboneTensorOfInertia_h
@@ -36,102 +38,108 @@ class vtkMatrix3x3;
 class VTKBONE_EXPORT vtkboneTensorOfInertia : public vtkAlgorithm
 {
 public:
-  // Description:
-  // Constructs with initial values of zero.
+  /*! Constructs with initial values of zero. */
   static vtkboneTensorOfInertia *New();
 
   vtkTypeMacro(vtkboneTensorOfInertia,vtkAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-   // Description:
-  // Process a request from the executive.
-  // Will be delegated to  RequestData
+   //@{
+   /*! Process a request from the executive. Will be delegated to 
+       RequestData */
   virtual int ProcessRequest(vtkInformation*,
                              vtkInformationVector**,
                              vtkInformationVector*) override;
+   //@}
 
-  // Description:
-  // Assign a data object as input.
+  //@{
+  /*! Assign a data object as input. */
   void SetInputData(vtkDataObject *);
   void SetInputData(int, vtkDataObject*);
+  //@}
 
-  // Description:
-  // Set/Get UseSpecific.  If set, will only consider cells with
-  // integer scalar value equal to SpecificValue.
+  //@{
+  /*! Set/Get UseSpecific.  If set, will only consider cells with integer
+      scalar value equal to SpecificValue. */
   vtkSetMacro(UseSpecificValue, int);
   vtkGetMacro(UseSpecificValue, int);
   vtkBooleanMacro(UseSpecificValue,int);
+  //@}
 
-  // Description:
-  // Set/Get the SpecificValue.  If set, automatically sets UseSpecificValue on.
-  // Applies only to image inputs.
+  //@{
+  /*! Set/Get the SpecificValue.  If set, automatically sets
+      UseSpecificValue on. Applies only to image inputs. */
   void SetSpecificValue (int v) {this->SpecificValue=v; this->UseSpecificValue=1;}
   vtkGetMacro(SpecificValue, int);
+  //@}
 
-  // Description:
-  // Set/Get UseThresholds.  If set, will only consider cells with
-  // scalar value between LowerThreshold and UpperThreshold (inclusive).
-  // Applies only to image inputs.
+  //@{
+  /*! Set/Get UseThresholds.  If set, will only consider cells with scalar
+      value between LowerThreshold and UpperThreshold (inclusive). Applies
+      only to image inputs. */
   vtkSetMacro(UseThresholds, int);
   vtkGetMacro(UseThresholds, int);
   vtkBooleanMacro(UseThresholds,int);
+  //@}
 
-  // Description:
-  // Set/Get the LowerThreshold.  If set, automatically sets UseThresholds on.
-  // Default value is VTK_DOUBLE_MIN.
-  // Applies only to image inputs.
+  //@{
+  /*! Set/Get the LowerThreshold.  If set, automatically sets UseThresholds
+      on. Default value is VTK_DOUBLE_MIN. Applies only to image inputs. */
   void SetLowerThreshold (double v) {this->LowerThreshold=v; this->UseThresholds=1;}
   vtkGetMacro(LowerThreshold, double);
+  //@}
 
-  // Description:
-  // Set/Get the UpperThreshold.  If set, automatically sets UseThresholds on.
-  // Default value is VTK_DOUBLE_MAX.
-  // Applies only to image inputs.
+  //@{
+  /*! Set/Get the UpperThreshold.  If set, automatically sets UseThresholds
+      on. Default value is VTK_DOUBLE_MAX. Applies only to image inputs. */
   void SetUpperThreshold (double v) {this->UpperThreshold=v; this->UseThresholds=1;}
   vtkGetMacro(UpperThreshold, double);
+  //@}
 
-  // Description:
-  // Compute and return the count of cells matching the criteria.
+  //@{
+  /*! Compute and return the count of cells matching the criteria. */
   vtkGetMacro(Count, vtkIdType);
+  //@}
 
-  // Description:
-  // Compute and return the volume.
+  //@{
+  /*! Compute and return the volume. */
   vtkGetMacro(Volume, double);
+  //@}
 
-  // Description:
-  // Compute and return the mass.
+  //@{
+  /*! Compute and return the mass. */
   vtkGetMacro(Mass, double);
+  //@}
 
-  // Description:
-  // Compute and return the center of mass.
+  //@{
+  /*! Compute and return the center of mass. */
   vtkGetVector3Macro(CenterOfMass, double);
   double GetCenterOfMassX() {return this->CenterOfMass[0];}
   double GetCenterOfMassY() {return this->CenterOfMass[1];}
   double GetCenterOfMassZ() {return this->CenterOfMass[2];}
+  //@}
 
-  // Description:
-  // Compute and return the tensor of inertia about the center of mass.
+  /*! Compute and return the tensor of inertia about the center of mass. */
   void GetTensorOfInertia(vtkboneTensor* MOI);
 
-  // Description:
-  // Compute and return the tensor of inertia about the origin.
+  /*! Compute and return the tensor of inertia about the origin. */
   void GetTensorOfInertiaAboutOrigin(vtkboneTensor* MOI);
 
-  // Description:
-  // Get the eigenvectors of the tensor of inertia.  The principal axes
-  // are in the columns of A.  THe eigenvectors are aligned as close
-  // as possible to x,y,z.
+  /*! Get the eigenvectors of the tensor of inertia.  The principal axes
+      are in the columns of A.	THe eigenvectors are aligned as close as
+      possible to x,y,z. */
   void GetEigenvectors(vtkMatrix3x3* A);
 
-  // Description:
-  // Get the principal axis lying closest to the specified Cartesian axis.
+  //@{
+  /*! Get the principal axis lying closest to the specified Cartesian axis. */
   vtkGetVector3Macro(PrincipalAxisClosestToX, double);
   vtkGetVector3Macro(PrincipalAxisClosestToY, double);
   vtkGetVector3Macro(PrincipalAxisClosestToZ, double);
+  //@}
 
-  // Description:
-  // Get the principal moments of inertia.  These are ordered the same as
-  // the principal axes of inertia.
+  //@{
+  /*! Get the principal moments of inertia.  These are ordered the same as
+      the principal axes of inertia. */
   vtkGetVector3Macro(PrincipalMoments, double);
   double GetPrincipalMoment0()
     {return this->PrincipalMoments[0];}
@@ -139,36 +147,40 @@ public:
     {return this->PrincipalMoments[1];}
   double GetPrincipalMoment2()
     {return this->PrincipalMoments[2];}
+  //@}
 
-  // Description:
-  // Given a tensor of inertia T0 about the center of mass of a body
-  // with mass m, calculate the tensor of inertia B about the point r.
-  // Note: Invariant under r -> -r, which can be handy.
+  //@{
+  /*! Given a tensor of inertia T0 about the center of mass of a body with
+      mass m, calculate the tensor of inertia B about the point r. Note:
+      Invariant under r -> -r, which can be handy. */
   static void TranslateTensorOfInertiaFromCOM(
       vtkboneTensor* T0,
       double mass,
       double r[3],
       vtkboneTensor* T);
+  //@}
 
-  // Description:
-  // Given a tensor of inertia T about some point r of a body with mass m,
-  // calculates the tensor of inertia B about the center of mass.
-  // Note: Invariant under r -> -r, which can be handy.
+  //@{
+  /*! Given a tensor of inertia T about some point r of a body with mass m,
+      calculates the tensor of inertia B about the center of mass. Note:
+      Invariant under r -> -r, which can be handy. */
   static void TranslateTensorOfInertiaToCOM(
       vtkboneTensor* T,
       double mass,
       double r[3],
       vtkboneTensor* T0);
+  //@}
 
-  // Description:
-  // Given a tensor of inertia T1 about some point r1 of a body with mass m,
-  // calculate the tensor of inertia T2 about some other point r2.
+  //@{
+  /*! Given a tensor of inertia T1 about some point r1 of a body with mass
+      m, calculate the tensor of inertia T2 about some other point r2. */
   static void TranslateTensorOfInertia(
       vtkboneTensor* T1,
       double r1[3],
       double mass,
       double r2[3],
       vtkboneTensor* T2);
+  //@}
 
 protected:
   vtkboneTensorOfInertia();

@@ -11,21 +11,23 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneSelectVisiblePoints - Selects points that are not obscured
-// by a set of Polygons.
-//
-// .SECTION Description
-// This filter takes two inputs.  Input 0 is a vtkPolyData that represents
-// polygons (a "surface") that might potentially obscure points.  Input 1 is
-// any type of vtkDataSet, that contains the Points to be tested for
-// visibility (the Cells of input 1 are ignored).  The output is a vtkPolyData
-// object contains all the visible cells, represented as a set of VTK_VERTEX.
-// The original Point Ids can be traced back by the PointData attribute PedigreeIds
-// array, it is exists.  Otherwise a PedigreeIds attribute array will be
-// generated for this purpose.
-//
-// .SECTION See Also
-// vtkSelection vtkSelectVisiblePoints
+/*! @class   vtkboneSelectVisiblePoints
+    @brief   Selects points that are not obscured
+ by a set of Polygons.
+
+
+ This filter takes two inputs.  Input 0 is a vtkPolyData that represents
+ polygons (a "surface") that might potentially obscure points.  Input 1 is
+ any type of vtkDataSet, that contains the Points to be tested for
+ visibility (the Cells of input 1 are ignored).  The output is a vtkPolyData
+ object contains all the visible cells, represented as a set of VTK_VERTEX.
+ The original Point Ids can be traced back by the PointData attribute PedigreeIds
+ array, it is exists.  Otherwise a PedigreeIds attribute array will be
+ generated for this purpose.
+
+    @sa
+ vtkSelection vtkSelectVisiblePoints
+*/
 
 #ifndef __vtkboneSelectVisiblePoints_h
 #define __vtkboneSelectVisiblePoints_h
@@ -40,26 +42,29 @@ public:
   vtkTypeMacro(vtkboneSelectVisiblePoints, vtkPolyDataAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Sets the tolerance for calculating intersection.  If any polygon
-  // lies within Tolerance of the ray of a point, that point is considered
-  // hidden.
+  //@{
+  /*! Sets the tolerance for calculating intersection.	If any polygon lies
+      within Tolerance of the ray of a point, that point is considered
+      hidden. */
   vtkSetMacro(Tolerance, float);
   vtkGetMacro(Tolerance, float);
+  //@}
 
-  // Description:
-  // Set get the normal vector from the object towards the viewer.
-  // Default is 0,0,1 .
+  //@{
+  /*! Set get the normal vector from the object towards the viewer. Default
+      is 0,0,1 . */
   vtkSetVector3Macro(NormalVector, double);
   vtkGetVector3Macro(NormalVector, double);
+  //@}
 
-  // Description:
-  // Find the distance from the point P along the vector V to the
-  // bounding box surface.
+  //@{
+  /*! Find the distance from the point P along the vector V to the bounding
+      box surface. */
   static double LineBoundsIntersection(
     double P[3],
     double V[3],
     double bounds[6]);
+  //@}
 
 protected:
   vtkboneSelectVisiblePoints();

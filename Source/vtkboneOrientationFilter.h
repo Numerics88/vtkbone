@@ -11,22 +11,24 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneOrientationFilter - select polygons that face a specified direction.
-//
-// .SECTION Description
-//
-// This filter passes through only polygons in a vtkPolyData that have a
-// positive dot product with a specified normal vector.
-//
-// The original Cell and Point Ids can be traced back by the
-// CellData/DataPointData attribute PedigreeIds arrays.
-//
-// This filter will use the Normals CellData array of the input data if
-// it exists, otherwise it will create it and attach it to the input
-// DataSet CellData.  (i.e. This filter might modify its input.  This
-// is done for efficiency to avoid unnecessarily recalculating normals.)
-// .SECTION See Also
-// vtkboneSelectVisiblePoints
+/*! @class   vtkboneOrientationFilter
+    @brief   select polygons that face a specified direction.
+
+
+
+ This filter passes through only polygons in a vtkPolyData that have a
+ positive dot product with a specified normal vector.
+
+ The original Cell and Point Ids can be traced back by the
+ CellData/DataPointData attribute PedigreeIds arrays.
+
+ This filter will use the Normals CellData array of the input data if
+ it exists, otherwise it will create it and attach it to the input
+ DataSet CellData.  (i.e. This filter might modify its input.  This
+ is done for efficiency to avoid unnecessarily recalculating normals.)
+    @sa
+ vtkboneSelectVisiblePoints
+*/
 
 #ifndef __vtkboneOrientationFilter_h
 #define __vtkboneOrientationFilter_h
@@ -41,11 +43,12 @@ public:
   vtkTypeMacro(vtkboneOrientationFilter, vtkPolyDataAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Set get the normal vector from the object towards the viewer.
-  // Default is 0,0,1 .
+  //@{
+  /*! Set get the normal vector from the object towards the viewer. Default
+      is 0,0,1 . */
   vtkSetVector3Macro(NormalVector, double);
   vtkGetVector3Macro(NormalVector, double);
+  //@}
 
 protected:
   vtkboneOrientationFilter();

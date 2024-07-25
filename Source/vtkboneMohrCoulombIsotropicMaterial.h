@@ -11,20 +11,22 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneVonMisesIsotropicMaterial - An object representing an
-//  isotropic Mohr Coulomb elastoplastic material.
-//
-// .SECTION Description
-// vtkboneMohrCoulombIsotropicMaterial stores the parameters for an
-// isotropic material with Mohr Coulomb elastoplastic properties.
-//
-// .SECTION See Also
-// vtkboneMaterialTable vtkboneFiniteElementModel
-// vtkboneGenerateHomogeneousMohrCoulombIsotropicMaterialTable
-// vtkboneGenerateHommingaMaterialTable
-// vtkboneLinearOrthotropicMaterial
-// vtkboneLinearAnistropicMaterial
-// vtkboneVonMisesIsotropicMaterial
+/*! @class   vtkboneVonMisesIsotropicMaterial
+    @brief   An object representing an
+  isotropic Mohr Coulomb elastoplastic material.
+
+
+ vtkboneMohrCoulombIsotropicMaterial stores the parameters for an
+ isotropic material with Mohr Coulomb elastoplastic properties.
+
+    @sa
+ vtkboneMaterialTable vtkboneFiniteElementModel
+ vtkboneGenerateHomogeneousMohrCoulombIsotropicMaterialTable
+ vtkboneGenerateHommingaMaterialTable
+ vtkboneLinearOrthotropicMaterial
+ vtkboneLinearAnistropicMaterial
+ vtkboneVonMisesIsotropicMaterial
+*/
 
 #ifndef __vtkboneMohrCoulombIsotropicMaterial_h
 #define __vtkboneMohrCoulombIsotropicMaterial_h
@@ -40,33 +42,31 @@ class VTKBONE_EXPORT vtkboneMohrCoulombIsotropicMaterial : public vtkboneLinearI
     vtkTypeMacro(vtkboneMohrCoulombIsotropicMaterial, vtkboneLinearIsotropicMaterial);
     void PrintSelf(ostream& os, vtkIndent indent) override;
 
-    // Description:
-    // Set/get c.
+    //@{
+    /*! Set/get c. */
     vtkSetMacro(C, double);
     vtkGetMacro(C, double);
+    //@}
 
-    // Description:
-    // Set/get phi.
+    //@{
+    /*! Set/get phi. */
     vtkSetMacro(Phi, double);
     vtkGetMacro(Phi, double);
+    //@}
 
-    // Description:
-    // Set the yield strengths in tension and compression.
-    // Note that the yield strength has units of stress.
-    // This is an alternate way to define a Mohr Coulomb material, and will
-    // determine C and Phi.
+    /*! Set the yield strengths in tension and compression. Note that the
+	yield strength has units of stress. This is an alternate way to
+	define a Mohr Coulomb material, and will determine C and Phi. */
     virtual void SetYieldStrengths (double YT, double YC);
 
-    // Description:
-    // Creates a copy of this object.
-    // You should almost certainly give the copy or the original a new name.
+    /*! Creates a copy of this object. You should almost certainly give the
+	copy or the original a new name. */
     virtual vtkboneMaterial* Copy() override;
 
-    // Description:
-    // Creates a copy of this object, with all the modulii scaled by
-    // factor.
-    // You should almost certainly give the copy or the original a new name.
-    // Note that you will have to delete the pointer when finished with it.
+    /*! Creates a copy of this object, with all the modulii scaled by
+	factor. You should almost certainly give the copy or the original a
+	new name. Note that you will have to delete the pointer when
+	finished with it. */
     virtual vtkboneMaterial* ScaledCopy(double factor) override;
 
   protected:

@@ -11,8 +11,10 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneFiniteElementModelAlgorithm - Superclass for algorithms that
-//  produce only vtkboneFiniteElementModel as output
+/*! @class   vtkboneFiniteElementModelAlgorithm
+    @brief   Superclass for algorithms that
+  produce only vtkboneFiniteElementModel as output
+*/
 
 #ifndef __vtkboneFiniteElementModelAlgorithm_h
 #define __vtkboneFiniteElementModelAlgorithm_h
@@ -31,17 +33,19 @@ public:
   vtkTypeMacro(vtkboneFiniteElementModelAlgorithm,vtkUnstructuredGridAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Get the output data object for a port on this algorithm.
+  //@{
+  /*! Get the output data object for a port on this algorithm. */
   vtkboneFiniteElementModel* GetOutput();
   vtkboneFiniteElementModel* GetOutput(int);
   virtual void SetOutput(vtkDataObject* d) override;
+  //@}
 
-  // Description:
-  // see vtkAlgorithm for details
+  //@{
+  /*! see vtkAlgorithm for details */
   virtual int ProcessRequest(vtkInformation*,
                              vtkInformationVector**,
                              vtkInformationVector*) override;
+  //@}
 
   // this method is not recommended for use, but lots of old style filters
   // use it
@@ -49,19 +53,21 @@ public:
   vtkDataObject *GetInput() { return this->GetInput(0); };
   vtkboneFiniteElementModel *GetFiniteElementModelInput(int port);
 
-  // Description:
-  // Assign a data object as input. Note that this method does not
-  // establish a pipeline connection. Use SetInputConnection() to
-  // setup a pipeline connection.
+  //@{
+  /*! Assign a data object as input. Note that this method does not
+      establish a pipeline connection. Use SetInputConnection() to setup a
+      pipeline connection. */
   void SetInputData(vtkDataObject *);
   void SetInputData(int, vtkDataObject*);
+  //@}
 
-  // Description:
-  // Assign a data object as input. Note that this method does not
-  // establish a pipeline connection. Use SetInputConnection() to
-  // setup a pipeline connection.
+  //@{
+  /*! Assign a data object as input. Note that this method does not
+      establish a pipeline connection. Use SetInputConnection() to setup a
+      pipeline connection. */
   void AddInputData(vtkDataObject *);
   void AddInputData(int, vtkDataObject*);
+  //@}
 
 protected:
   vtkboneFiniteElementModelAlgorithm();
@@ -72,32 +78,36 @@ protected:
                                  vtkInformationVector** inputVector,
                                  vtkInformationVector* outputVector) override;
 
-  // Description:
-  // This is called by the superclass.
-  // This is the method you should override.
+  //@{
+  /*! This is called by the superclass. This is the method you should
+      override. */
   virtual int RequestData(vtkInformation* request,
                           vtkInformationVector** inputVector,
                           vtkInformationVector* outputVector) override;
+  //@}
 
 
-  // Description:
-  // This is called by the superclass.
-  // This is the method you should override.
+  //@{
+  /*! This is called by the superclass. This is the method you should
+      override. */
   virtual int RequestDataObject(vtkInformation*,
                                 vtkInformationVector**,
                                 vtkInformationVector*);
+  //@}
 
-  // Description:
-  // This is called by the superclass.
-  // This is the method you should override.
+  //@{
+  /*! This is called by the superclass. This is the method you should
+      override. */
   virtual int RequestUpdateExtent(vtkInformation*,
                                   vtkInformationVector**,
                                   vtkInformationVector*) override;
+  //@}
 
-  // Description:
-  // This method is the old style execute method
+  //@{
+  /*! This method is the old style execute method */
   virtual void ExecuteData(vtkDataObject *output);
   virtual void Execute();
+  //@}
 
   // see algorithm for more info
   virtual int FillOutputPortInformation(int port, vtkInformation* info) override;

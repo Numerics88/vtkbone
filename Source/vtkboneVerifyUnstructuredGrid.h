@@ -11,20 +11,22 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneVerifyUnstructuredGrid - verifies the consistency of
-//  vtkUnstructuredGrid objects.
-//
-// .SECTION Description
-//  This object will generate a VTK error if the input fails a consistency
-//  tests.  The input is passed through unmodified to the output.
-//  At the moment, only datasets consisting entirely of cells of VTK_VOXEL
-//  can be checked.  This will be generalized to other cell types in future.
-//
-//  The tests are:
-//    1. Check that point and cell Ids are within range.
-//    2. Check the the topology of the cells (ie. the list of point Ids for
-//       each cell) is consistent with the cell type.
-//    3. Check that all attribute arrays have the correct length.
+/*! @class   vtkboneVerifyUnstructuredGrid
+    @brief   verifies the consistency of
+  vtkUnstructuredGrid objects.
+
+
+  This object will generate a VTK error if the input fails a consistency
+  tests.  The input is passed through unmodified to the output.
+  At the moment, only datasets consisting entirely of cells of VTK_VOXEL
+  can be checked.  This will be generalized to other cell types in future.
+
+  The tests are:
+    1. Check that point and cell Ids are within range.
+    2. Check the the topology of the cells (ie. the list of point Ids for
+       each cell) is consistent with the cell type.
+    3. Check that all attribute arrays have the correct length.
+*/
 
 #ifndef __vtkboneVerifyUnstructuredGrid_h
 #define __vtkboneVerifyUnstructuredGrid_h
@@ -42,11 +44,12 @@ public:
   vtkTypeMacro(vtkboneVerifyUnstructuredGrid, vtkUnstructuredGridAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Set/Get the point coordinate tolerance distance.  This tolerance is
-  // used when verifying cell topology.
+  //@{
+  /*! Set/Get the point coordinate tolerance distance.	This tolerance is
+      used when verifying cell topology. */
   vtkSetMacro(Tolerance, double);
   vtkGetMacro(Tolerance, double);
+  //@}
 
 protected:
   vtkboneVerifyUnstructuredGrid();

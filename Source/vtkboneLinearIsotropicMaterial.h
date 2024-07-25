@@ -11,19 +11,21 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneLinearIsotropicMaterial - An object representing a
-// linear isotropic material.
-//
-// .SECTION Description
-// vtkboneLinearIsotropicMaterial stores the parameters for a
-// linear isotropic material.
-//
-// .SECTION See Also
-// vtkboneMaterialTable vtkboneFiniteElementModel
-// vtkboneGenerateHomogeneousLinearIsotropicMaterialTable
-// vtkboneGenerateHommingaMaterialTable
-// vtkboneLinearOrthotropicMaterial
-// vtkboneLinearAnistropicMaterial
+/*! @class   vtkboneLinearIsotropicMaterial
+    @brief   An object representing a
+ linear isotropic material.
+
+
+ vtkboneLinearIsotropicMaterial stores the parameters for a
+ linear isotropic material.
+
+    @sa
+ vtkboneMaterialTable vtkboneFiniteElementModel
+ vtkboneGenerateHomogeneousLinearIsotropicMaterialTable
+ vtkboneGenerateHommingaMaterialTable
+ vtkboneLinearOrthotropicMaterial
+ vtkboneLinearAnistropicMaterial
+*/
 
 #ifndef __vtkboneLinearIsotropicMaterial_h
 #define __vtkboneLinearIsotropicMaterial_h
@@ -39,34 +41,31 @@ class VTKBONE_EXPORT vtkboneLinearIsotropicMaterial : public vtkboneMaterial
     vtkTypeMacro(vtkboneLinearIsotropicMaterial, vtkboneMaterial);
     void PrintSelf(ostream& os, vtkIndent indent) override;
 
-    // Description:
-    // Set the Young's modulus (E).
-    // Assuming that your length units are mm, then modulus units are MPa.
-    // Default is 6829 MPa.
+    //@{
+    /*! Set the Young's modulus (E). Assuming that your length units are
+	mm, then modulus units are MPa. Default is 6829 MPa. */
     vtkSetMacro(YoungsModulus, double);
     vtkGetMacro(YoungsModulus, double);
+    //@}
 
-    // Description:
-    // Set the isotropic Poisson's ratio (nu).
-    // Default is 0.3.
+    //@{
+    /*! Set the isotropic Poisson's ratio (nu). Default is 0.3. */
     vtkSetMacro(PoissonsRatio, double);
     vtkGetMacro(PoissonsRatio, double);
+    //@}
 
-    // Description:
-    // Get the isotropic shear modulus (G).  Note that for the isotropic case,
-    // this is given by G = E/(2*(1 + nu))
+    /*! Get the isotropic shear modulus (G).  Note that for the isotropic
+	case, this is given by G = E/(2*(1 + nu)) */
     double GetShearModulus();
 
-    // Description:
-    // Creates a copy of this object.
-    // You should almost certainly give the copy or the original a new name.
+    /*! Creates a copy of this object. You should almost certainly give the
+	copy or the original a new name. */
     virtual vtkboneMaterial* Copy() override;
 
-    // Description:
-    // Creates a copy of this object, with all the modulii scaled by
-    // factor.
-    // You should almost certainly give the copy or the original a new name.
-    // Note that you will have to delete the pointer when finished with it.
+    /*! Creates a copy of this object, with all the modulii scaled by
+	factor. You should almost certainly give the copy or the original a
+	new name. Note that you will have to delete the pointer when
+	finished with it. */
     virtual vtkboneMaterial* ScaledCopy(double factor) override;
 
   protected:

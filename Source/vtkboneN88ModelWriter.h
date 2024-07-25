@@ -11,20 +11,22 @@
      PURPOSE.  See the above copyright notice for more information.
 =========================================================================*/
 
-// .NAME vtkboneN88ModelWriter - writes an n88model file.
-// .SECTION Description
-// Takes as input a vtkboneFiniteElementModel and writes a n88model file,
-// suitable for input to the Numerics88 finite element solver.
-//
-// Note that the output file format is 1-indexed.  (vtkboneFiniteElementModel is 0-indexed.)
-//
-// Any arrays associated with the Points or the Cells are assumed to be
-// solution values, and are written as such, provided that (1) they are
-// named, and (2) they are not specified as any of the special arrays: Scalars,
-// Normals, GlobalIds, PedigreeIds.
-//
-// .SECTION See Also
-// vtkboneFiniteElementModel vtkboneFiniteElementModelGenerator
+/*! @class   vtkboneN88ModelWriter
+    @brief   writes an n88model file.
+
+ Takes as input a vtkboneFiniteElementModel and writes a n88model file,
+ suitable for input to the Numerics88 finite element solver.
+
+ Note that the output file format is 1-indexed.  (vtkboneFiniteElementModel is 0-indexed.)
+
+ Any arrays associated with the Points or the Cells are assumed to be
+ solution values, and are written as such, provided that (1) they are
+ named, and (2) they are not specified as any of the special arrays: Scalars,
+ Normals, GlobalIds, PedigreeIds.
+
+    @sa
+ vtkboneFiniteElementModel vtkboneFiniteElementModelGenerator
+*/
 
 #ifndef __vtkboneN88ModelWriter_h
 #define __vtkboneN88ModelWriter_h
@@ -51,16 +53,18 @@ public:
   vtkTypeMacro(vtkboneN88ModelWriter, vtkWriter);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
-  // Description:
-  // Specify file name of file to write.
+  //@{
+  /*! Specify file name of file to write. */
   vtkSetStringMacro(FileName);
   vtkGetStringMacro(FileName);
+  //@}
 
-  // Description:
-  // Set/get whether use compression when writing the data file.
+  //@{
+  /*! Set/get whether use compression when writing the data file. */
   vtkSetMacro(Compression, int);
   vtkGetMacro(Compression, int);
   vtkBooleanMacro(Compression, int);
+  //@}
 
 protected:
   vtkboneN88ModelWriter();
