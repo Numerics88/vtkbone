@@ -34,14 +34,12 @@ export WGET_PROG="@WGET@"              # wget (remote file retrieval)
 #
 export PROJECT_NAME=vtkbone
 
-# PATH_TO_VTK_DOX_SCRIPTS:
-# Path to the directory holding the Perl scripts used to produce the VTK doc
-# in Doxygen format. You need the VTK source files or a local copy of
-# these scripts.
+# PATH_TO_DOX_SCRIPTS:
+# Path to the directory holding the Perl script used to produce the index.
 # Example:
-#   PATH_TO_VTK_DOX_SCRIPTS=@VTK_SOURCE_DIR@/Utilities/Doxygen
+#   PATH_TO_DOX_SCRIPTS=@VTKBONE_SOURCE_DIR@/Utilities/Doxygen
 #
-export PATH_TO_VTK_DOX_SCRIPTS="@VTK_SOURCE_DIR@/Utilities/Doxygen"
+#export PATH_TO_DOX_SCRIPTS="@VTKBONE_SOURCE_DIR@/Utilities/Doxygen"
 
 # SOURCE_DIR:
 # Source directory. The top directory of the source files.
@@ -60,29 +58,17 @@ export SOURCE_DIR="@VTKBONE_SOURCE_DIR@"
 #
 export REL_PATH_TO_TOP=.
 
-# INTERMEDIATE_DOX_DIR:
-# Directory where the intermediate Doxygen files should be stored (mainly
-# these headers files converted from the VTK format to the Doxygen format).
-# This directory is erased at the end of this script, unless you comment
-# the corresponding line.
-# DOXTEMP might be used to simplify the syntax.
+# HEADER_DIR:
+# Directory where the header files are.
 # Example:
-#   DOXTEMP=DOXTEMP=@VTKBONE_BINARY_DIR@/Utilities/Doxygen
-#   INTERMEDIATE_DOX_DIR=$DOXTEMP/dox
-#
-export DOXTEMP="@VTKBONE_BINARY_DIR@/Utilities/Doxygen"
-export INTERMEDIATE_DOX_DIR="$DOXTEMP/dox"
+#   HEADER_DIR="@VTKBONE_SOURCE_DIR@/Source"
+export HEADER_DIR="@VTKBONE_SOURCE_DIR@/Source"
 
-# CVSWEB_CHECKOUT, CVSWEB_CHECKOUT_SUFFIX:
-# URL to the CVSWeb of the project, in checkout mode (i.e. appending a file
-# name to this URL will retrieve the contents of the file). In the same way
-# CVSWEB_CHECKOUT_SUFFIX is appended to the result.
+# DOXTEMP:
+# Temporary directory for generated files.
 # Example:
-#   CVSWEB_CHECKOUT=http://public.kitware.com/cgi-bin/cvsweb.cgi/~checkout~/VTK
-#   CVSWEB_CHECKOUT_SUFFIX=?cvsroot=CMake
-#
-export CVSWEB_CHECKOUT="http://public.kitware.com/cgi-bin/cvsweb.cgi/~checkout~/VTK/"
-export CVSWEB_CHECKOUT_SUFFIX="?cvsroot=VTK"
+#   DOXTEMP="@VTKBONE_BINARY_DIR@/Utilities/Doxygen"
+export DOXTEMP="@VTKBONE_BINARY_DIR@/Utilities/Doxygen"
 
 # DATA_ROOT:
 # Data directory. The root directory of the data files.
@@ -123,7 +109,7 @@ export ALLOW_ERASE_OUTPUT_DIRECTORY=ON
 # Example:
 #   COMPILE_HTML_HELP=ON
 #   COMPILE_HTML_HELP=@DOCUMENTATION_HTML_HELP@
-#   RESULTING_HTML_HELP_FILE=$DOXTEMP/vtk4.chm
+#   RESULTING_HTML_HELP_FILE=$DOXTEMP/vtk9.chm
 #
 export COMPILE_HTML_HELP=@DOCUMENTATION_HTML_HELP@
 export RESULTING_HTML_HELP_FILE="$DOXTEMP/$PROJECT_NAME.chm"
@@ -136,7 +122,7 @@ export RESULTING_HTML_HELP_FILE="$DOXTEMP/$PROJECT_NAME.chm"
 # Example:
 #   CREATE_HTML_TARZ_ARCHIVE=ON
 #   CREATE_HTML_TARZ_ARCHIVE=@DOCUMENTATION_HTML_TARZ@
-#   RESULTING_HTML_TARZ_ARCHIVE_FILE=$DOXTEMP/vtk4-html.tar.gz
+#   RESULTING_HTML_TARZ_ARCHIVE_FILE=$DOXTEMP/vtk9-html.tar.gz
 #
 export CREATE_HTML_TARZ_ARCHIVE=@DOCUMENTATION_HTML_TARZ@
 export RESULTING_HTML_TARZ_ARCHIVE_FILE="$DOXTEMP/$PROJECT_NAME-html.tar.gz"
@@ -148,43 +134,33 @@ export RESULTING_HTML_TARZ_ARCHIVE_FILE="$DOXTEMP/$PROJECT_NAME-html.tar.gz"
 # The tag file is expected to be compressed using gzip, but DO NOT include
 # the .gz extension in VTK_TAGFILE.
 # Note: your doxyfile must be tailored to make use-of or create this tag file.
-#    (using TAGFILES = vtk4-nightly.tag=http://www.vtk.org/doc/nightly/html
-#        or GENERATE_TAGFILE = "@FOO_BINARY_DIR@/Utilities/Doxygen/vtk4.tag")
+#    (using TAGFILES = vtk9-nightly.tag=https://www.vtk.org/doc/nightly/html
+#        or GENERATE_TAGFILE = "@FOO_BINARY_DIR@/Utilities/Doxygen/vtk9.tag")
 # Example:
 #   DOWNLOAD_VTK_TAGFILE=OFF
-#   VTK_TAGFILE=vtk4-nightly.tag
-#   VTK_TAGFILE_REMOTE_DIR=http://www.vtk.org/doc/nightly/html
+#   VTK_TAGFILE=vtk9-nightly.tag
+#   VTK_TAGFILE_REMOTE_DIR=https://www.vtk.org/doc/nightly/html
 #   VTK_TAGFILE_DEST_DIR=$DOXTEMP
 #
 export DOWNLOAD_VTK_TAGFILE=@DOCUMENTATION_DOWNLOAD_VTK_TAGFILE@
 export VTK_TAGFILE=vtkNightlyDoc.tag
-export VTK_TAGFILE_REMOTE_DIR="http://www.vtk.org/files/nightly"
+export VTK_TAGFILE_REMOTE_DIR="https://www.vtk.org/files/nightly"
 export VTK_TAGFILE_DEST_DIR="$DOXTEMP"
 
 # ----------------------------------------------------------------------------
-# Convert the VTKBONE headers to the Doxygen format.
-
-if test "x$PERL_PROG" != "xNOTFOUND" ; then
-    $PERL_PROG "$PATH_TO_VTK_DOX_SCRIPTS/doc_header2doxygen.pl" \
-        --to "$INTERMEDIATE_DOX_DIR" \
-        --relativeto "$SOURCE_DIR/$REL_PATH_TO_TOP" \
-        "$SOURCE_DIR/$REL_PATH_TO_TOP/Source"
-fi
-
-# ----------------------------------------------------------------------------
 # Build the full-text index.
-
-if test "x$PERL_PROG" != "xNOTFOUND" ; then
-    $PERL_PROG "$PATH_TO_VTK_DOX_SCRIPTS/doc_index.pl" \
-        --project "$PROJECT_NAME" \
-        --stop  "$PATH_TO_VTK_DOX_SCRIPTS/doc_index.stop" \
-        --store "doc_""$PROJECT_NAME""_index.dox" \
-        --to "$INTERMEDIATE_DOX_DIR" \
-        "$SOURCE_DIR/$REL_PATH_TO_TOP/Source"
-fi
+#
+#if test "x$PERL_PROG" != "xNOTFOUND" ; then
+#    $PERL_PROG "$PATH_TO_DOX_SCRIPTS/doc_index.pl" \
+#        --project "$PROJECT_NAME" \
+#        --stop  "$PATH_TO_DOX_SCRIPTS/doc_index.stop" \
+#        --store "doc_""$PROJECT_NAME""_index.dox" \
+#        --to "$HEADER_DIR" \
+#        "$SOURCE_DIR/$REL_PATH_TO_TOP/Source"
+#fi
 
 # ----------------------------------------------------------------------------
-# Retrieve the (gziped) VTK 4 tag file and decompress it
+# Retrieve the (gziped) VTK tag file and decompress it
 
 if test "x$DOWNLOAD_VTK_TAGFILE" == "xON" ; then
     if test "x$VTK_TAGFILE" != "x" ; then
@@ -213,18 +189,18 @@ fi
 
 # ----------------------------------------------------------------------------
 # Clean the HTML pages to remove the path to the intermediate Doxygen dir.
-
-if test "x$PERL_PROG" != "xNOTFOUND" ; then
-    $PERL_PROG "$PATH_TO_VTK_DOX_SCRIPTS/doc_rmpath.pl" \
-        --to "$INTERMEDIATE_DOX_DIR" \
-        --html "$OUTPUT_DIRECTORY/html"
-fi
+#
+#if test "x$PERL_PROG" != "xNOTFOUND" ; then
+#    $PERL_PROG "$PATH_TO_DOX_SCRIPTS/doc_rmpath.pl" \
+#        --to "$HEADER_DIR" \
+#        --html "$OUTPUT_DIRECTORY/html"
+#fi
 
 # ----------------------------------------------------------------------------
 # clean the HTML pages to remove layout pbs
 #
 #if test "x$PERL_PROG" != "xNOTFOUND" ; then
-#    $PERL_PROG $PATH_TO_VTK_DOX_SCRIPTS/doc_cleanhtml.pl \
+#    $PERL_PROG $PATH_TO_DOX_SCRIPTS/doc_cleanhtml.pl \
 #        --html "$OUTPUT_DIRECTORY/html"
 #fi
 
@@ -269,7 +245,7 @@ fi
 # Clean-up.
 
 # if test "x$RM_PROG" != "xNOTFOUND" ; then
-#     $RM_PROG -fr "$INTERMEDIATE_DOX_DIR"
+#     $RM_PROG -fr "$HEADER_DIR"
 # 
 #     if test "x$DOWNLOAD_VTK_TAGFILE" == "xON" ; then
 #         if test "x$VTK_TAGFILE" != "x" ; then

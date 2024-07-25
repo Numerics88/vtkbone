@@ -36,14 +36,13 @@ IMAGE_PATH           = "@VTKBONE_SOURCE_DIR@/Utilities/Doxygen"
 OUTPUT_DIRECTORY     = "@VTKBONE_BINARY_DIR@/Utilities/Doxygen/doc"
 
 INPUT                = \
- "@VTKBONE_BINARY_DIR@/Utilities/Doxygen/dox/Source" \
- "@VTKBONE_SOURCE_DIR@/Utilities/Doxygen/doc_vtkbone_mainpage.dox" \
- "@VTKBONE_BINARY_DIR@/Utilities/Doxygen/dox/doc_vtkbone_index.dox"
+ "@VTKBONE_SOURCE_DIR@/Source" \
+ "@VTKBONE_SOURCE_DIR@/Utilities/Doxygen/doc_vtkbone_mainpage.dox"
 
 EXCLUDE_PATTERNS     =
 EXCLUDE              =
 
-TAGFILES             = "@VTKBONE_BINARY_DIR@/Utilities/Doxygen/vtkNightlyDoc.tag=http://www.vtk.org/doc/nightly/html"
+TAGFILES             = "@VTKBONE_BINARY_DIR@/Utilities/Doxygen/vtkNightlyDoc.tag=https://www.vtk.org/doc/nightly/html"
 
 EXTRACT_ALL          = YES
 EXTRACT_PRIVATE      = NO
@@ -61,14 +60,11 @@ JAVADOC_AUTOBRIEF    = YES
 SORT_MEMBER_DOCS     = NO
 DISTRIBUTE_GROUP_DOC = YES
 TAB_SIZE             = 3
-DETAILS_AT_TOP       = YES
 
 FILE_PATTERNS        = *.h
 RECURSIVE            = NO
 
-HTML_ALIGN_MEMBERS   = YES
 ALPHABETICAL_INDEX   = YES
-COLS_IN_ALPHA_INDEX  = 3
 IGNORE_PREFIX        = vtkbone vtk
 
 ENABLE_PREPROCESSING = YES
