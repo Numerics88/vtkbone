@@ -169,7 +169,9 @@ list (APPEND VTKBONE_DISTRIBUTED_HDRS
 
 # Requires Boost
 # set (Boost_USE_STATIC_LIBS ON)
-find_package (Boost 1.61.0 COMPONENTS date_time filesystem thread system REQUIRED)
+find_package (Boost 1.70.0
+    COMPONENTS date_time filesystem thread system
+    CONFIG REQUIRED)
 
 # Requires n88util
 find_package (n88util 2.0 REQUIRED)
