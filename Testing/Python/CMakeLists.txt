@@ -1,4 +1,4 @@
-find_package (Python
+find_package (Python${VTK_PYTHON_VERSION}
     COMPONENTS Interpreter
     QUIET REQUIRED)
 
