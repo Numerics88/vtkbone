@@ -5,9 +5,9 @@ find_package(VTK REQUIRED)
 # Set suffix for VTK directories
 set(vtk_version_suffix "-${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}")
 
-# Use our version suffix for shared libraries
+# Use VTK version as suffix for our shared libraries
 if (BUILD_SHARED_LIBS)
-    set(vtkbone_library_suffix "${VTKBONE_SHORT_VERSION}")
+    set(vtkbone_library_suffix "${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}")
 else()
     set(vtkbone_library_suffix)
 endif()
