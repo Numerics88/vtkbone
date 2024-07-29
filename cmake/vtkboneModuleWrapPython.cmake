@@ -1,7 +1,7 @@
 # Create rules for Python wrapping
 
 find_package(Python${VTK_PYTHON_VERSION} QUIET
-    COMPONENTS Development.Module)
+    COMPONENTS Development)
 
 vtk_module_wrap_python(
     MODULES         ${vtkbone_modules}
