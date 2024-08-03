@@ -215,7 +215,6 @@ vtk_module_add_module (vtkbone::vtkbone
 # Link extra (non-VTK) libraries
 vtk_module_link (vtkbone::vtkbone
     PRIVATE
-        VTK::netcdf
         AimIO::AimIO
         pQCTIO::pQCTIO
         n88util::n88util
