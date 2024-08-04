@@ -190,8 +190,11 @@ if (VTKBONE_USE_VTKNETCDF)
     set (netCDF_INCLUDE_DIR)
     set (netCDF_LIBRARIES VTK::netcdf)
 else()
-    find_package (netCDF REQUIRED)
-    mark_as_advanced (netCDF_DIR)
+    if (WIN32)
+      # brings in necessary extra libs and definitions on windows
+      find_package (hdf5 CONFIG REQUIRED)
+    endif()
+    find_package (netCDF CONFIG REQUIRED)
 endif()
 
 # Add include directories
