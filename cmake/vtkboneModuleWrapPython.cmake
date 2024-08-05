@@ -15,6 +15,7 @@ vtk_module_wrap_python(
 
 vtk_module_python_default_destination(python_destination)
 string(CONCAT _content
+    "import vtkmodules\n"
     "from .vtkbone import *\n\n"
     "__all__ = ['vtkbone']\n"
     "__version__ = \"${VTKBONE_VERSION}\"\n")
