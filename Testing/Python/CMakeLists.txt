@@ -1,4 +1,4 @@
-find_package (Python${VTK_PYTHON_VERSION}
+find_package (Python3
     COMPONENTS Interpreter
     QUIET REQUIRED)
 
@@ -33,5 +33,5 @@ set (Tests
 
 foreach (test ${Tests})
   get_filename_component (TName ${test} NAME_WE)
-  add_test (${TName} ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/${test} -v)
+  add_test (${TName} ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/${test} -v)
 endforeach (test)
