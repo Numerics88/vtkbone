@@ -140,7 +140,7 @@ int vtkboneAIMReader::RequestInformation (
   switch (reader.buffer_type)
   {
     case AimIO::AimFile::AIMFILE_TYPE_CHAR:
-      scalarType = VTK_CHAR;
+      scalarType = VTK_UNSIGNED_CHAR;
       break;
     case AimIO::AimFile::AIMFILE_TYPE_SHORT:
       scalarType = VTK_SHORT;
@@ -233,7 +233,7 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
   switch( scalarType )
   {
 
-    case VTK_CHAR:
+    case VTK_UNSIGNED_CHAR:
     {
       vtkSmartPointer<vtkCharArray> carray = vtkSmartPointer<vtkCharArray>::New();
       carray->SetNumberOfComponents(1);
