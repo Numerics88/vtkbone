@@ -2,7 +2,7 @@
 #include "vtkImageData.h"
 #include "vtkObjectFactory.h"
 #include "vtkShortArray.h"
-#include "vtkCharArray.h"
+#include "vtkSignedCharArray.h"
 #include "vtkFloatArray.h"
 #include "vtkPointData.h"
 #include "vtkCellData.h"
@@ -140,7 +140,7 @@ int vtkboneAIMReader::RequestInformation (
   switch (reader.buffer_type)
   {
     case AimIO::AimFile::AIMFILE_TYPE_CHAR:
-      scalarType = VTK_UNSIGNED_CHAR;
+      scalarType = VTK_SIGNED_CHAR;
       break;
     case AimIO::AimFile::AIMFILE_TYPE_SHORT:
       scalarType = VTK_SHORT;
@@ -233,9 +233,9 @@ int vtkboneAIMReader::RequestData (vtkInformation*,
   switch( scalarType )
   {
 
-    case VTK_UNSIGNED_CHAR:
+    case VTK_SIGNED_CHAR:
     {
-      vtkSmartPointer<vtkCharArray> carray = vtkSmartPointer<vtkCharArray>::New();
+      vtkSmartPointer<vtkSignedCharArray> carray = vtkSmartPointer<vtkSignedCharArray>::New();
       carray->SetNumberOfComponents(1);
       carray->SetNumberOfValues(N);
       try
