@@ -262,6 +262,10 @@ void vtkboneAIMWriter::WriteData()
   switch (data->GetDataType())
   {
     case VTK_CHAR:
+      vtkErrorMacro(<<"Saving VTK_CHAR is deprecated, use VTK_SIGNED_CHAR.");
+      writer.WriteImageData ((char*)(data->WriteVoidPointer(0,0)));
+      break;
+    case VTK_SIGNED_CHAR:
       writer.WriteImageData ((char*)(data->WriteVoidPointer(0,0)));
       break;
     case VTK_SHORT:
@@ -271,7 +275,7 @@ void vtkboneAIMWriter::WriteData()
       writer.WriteImageData ((float*)(data->WriteVoidPointer(0,0)));
       break;
     default:
-      vtkErrorMacro(<<"Input must be of type VTK_CHAR, VTK_SHORT or VTK_FLOAT.");
+      vtkErrorMacro(<<"Input must be of type VTK_SIGNED_CHAR, VTK_SHORT or VTK_FLOAT.");
       return;
   }
 
