@@ -32,6 +32,7 @@ set (VTKBONE_WRAPPED_SRCS
     vtkboneImageConnectivityFilter.cxx
     vtkboneImageConnectivityMap.cxx
     vtkboneImageToMesh.cxx
+    vtkboneISQReader.cxx
     vtkboneInterpolateCoarseSolution.cxx
     vtkboneLinearIsotropicMaterial.cxx
     vtkboneLinearIsotropicMaterialArray.cxx
@@ -103,6 +104,7 @@ set (VTKBONE_DISTRIBUTED_HDRS
     vtkboneImageConnectivityFilter.h
     vtkboneImageConnectivityMap.h
     vtkboneImageToMesh.h
+    vtkboneISQReader.h
     vtkboneInterpolateCoarseSolution.h
     vtkboneLinearIsotropicMaterial.h
     vtkboneLinearIsotropicMaterialArray.h
