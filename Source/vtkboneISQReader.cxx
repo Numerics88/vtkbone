@@ -78,7 +78,7 @@ int vtkboneISQReader::RequestInformation (
   reader.filename = this->FileName;
   try
   {
-    reader.ReadIsqImageInfo();
+    reader.ReadImageInfo();
   }
   catch (const std::exception& e)
   {
@@ -176,7 +176,7 @@ int vtkboneISQReader::RequestData (vtkInformation*,
   reader.filename = this->FileName;
   try
   {
-    reader.ReadIsqImageInfo();
+    reader.ReadImageInfo();
   }
   catch (const std::exception& e)
   {
@@ -229,7 +229,7 @@ int vtkboneISQReader::RequestData (vtkInformation*,
       sarray->SetNumberOfValues(N);
       try
       {
-        reader.ReadIsqImageData((short*)(sarray->WriteVoidPointer(0,N)), N);
+        reader.ReadImageData((short*)(sarray->WriteVoidPointer(0,N)), N);
       }
       catch (const std::exception& e)
       {
