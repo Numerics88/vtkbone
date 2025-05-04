@@ -11,6 +11,7 @@
 #include "vtkInformationIntegerKey.h"
 #include "vtkStreamingDemandDrivenPipeline.h"
 #include "vtkSmartPointer.h"
+#include "AimIO/AimIO.h"
 #include "AimIO/IsqIO.h"
 #include <cassert>
 
@@ -133,7 +134,7 @@ int vtkboneISQReader::RequestInformation (
   int scalarType;
   switch (reader.buffer_type)
   {
-    case AimIO::AimFile::ISQFILE_TYPE_SHORT:
+    case AimIO::IsqFile::ISQFILE_TYPE_SHORT:
       scalarType = VTK_SHORT;
       break;
     default:
@@ -228,7 +229,7 @@ int vtkboneISQReader::RequestData (vtkInformation*,
       sarray->SetNumberOfValues(N);
       try
       {
-        reader.ReadImageData((short*)(sarray->WriteVoidPointer(0,N)), N);
+        reader.ReadIsqImageData((short*)(sarray->WriteVoidPointer(0,N)), N);
       }
       catch (const std::exception& e)
       {
