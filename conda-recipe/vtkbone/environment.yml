@@ -8,9 +8,9 @@ dependencies:
   - boost >=1.56
   - ninja
   - gtest
-  - libnetcdf =4.7
+  - libnetcdf >=4.7
   - pqctio
   - aimio
-  - vtk =8.2
+  - vtk >=8.2
   - tbb-devel
   - nose
