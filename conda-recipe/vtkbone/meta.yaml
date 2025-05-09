@@ -20,10 +20,10 @@ requirements:
     - gtest
     - python {{ python }}
     - boost >=1.57
-    - libnetcdf >=4.7
+    - libnetcdf >=4.8, <=4.8.1
     - pqctio
     - aimio
-    - vtk >=8.2
+    - vtk >=8.2, <=9.0
     - tbb-devel
     - nose
   host:
@@ -31,10 +31,10 @@ requirements:
   run:
     # - python {{ python }}
     - boost >=1.57
-    - libnetcdf >=4.7
+    - libnetcdf >=4.8, <=4.8.1
     - pqctio
     - aimio
-    - vtk >=8.2
+    - vtk >=8.2, <=9.0
 
 test:
   imports:
