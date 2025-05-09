@@ -1,0 +1,16 @@
+name: n88
+channels:
+  - friedchickean
+  - defaults
+dependencies:
+  - python >=3.7
+  - cmake >=3.30.3
+  - boost >=1.56
+  - ninja
+  - gtest
+  - libnetcdf =4.7
+  - pqctio
+  - aimio
+  - vtk =8.2
+  - tbb-devel
+  - nose

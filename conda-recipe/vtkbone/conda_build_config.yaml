@@ -6,9 +6,11 @@ cxx_compiler:
   - gxx                        # [linux]
   - clangxx                    # [osx]
   - vs2015                     # [win]
-macos_min_version:             # [osx]
-  - 10.9                       # [osx]
-MACOSX_DEPLOYMENT_TARGET:      # [osx]
-  - 10.9                       # [osx]
-CONDA_BUILD_SYSROOT:
-  - /opt/MacOSX10.9.sdk        # [osx]
+cxx_compiler_version:
+  - 14.0.6                     # [osx]
+  - 12                         # [linux]
+clang_variant:
+  - default
+channels:
+  - friedchickean
+  - defaults
