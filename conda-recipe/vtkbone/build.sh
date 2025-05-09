@@ -18,7 +18,7 @@ declare -a CMAKE_PLATFORM_FLAGS
 case $(uname | tr '[:upper:]' '[:lower:]') in
   linux*)
 		# See crazy vtk hacks here: https://github.com/conda-forge/vtk-feedstock/issues/86
-		sed -i '/vtkhdf5_LIBRARIES/d' $BUILD_PREFIX/lib/cmake/vtk-8.2/Modules/vtkhdf5.cmake
+		# sed -i '/vtkhdf5_LIBRARIES/d' $BUILD_PREFIX/lib/cmake/vtk-8.2/Modules/vtkhdf5.cmake
 
 		# Environment variables for nosetests
 		export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
