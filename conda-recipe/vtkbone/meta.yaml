@@ -27,9 +27,11 @@ requirements:
     - tbb-devel
     - nose
     - pugixml =1.11.4
+    - n88util
   host:
     - libcxx <=14.0.6
     - pugixml =1.11.4
+    - n88util
   run:
     # - python {{ python }}
     - boost >=1.57
