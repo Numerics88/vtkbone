@@ -39,15 +39,6 @@ jobs:
                 echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
                 echo "  - $XCODE_SDK" >> ./conda-recipe/vtkbone/conda_build_config.yaml
               fi
-
-          - name: (Debug) Check python version and current env
-            run: |
-              echo "Python version: $(python --version)"
-              echo "Current environment: $(conda info --envs | grep '*' | awk '{print $1}')"
-              echo "CONDA_BUILD_SYSROOT: $CONDA_BUILD_SYSROOT"
-              echo "OS: ${{ matrix.os }}"
-              echo "GITHUB_ENV: $GITHUB_ENV"
-              echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
             
           - name: Build and publish
             uses: openalea/action-build-publish-anaconda@v0.1.5

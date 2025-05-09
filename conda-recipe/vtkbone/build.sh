@@ -1,8 +1,17 @@
 set -x
 
+# (DEBUG) Check python version and conda environement before build
+python --version
+conda info
+conda list
+conda env list
+
+
 # Deactivate any existing conda environment to avoid mismatches with build config
 # Without this, the build fails for MacOS-13 runner
 conda deactivate
+
+python --version
 
 # Create build directory
 mkdir -p build
