@@ -16,7 +16,7 @@ jobs:
           matrix:
             # OS types: Windows x64, macOS 13 (last intel based runner), macOS latest (Apple silicon), and Ubuntu x64
             # ------------------------------------------------------
-            os: ["macos-latest"]
+            os: ["macos-13"]
             python-minor-version: [9]
 
         steps:
@@ -33,6 +33,11 @@ jobs:
                 echo "CONDA_BUILD_SYSROOT=/Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> $GITHUB_ENV
                 echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
                 echo "  - /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> ./conda-recipe/vtkbone/conda_build_config.yaml
+              elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+                XCODE_SDK="$(xcode-select -p)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+                echo "CONDA_BUILD_SYSROOT=$XCODE_SDK" >> $GITHUB_ENV
+                echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
+                echo "  - $XCODE_SDK" >> ./conda-recipe/vtkbone/conda_build_config.yaml
               fi
             
           - name: Build and publish
