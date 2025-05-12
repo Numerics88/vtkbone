@@ -28,9 +28,9 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
 		# sed -i '/vtkhdf5_LIBRARIES/d' $BUILD_PREFIX/lib/cmake/vtk-8.2/Modules/vtkhdf5.cmake
 
 		# Environment variables for nosetests
-		export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
-		export PYTHONPATH="${PREFIX}/lib/python${PY_VER}/site-packages/:${PYTHONPATH}"
+		export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"{PYTHONPATH}"
     ;;
+		export PYTHONPATH="${PREFIX}/lib/python${PY_VER}/site-packages/:$
   darwin*)
 		# Get the SDK
 		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT:PATH="${CONDA_BUILD_SYSROOT}")

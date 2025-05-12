@@ -9,13 +9,8 @@ cxx_compiler:
 cxx_compiler_version:
   - 14.0.6                     # [osx]
   - 12                         # [linux]
-MACOSX_DEPLOYMENT_TARGET:
-  - 12.0                       # [osx]
-  - 13.0                       # [osx]
-  - 14.0                       # [osx]
 clang_variant:
   - default
 channels:
   - friedchickean
-  - conda-forge
   - defaults
