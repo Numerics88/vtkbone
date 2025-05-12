@@ -14,3 +14,5 @@ dependencies:
   - vtk
   - tbb-devel
   - nose
+  - pugixml =1.11.4
+  - n88util
