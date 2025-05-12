@@ -23,7 +23,7 @@ requirements:
     - libnetcdf
     - pqctio
     - aimio
-    - vtk =9.4.2
+    - vtk >=9.1.0
     - tbb-devel
     - nose
     - pugixml
@@ -32,7 +32,7 @@ requirements:
     - libcxx <=14.0.6
     - pugixml
     - n88util
-    - vtk =9.4.2
+    - vtk >=9.1.0
   run:
     # - python {{ python }}
     - boost >=1.57

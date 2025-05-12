@@ -17,7 +17,7 @@ jobs:
             # OS types: Windows x64, macOS 13 (last intel based runner), macOS latest (Apple silicon), and Ubuntu x64
             # ------------------------------------------------------
             os: ["macos-latest", "macos-13"]
-            python-version: ["3.9"]
+            python-minor-version: [10]
 
         steps:
           - name: Checkout repo
