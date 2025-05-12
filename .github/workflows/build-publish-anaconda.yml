@@ -49,6 +49,15 @@ jobs:
                 echo "  - $XCODE_SDK" >> ./conda-recipe/vtkbone/conda_build_config.yaml
               fi
 
+          - name: Download OSX 11.1 SDK tar and extract to /Library/Developer/CommandLineTools/SDKs
+            if: startsWith(matrix.os, 'macos')
+            run: |
+              curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.1.sdk.tar.xz -o MacOSX11.1.sdk.tar.xz
+              sudo mkdir -p /Library/Developer/CommandLineTools/SDKs
+              tar -xJf MacOSX11.1.sdk.tar.xz -C /Library/Developer/CommandLineTools/SDKs
+              sudo chown -R $(whoami) /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk
+              sudo chmod -R 755 /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk
+
           - name: (Debug) Echo sdks libraries
             if: startsWith(matrix.os, 'macos')
             run: |
