@@ -4,17 +4,10 @@ set -x
 # Without this, the build fails for MacOS-13 runner
 # conda deactivate
 
-# (Debug) Check sdk and conda build sysroot
-echo "SDK: ${CONDA_BUILD_SYSROOT}"
-echo "Python Version: $(python --version)"
-
 # Create build directory
 mkdir -p build
 cd build
 BUILD_CONFIG=Release
-
-# (Debug) Check sdk and conda build sysroot
-echo "SDK: ${CONDA_BUILD_SYSROOT}"
 
 # Specify Python
 # PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
@@ -28,9 +21,9 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
 		# sed -i '/vtkhdf5_LIBRARIES/d' $BUILD_PREFIX/lib/cmake/vtk-8.2/Modules/vtkhdf5.cmake
 
 		# Environment variables for nosetests
-		export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"{PYTHONPATH}"
+		export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
+		export PYTHONPATH="${PREFIX}/lib/python${PY_VER}/site-packages/:${PYTHONPATH}"
     ;;
-		export PYTHONPATH="${PREFIX}/lib/python${PY_VER}/site-packages/:$
   darwin*)
 		# Get the SDK
 		CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT:PATH="${CONDA_BUILD_SYSROOT}")
