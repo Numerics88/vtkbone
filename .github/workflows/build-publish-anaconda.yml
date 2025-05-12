@@ -25,6 +25,15 @@ jobs:
             with:
               ref: kean/ci
               fetch-depth: 0
+          
+          - name: Echo Conda Build Sysroot and Mac XCode version and path
+            run: |
+              echo "CONDA_BUILD_SYSROOT=${{ env.CONDA_BUILD_SYSROOT }}"
+              echo "XCODE_SDK=$(xcode-select -p)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+              echo "XCODE_VERSION=$(xcodebuild -version | grep Xcode | awk '{print $2}')"
+              echo "XCODE_PATH=$(xcode-select -p)"
+              echo "XCODE_SDK_VERSION=$(xcodebuild -showsdks | grep macOS | awk '{print $2}')"
+              echo "XCODE_SDK_PATH=$(xcodebuild -showsdks | grep macOS | awk '{print $3}')"
 
           # - name: Set CONDA_BUILD_SYSROOT dynamically
           #   if: startsWith(matrix.os, 'macos')
