@@ -26,19 +26,19 @@ jobs:
               ref: kean/ci
               fetch-depth: 0
 
-          - name: Set CONDA_BUILD_SYSROOT dynamically
-            if: startsWith(matrix.os, 'macos')
-            run: |
-              if [[ "${{ matrix.os }}" == "macos-13" ]]; then
-                echo "CONDA_BUILD_SYSROOT=/Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> $GITHUB_ENV
-                echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
-                echo "  - /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> ./conda-recipe/vtkbone/conda_build_config.yaml
-              elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
-                XCODE_SDK="$(xcode-select -p)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
-                echo "CONDA_BUILD_SYSROOT=$XCODE_SDK" >> $GITHUB_ENV
-                echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
-                echo "  - $XCODE_SDK" >> ./conda-recipe/vtkbone/conda_build_config.yaml
-              fi
+          # - name: Set CONDA_BUILD_SYSROOT dynamically
+          #   if: startsWith(matrix.os, 'macos')
+          #   run: |
+          #     if [[ "${{ matrix.os }}" == "macos-13" ]]; then
+          #       echo "CONDA_BUILD_SYSROOT=/Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> $GITHUB_ENV
+          #       echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
+          #       echo "  - /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> ./conda-recipe/vtkbone/conda_build_config.yaml
+          #     elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+          #       XCODE_SDK="$(xcode-select -p)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+          #       echo "CONDA_BUILD_SYSROOT=$XCODE_SDK" >> $GITHUB_ENV
+          #       echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
+          #       echo "  - $XCODE_SDK" >> ./conda-recipe/vtkbone/conda_build_config.yaml
+          #     fi
             
           - name: Build and publish
             uses: openalea/action-build-publish-anaconda@v0.1.5

@@ -5,10 +5,16 @@ set -x
 # Without this, the build fails for MacOS-13 runner
 # conda deactivate
 
+# (Debug) Check sdk and conda build sysroot
+echo "SDK: ${CONDA_BUILD_SYSROOT}"
+
 # Create build directory
 mkdir -p build
 cd build
 BUILD_CONFIG=Release
+
+# (Debug) Check sdk and conda build sysroot
+echo "SDK: ${CONDA_BUILD_SYSROOT}"
 
 # Specify Python
 PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
