@@ -9,6 +9,15 @@ set -x
 echo "SDK: ${CONDA_BUILD_SYSROOT}"
 echo "Python Version: $(python --version)"
 
+echo "Selecting X-code"
+# Select Xcode with xcode-select
+if [[ $(uname) == "Darwin" ]]; then
+  if [[ -z $(xcode-select -p) ]]; then
+	echo "Xcode not found. Please install Xcode and run 'xcode-select --install'."
+	exit 1
+  fi
+fi
+
 # Create build directory
 mkdir -p build
 cd build
@@ -18,8 +27,8 @@ BUILD_CONFIG=Release
 echo "SDK: ${CONDA_BUILD_SYSROOT}"
 
 # Specify Python
-PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
-PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')
+# PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
+# PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')
 
 # OS specifics
 declare -a CMAKE_PLATFORM_FLAGS
@@ -55,15 +64,14 @@ cmake .. \
 	-DCMAKE_INSTALL_RPATH:PATH="${PREFIX}/lib" \
 	-DBUILD_SHARED_LIBS:BOOL=ON \
 	-DBOOST_ROOT:PATH="${PREFIX}" \
-	-DPYTHON_LIBRARY:PATH="${PYTHON_LIBRARY}" \
-	-DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
-	-DPython_ROOT_DIR:PATH="${PREFIX}" \
-	-DPython_FIND_STRATEGY="LOCATION" \
-	-DVTKBONE_PYTHON_VERSION:STRING="${PY_VER}" \
 	-DCMAKE_MODULE_PATH:PATH="${SRC_DIR}/cmake/modules" \
 	-DENABLE_TESTING:BOOL=ON \
 	"${CMAKE_PLATFORM_FLAGS[@]}"
 
+	# -DPython_FIND_STRATEGY="LOCATION" \
+	# -DPython_ROOT_DIR:PATH="${PREFIX}" \
+	# -DPYTHON_LIBRARY:PATH="${PYTHON_LIBRARY}" \
+	# -DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
 # Compile and install
 ninja install -v
 
