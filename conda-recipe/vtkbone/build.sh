@@ -7,6 +7,7 @@ set -x
 
 # (Debug) Check sdk and conda build sysroot
 echo "SDK: ${CONDA_BUILD_SYSROOT}"
+echo "Python Version: ${python --version}"
 
 # Create build directory
 mkdir -p build
