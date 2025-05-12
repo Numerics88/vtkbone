@@ -16,7 +16,7 @@ jobs:
           matrix:
             # OS types: Windows x64, macOS 13 (last intel based runner), macOS latest (Apple silicon), and Ubuntu x64
             # ------------------------------------------------------
-            os: ["macos-latest"]
+            os: ["macos-latest", "macos-13", "ubuntu-latest"]
             python-minor-version: [10]
 
         steps:
@@ -48,6 +48,11 @@ jobs:
                 echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
                 echo "  - $XCODE_SDK" >> ./conda-recipe/vtkbone/conda_build_config.yaml
               fi
+
+          - name: (Debug) Echo sdks libraries
+            if: startsWith(matrix.os, 'macos')
+            run: |
+              ls -l /Library/Developer/CommandLineTools/SDKs
             
           - name: Build and publish
             uses: openalea/action-build-publish-anaconda@v0.1.5
