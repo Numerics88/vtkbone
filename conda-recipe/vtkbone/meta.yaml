@@ -8,7 +8,7 @@ source:
 
 build:
   number: 0
-  # string: "py{{ CONDA_PY }}"
+  string: "py{{ CONDA_PY }}"
 
 # Note, boost has an upperbound right now to hanlde cmake correctly
 # and we need tbb-devel because of a CMake error upstream of VTK

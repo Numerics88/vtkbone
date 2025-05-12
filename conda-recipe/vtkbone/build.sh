@@ -12,10 +12,7 @@ echo "Python Version: $(python --version)"
 echo "Selecting X-code"
 # Select Xcode with xcode-select
 if [[ $(uname) == "Darwin" ]]; then
-  if [[ -z $(xcode-select -p) ]]; then
-	echo "Xcode not found. Please install Xcode and run 'xcode-select --install'."
-	exit 1
-  fi
+  sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 fi
 
 # Create build directory
@@ -66,12 +63,12 @@ cmake .. \
 	-DBOOST_ROOT:PATH="${PREFIX}" \
 	-DCMAKE_MODULE_PATH:PATH="${SRC_DIR}/cmake/modules" \
 	-DENABLE_TESTING:BOOL=ON \
+	-DPython_FIND_STRATEGY="LOCATION" \
+	-DPython_ROOT_DIR:PATH="${PREFIX}" \
+	-DPYTHON_LIBRARY:PATH="${PYTHON_LIBRARY}" \
+	-DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
 	"${CMAKE_PLATFORM_FLAGS[@]}"
 
-	# -DPython_FIND_STRATEGY="LOCATION" \
-	# -DPython_ROOT_DIR:PATH="${PREFIX}" \
-	# -DPYTHON_LIBRARY:PATH="${PYTHON_LIBRARY}" \
-	# -DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
 # Compile and install
 ninja install -v
 
