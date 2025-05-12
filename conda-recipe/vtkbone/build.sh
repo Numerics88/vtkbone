@@ -1,15 +1,12 @@
 set -x
 
+# Deactivate any existing conda environment to avoid mismatches with build config
+# Without this, the build fails for MacOS-13 runner
+# conda deactivate
 
 # (Debug) Check sdk and conda build sysroot
 echo "SDK: ${CONDA_BUILD_SYSROOT}"
 echo "Python Version: $(python --version)"
-
-echo "Selecting X-code"
-# Select Xcode with xcode-select
-if [[ $(uname) == "Darwin" ]]; then
-  sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-fi
 
 # Create build directory
 mkdir -p build
@@ -65,14 +62,10 @@ cmake .. \
 	-DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
 	"${CMAKE_PLATFORM_FLAGS[@]}"
 
-
-# Deactivate any existing conda environment to avoid mismatches with build config
-# Without this, the build fails for MacOS-13 runner
-conda deactivate
 # Compile and install
 ninja install -v
 
-conda activate
+# conda activate
 
 # Run tests
 nosetests ${SRC_DIR}/Testing/Python
