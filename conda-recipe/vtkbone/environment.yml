@@ -1,6 +1,7 @@
 name: n88
 channels:
   - friedchickean
+  - conda-forge
   - defaults
 dependencies:
   - python >=3.7
