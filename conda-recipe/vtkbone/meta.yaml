@@ -20,10 +20,10 @@ requirements:
     - gtest
     # - python {{ python }}
     - boost >=1.57
-    - libnetcdf >=4.8, <=4.8.1
+    - libnetcdf
     - pqctio
     - aimio
-    - vtk >=9.0.3, <= 9.4.1
+    - vtk
     - tbb-devel
     - nose
     - pugixml =1.11.4
@@ -35,10 +35,10 @@ requirements:
   run:
     # - python {{ python }}
     - boost >=1.57
-    - libnetcdf >=4.8, <=4.8.1
+    - libnetcdf
     - pqctio
     - aimio
-    - vtk >=9.0.3, <= 9.4.1
+    - vtk
 
 test:
   imports:
