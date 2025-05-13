@@ -13,4 +13,5 @@ clang_variant:
   - default
 channels:
   - friedchickean
+  - conda-forge
   - defaults

@@ -1,4 +1,3 @@
-
 package:
   name: vtkbone
   version: {{ GIT_DESCRIBE_TAG | lower | replace("v","") }}
@@ -10,36 +9,52 @@ build:
   number: 0
   string: "py{{ CONDA_PY }}"
 
-# Note, boost has an upperbound right now to hanlde cmake correctly
-# and we need tbb-devel because of a CMake error upstream of VTK
 requirements:
   build:
     - {{ compiler('cxx') }}
     - cmake >=3.12
     - ninja
     - gtest
-    # - python {{ python }}
-    - boost >=1.57
-    - libnetcdf >=4.8, <=4.8.1
+    - python {{ python }}
+    - boost 1.85
+    - libnetcdf
     - pqctio
     - aimio
-    - vtk >=9.0.3, <= 9.4.1
+    - vtk =9.3.1
+    - vtk-base =9.3.1
+    - qt6-main <=6.8.2,<6.9.0
     - tbb-devel
     - nose
-    - pugixml =1.11.4
-    - n88util
-  host:
-    - libcxx <=14.0.6
-    - pugixml =1.11.4
-    - n88util
-    - vtk >=9.0, <= 9.4.1
+    # - {{ compiler('cxx') }}
+    # - cmake >=3.19
+    # - ninja
+    # - gtest
+    # - boost =1.85
+    # - libnetcdf
+    # - pqctio
+    # - aimio
+    # - vtk =9.3.1
+    # - vtk-base =9.3.1
+    # - qt6-main <=6.8.2,<6.9.0
+    # - tbb-devel
+    # - nose
+    # - pugixml >=1.14,<1.15
+    # - n88util
+    # - libzlib >=1.3.1,<2.0
+    # - icu >=75.1,<76.0
   run:
-    # - python {{ python }}
-    - boost >=1.57
-    - libnetcdf >=4.8, <=4.8.1
+    - python {{ python }}
+    - boost =1.85
+    - libnetcdf
     - pqctio
     - aimio
-    - vtk >=9.0, <= 9.4.1
+    - vtk =9.3.1
+    - vtk-base =9.3.1
+  # host:
+  #   - libcxx
+  #   - pugixml >=1.14,<1.15
+  #   - n88util
+  #   - vtk =9.3.1
 
 test:
   imports:

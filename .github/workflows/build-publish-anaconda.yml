@@ -62,54 +62,57 @@ jobs:
             run: |
               ls -l /Library/Developer/CommandLineTools/SDKs
 
-          - name: Build and publish
-            uses: openalea/action-build-publish-anaconda@v0.1.5
-            with:
-              conda: conda-recipe/vtkbone
-              mamba: false
-              python: ${{ matrix.python-minor-version }}
-              numpy: '22'
-              channels: friedchickean, defaults
-              token: ${{ secrets.KEAN_CONDA_TOKEN }}
-              publish: true
-              label: main
+          # - name: Build and publish
+          #   uses: openalea/action-build-publish-anaconda@v0.1.5
+          #   with:
+          #     conda: conda-recipe/vtkbone
+          #     mamba: false
+          #     python: ${{ matrix.python-minor-version }}
+          #     numpy: '22'
+          #     channels: friedchickean, defaults
+          #     token: ${{ secrets.KEAN_CONDA_TOKEN }}
+          #     publish: true
+          #     label: main
 
           
-          # - name: Setup Conda
-          #   uses: conda-incubator/setup-miniconda@v3
-          #   with:
-          #     python-version: 3.${{ matrix.python-minor-version }}
-          #     auto-update-conda: false
-          #     auto-activate-base: true
+          - name: Setup Conda
+            uses: conda-incubator/setup-miniconda@v3
+            with:
+              python-version: 3.${{ matrix.python-minor-version }}
+              environment-file: conda-recipe/vtkbone/environment.yml
+              auto-update-conda: false
+              auto-activate-base: false
+              show-channel-urls: true
 
 
-          # - name: Check if n88 environment is activated
-          #   run: |
-          #     echo "Current conda environment: $CONDA_DEFAULT_ENV"
-          #     echo "Current conda prefix: $CONDA_PREFIX"
-          #     echo "Current conda path: $PATH"
-          #     echo "Current conda version: $(conda --version)"
-          #     echo "Current python version: $(python --version)"
-          #     echo "Current pip version: $(pip --version)"
-          #     echo "Current conda list: $(conda list)"
+          - name: Check if n88 environment is activated
+            run: |
+              echo "Current conda environment: $CONDA_DEFAULT_ENV"
+              echo "Current conda prefix: $CONDA_PREFIX"
+              echo "Current conda path: $PATH"
+              echo "Current conda version: $(conda --version)"
+              echo "Current python version: $(python --version)"
+              echo "Current pip version: $(pip --version)"
+              echo "Current conda list: $(conda list)"
 
-          # - name: Install conda-build & anaconda-client
-          #   run: |
-          #     conda install -y conda-build anaconda-client
+          - name: Install conda-build & anaconda-client
+            run: |
+              conda install -y conda-build anaconda-client
         
-          # - name: Build Conda package
-          #   run: |
-          #     echo "Current conda environment: $CONDA_DEFAULT_ENV"
-          #     conda build conda-recipe/vtkbone \
-          #       -c friedchickean -c defaults \
-          #       --python ${{ matrix.python-version }} \
-          #       --output-folder build_artifacts
+          - name: Build Conda package
+            run: |
+              echo "Current conda environment: $CONDA_DEFAULT_ENV"
+              conda activate n88
+              conda build conda-recipe/vtkbone \
+                -c friedchickean -c defaults \
+                --python ${{ matrix.python-version }} \
+                --output-folder build_artifacts
 
-          # - name: Upload Conda package to channel
-          #   run: |
-          #     PACKAGE_PATH=$(conda build conda-recipe/vtkbone \
-          #       -c friedchickean -c conda-forge \
-          #       --python ${{ matrix.python-version }} --output)
-          #     echo "Uploading $PACKAGE_PATH"
-          #     anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
+          - name: Upload Conda package to channel
+            run: |
+              PACKAGE_PATH=$(conda build conda-recipe/vtkbone \
+                -c friedchickean -c conda-forge \
+                --python ${{ matrix.python-version }} --output)
+              echo "Uploading $PACKAGE_PATH"
+              anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
             

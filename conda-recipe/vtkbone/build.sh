@@ -9,9 +9,11 @@ mkdir -p build
 cd build
 BUILD_CONFIG=Release
 
+echo "PREFIX: ${PREFIX}"
+
 # Specify Python
-# PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
-# PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')
+PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
+PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')
 
 # OS specifics
 declare -a CMAKE_PLATFORM_FLAGS
@@ -45,6 +47,8 @@ cmake .. \
 	-DCMAKE_PREFIX_PATH:PATH="${PREFIX}" \
 	-DCMAKE_INSTALL_PREFIX:PATH="${PREFIX}" \
 	-DCMAKE_INSTALL_RPATH:PATH="${PREFIX}/lib" \
+	-DQT_HOST_PATH:PATH="${PREFIX}" \
+	-DQT_HOST_PATH_CMAKE_DIR="${PREFIX}/lib/cmake" \
 	-DBUILD_SHARED_LIBS:BOOL=ON \
 	-DBOOST_ROOT:PATH="${PREFIX}" \
 	-DCMAKE_MODULE_PATH:PATH="${SRC_DIR}/cmake/modules" \
