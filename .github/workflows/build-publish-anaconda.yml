@@ -105,14 +105,14 @@ jobs:
               conda activate n88
               conda build conda-recipe/vtkbone \
                 -c friedchickean -c defaults \
-                --python ${{ matrix.python-version }} \
+                --python 3.${{ matrix.python-minor-version }} \
                 --output-folder build_artifacts
 
           - name: Upload Conda package to channel
             run: |
               PACKAGE_PATH=$(conda build conda-recipe/vtkbone \
                 -c friedchickean -c conda-forge \
-                --python ${{ matrix.python-version }} --output)
+                --python 3.${{ matrix.python-minor-version }} --output)
               echo "Uploading $PACKAGE_PATH"
               anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
             

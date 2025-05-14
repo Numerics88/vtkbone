@@ -59,7 +59,6 @@ cmake .. \
 	-DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
 	"${CMAKE_PLATFORM_FLAGS[@]}"
 
-
 echo "Macosx deployment target: ${MACOSX_DEPLOYMENT_TARGET}"
 # Compile and install
 ninja install -v
