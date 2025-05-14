@@ -1,9 +1,5 @@
 set -x
 
-# Deactivate any existing conda environment to avoid mismatches with build config
-# Without this, the build fails for MacOS-13 runner
-# conda deactivate
-
 # Create build directory
 mkdir -p build
 cd build
@@ -19,6 +15,7 @@ PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconf
 declare -a CMAKE_PLATFORM_FLAGS
 case $(uname | tr '[:upper:]' '[:lower:]') in
   linux*)
+		# (Old workaround for VTK 8.2.0)
 		# See crazy vtk hacks here: https://github.com/conda-forge/vtk-feedstock/issues/86
 		# sed -i '/vtkhdf5_LIBRARIES/d' $BUILD_PREFIX/lib/cmake/vtk-8.2/Modules/vtkhdf5.cmake
 
@@ -55,7 +52,6 @@ cmake .. \
     -DPython_ROOT_DIR:PATH="${PREFIX}" \
     -DPYTHON_LIBRARY:PATH="${PYTHON_LIBRARY}" \
     -DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
-    -DQT_HOST_PATH:PATH="${PREFIX}/lib/cmake/Qt6" \
 	-DVTK_GROUP_ENABLE_Qt=NO \
 	-DVTK_MODULE_ENABLE_VTK_GUISupportQt=NO \
 	-DVTK_MODULE_ENABLE_VTK_RenderingQt=NO \
@@ -64,8 +60,6 @@ cmake .. \
 echo "Macosx deployment target: ${MACOSX_DEPLOYMENT_TARGET}"
 # Compile and install
 ninja install -v
-
-# conda activate
 
 # Run tests
 nosetests ${SRC_DIR}/Testing/Python

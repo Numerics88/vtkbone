@@ -5,10 +5,10 @@ channels:
 dependencies:
   - python >=3.7
   - cmake >=3.30.3
-  - boost >=1.56
+  - boost =1.8.5
   - ninja
   - gtest
-  - libnetcdf
+  - libnetcdf =4.9.2
   - pqctio
   - aimio
   - vtk
