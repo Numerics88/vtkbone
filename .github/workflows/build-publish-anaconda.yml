@@ -25,7 +25,15 @@ jobs:
             with:
               ref: kean/ci
               fetch-depth: 0
-          
+
+          - name: Download OSX 11.1 SDK tar and extract to /Library/Developer/CommandLineTools/SDKs
+            if: startsWith(matrix.os, 'macos')
+            run: |
+              sudo mkdir -p /Library/Developer/CommandLineTools/SDKs
+              sudo chown -R $USER /Library/Developer/CommandLineTools/SDKs
+              curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.1.sdk.tar.xz -o MacOSX11.1.sdk.tar.xz
+              tar -xJf MacOSX11.1.sdk.tar.xz -C /Library/Developer/CommandLineTools/SDKs
+
           - name: Echo Conda Build Sysroot and Mac XCode version and path
             run: |
               echo "CONDA_BUILD_SYSROOT=${{ env.CONDA_BUILD_SYSROOT }}"
@@ -48,19 +56,6 @@ jobs:
                 echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
                 echo "  - $XCODE_SDK" >> ./conda-recipe/vtkbone/conda_build_config.yaml
               fi
-
-          - name: Download OSX 11.1 SDK tar and extract to /Library/Developer/CommandLineTools/SDKs
-            if: startsWith(matrix.os, 'macos')
-            run: |
-              sudo mkdir -p /Library/Developer/CommandLineTools/SDKs
-              sudo chown -R $USER /Library/Developer/CommandLineTools/SDKs
-              curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.1.sdk.tar.xz -o MacOSX11.1.sdk.tar.xz
-              tar -xJf MacOSX11.1.sdk.tar.xz -C /Library/Developer/CommandLineTools/SDKs
-
-          - name: (Debug) Echo sdks libraries
-            if: startsWith(matrix.os, 'macos')
-            run: |
-              ls -l /Library/Developer/CommandLineTools/SDKs
 
           - name: Build and publish
             uses: openalea/action-build-publish-anaconda@v0.1.5

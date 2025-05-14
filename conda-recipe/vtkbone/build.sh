@@ -40,8 +40,6 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
   *)
 esac
 
-echo "${PREFIX}/lib/cmake/Qt6"
-
 # CMake
 cmake .. \
     -G "Ninja" \

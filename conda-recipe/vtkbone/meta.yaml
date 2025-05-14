@@ -22,7 +22,7 @@ requirements:
     - libnetcdf >=4.8
     - pqctio
     - aimio
-    - vtk =9.0
+    - vtk =9.4.1
     - tbb-devel
     - nose
     - pugixml
