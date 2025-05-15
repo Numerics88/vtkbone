@@ -9,7 +9,29 @@ echo "PREFIX: ${PREFIX}"
 
 # Specify Python
 PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
-PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')
+# PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')
+PYTHON_LIBRARY=$(python -c '
+import sysconfig
+libdir = sysconfig.get_config_var("LIBDIR")
+ldlib = sysconfig.get_config_var("LDLIBRARY")
+if libdir and ldlib:
+    print(f"{libdir}/{ldlib}")
+else:
+    print("")
+')
+# Fallback to shared library if static library is missing
+if [[ ! -f "${PYTHON_LIBRARY}" ]]; then
+    PYTHON_LIBRARY="${BUILD_PREFIX}/lib/libpython${PY_VER}.dylib"
+fi
+echo "PYTHON_INCLUDE_DIR: ${PYTHON_INCLUDE_DIR}"
+echo "PYTHON_LIBRARY: ${PYTHON_LIBRARY}"
+ls ${PYTHON_INCLUDE_DIR}
+ls ${PYTHON_LIBRARY}
+
+ls ${BUILD_PREFIX}/lib/libpython3.10.dylib
+
+echo "${BUILD_PREFIX}"
+echo "${PREFIX}"
 
 # OS specifics
 declare -a CMAKE_PLATFORM_FLAGS
@@ -48,18 +70,18 @@ cmake .. \
     -DBOOST_ROOT:PATH="${PREFIX}" \
     -DCMAKE_MODULE_PATH:PATH="${SRC_DIR}/cmake/modules" \
     -DENABLE_TESTING:BOOL=ON \
+    -DVTKBONE_WRAP_PYTHON=ON \
     -DPython_FIND_STRATEGY="LOCATION" \
     -DPython_ROOT_DIR:PATH="${PREFIX}" \
     -DPYTHON_LIBRARY:PATH="${PYTHON_LIBRARY}" \
     -DPYTHON_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
-	-DVTK_GROUP_ENABLE_Qt=NO \
-	-DVTK_MODULE_ENABLE_VTK_GUISupportQt=NO \
-	-DVTK_MODULE_ENABLE_VTK_RenderingQt=NO \
-    "${CMAKE_PLATFORM_FLAGS[@]}"
+    -DVTK_GROUP_ENABLE_Qt=NO \
+    -DVTK_MODULE_ENABLE_VTK_GUISupportQt=NO \
+    -DVTK_MODULE_ENABLE_VTK_RenderingQt=NO \
+      "${CMAKE_PLATFORM_FLAGS[@]}"
 
-echo "Macosx deployment target: ${MACOSX_DEPLOYMENT_TARGET}"
 # Compile and install
 ninja install -v
 
-# # Run tests
-# nosetests ${SRC_DIR}/Testing/Python
+# Run tests
+nosetests ${SRC_DIR}/Testing/Python
