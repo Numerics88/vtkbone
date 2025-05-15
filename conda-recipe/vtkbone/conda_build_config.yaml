@@ -13,8 +13,6 @@ clang_variant:
   - default
 MACOSX_DEPLOYMENT_TARGET:
   - 11.1
-CONDA_BUILD_SYSROOT:
-  - /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk
 channels:
   - friedchickean
   - conda-forge
