@@ -65,32 +65,21 @@ jobs:
             uses: conda-incubator/setup-miniconda@v3
             with:
               python-version: 3.${{ matrix.python-minor-version }}
-              environment-file: conda-recipe/vtkbone/environment.yml
               auto-update-conda: false
               auto-activate-base: false
               show-channel-urls: true
 
 
-          - name: Check if n88 environment is activated
-            run: |
-              echo "Current conda environment: $CONDA_DEFAULT_ENV"
-              echo "Current conda prefix: $CONDA_PREFIX"
-              echo "Current conda path: $PATH"
-              echo "Current conda version: $(conda --version)"
-              echo "Current python version: $(python --version)"
-              echo "Current pip version: $(pip --version)"
-              echo "Current conda list: $(conda list)"
-
           - name: Install conda-build & anaconda-client
             run: |
               conda install -y conda-build anaconda-client
         
-          # - name: Build Conda package
-          #   run: |
-          #     conda build conda-recipe/vtkbone \
-          #       -c friedchickean -c conda-forge \
-          #       --python 3.${{ matrix.python-minor-version }} \
-          #       --output-folder build_artifacts
+          - name: Build Conda package
+            run: |
+              conda build conda-recipe/vtkbone \
+                -c friedchickean -c conda-forge \
+                --python 3.${{ matrix.python-minor-version }} \
+                --output-folder build_artifacts
 
           - name: Upload Conda package to channel
             run: |

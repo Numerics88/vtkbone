@@ -16,6 +16,7 @@ requirements:
     - ninja
     - gtest
     - boost =1.85.0
+    - python >=3.9,<3.12
     - libnetcdf >=4.8
     - pqctio
     - aimio
