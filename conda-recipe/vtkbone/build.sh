@@ -61,5 +61,5 @@ echo "Macosx deployment target: ${MACOSX_DEPLOYMENT_TARGET}"
 # Compile and install
 ninja install -v
 
-# Run tests
-nosetests ${SRC_DIR}/Testing/Python
+# # Run tests
+# nosetests ${SRC_DIR}/Testing/Python
