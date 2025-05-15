@@ -48,17 +48,17 @@ jobs:
                 echo "  - $XCODE_SDK" >> ./conda-recipe/vtkbone/conda_build_config.yaml
               fi
 
-          - name: Build and publish
-            uses: openalea/action-build-publish-anaconda@v0.1.5
-            with:
-              conda: conda-recipe/vtkbone
-              mamba: false
-              python: ${{ matrix.python-minor-version }}
-              numpy: '22'
-              channels: friedchickean, defaults
-              token: ${{ secrets.KEAN_CONDA_TOKEN }}
-              publish: true
-              label: main
+          # - name: Build and publish
+          #   uses: openalea/action-build-publish-anaconda@v0.1.5
+          #   with:
+          #     conda: conda-recipe/vtkbone
+          #     mamba: false
+          #     python: ${{ matrix.python-minor-version }}
+          #     numpy: '22'
+          #     channels: friedchickean, defaults
+          #     token: ${{ secrets.KEAN_CONDA_TOKEN }}
+          #     publish: true
+          #     label: main
 
           
           - name: Setup Conda
