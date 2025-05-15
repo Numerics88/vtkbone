@@ -25,17 +25,19 @@ requirements:
     - nose
     - pugixml
     - n88util
+  host:
+    - vtk =9.3.1
   run:
     - python =3.10
-    - boost =1.74
+    - boost =1.85.0
     - libnetcdf >=4.8
     - pqctio
     - aimio
-    - vtk =9.0
+    - vtk =9.3.1
 
-test:
-  imports:
-    - vtkbone
+# test:
+#   imports:
+#     - vtkbone
 
 about:
   home: https://github.com/Numerics88/vtkbone

@@ -48,44 +48,44 @@ jobs:
                 echo "  - $XCODE_SDK" >> ./conda-recipe/vtkbone/conda_build_config.yaml
               fi
 
-          # - name: Build and publish
-          #   uses: openalea/action-build-publish-anaconda@v0.1.5
-          #   with:
-          #     conda: conda-recipe/vtkbone
-          #     mamba: false
-          #     python: ${{ matrix.python-minor-version }}
-          #     numpy: '22'
-          #     channels: friedchickean, defaults
-          #     token: ${{ secrets.KEAN_CONDA_TOKEN }}
-          #     publish: true
-          #     label: main
+          - name: Build and publish
+            uses: openalea/action-build-publish-anaconda@v0.1.5
+            with:
+              conda: conda-recipe/vtkbone
+              mamba: false
+              python: ${{ matrix.python-minor-version }}
+              numpy: '22'
+              channels: friedchickean, defaults
+              token: ${{ secrets.KEAN_CONDA_TOKEN }}
+              publish: true
+              label: main
 
           
-          - name: Setup Conda
-            uses: conda-incubator/setup-miniconda@v3
-            with:
-              python-version: 3.${{ matrix.python-minor-version }}
-              auto-update-conda: false
-              auto-activate-base: false
-              show-channel-urls: true
+          # - name: Setup Conda
+          #   uses: conda-incubator/setup-miniconda@v3
+          #   with:
+          #     python-version: 3.${{ matrix.python-minor-version }}
+          #     auto-update-conda: false
+          #     auto-activate-base: false
+          #     show-channel-urls: true
 
 
-          - name: Install conda-build & anaconda-client
-            run: |
-              conda install -y conda-build anaconda-client
+          # - name: Install conda-build & anaconda-client
+          #   run: |
+          #     conda install -y conda-build anaconda-client
         
-          - name: Build Conda package
-            run: |
-              conda build conda-recipe/vtkbone \
-                -c friedchickean -c conda-forge \
-                --python 3.${{ matrix.python-minor-version }} \
-                --output-folder build_artifacts
+          # - name: Build Conda package
+          #   run: |
+          #     conda build conda-recipe/vtkbone \
+          #       -c friedchickean -c conda-forge \
+          #       --python 3.${{ matrix.python-minor-version }} \
+          #       --output-folder build_artifacts
 
-          - name: Upload Conda package to channel
-            run: |
-              PACKAGE_PATH=$(conda build conda-recipe/vtkbone \
-                -c friedchickean -c conda-forge \
-                --python 3.${{ matrix.python-minor-version }} --output)
-              echo "Uploading $PACKAGE_PATH"
-              anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
+          # - name: Upload Conda package to channel
+          #   run: |
+          #     PACKAGE_PATH=$(conda build conda-recipe/vtkbone \
+          #       -c friedchickean -c conda-forge \
+          #       --python 3.${{ matrix.python-minor-version }} --output)
+          #     echo "Uploading $PACKAGE_PATH"
+          #     anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
             
