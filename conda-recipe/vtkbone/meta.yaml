@@ -9,6 +9,7 @@ build:
   number: 0
   string: "py{{ CONDA_PY }}"
 
+# Refer to https://github.com/Numerics88/faimsuperbuild for requirements
 requirements:
   build:
     - {{ compiler('cxx') }}
@@ -16,24 +17,17 @@ requirements:
     - ninja
     - gtest
     - boost =1.85.0
-    - python =3.10
+    - python >3.8
     - libnetcdf >=4.8
+    - numpy >=1.24.3,<=1.26.4
     - pqctio
     - aimio
     - vtk =9.3.1
     - tbb-devel
-    - nose
     - pugixml
     - n88util
-  host:
-    - vtk =9.3.1
   run:
-    - python =3.10
-    - boost =1.85.0
-    - libnetcdf >=4.8
-    - pqctio
-    - aimio
-    - vtk =9.3.1
+    - python >3.8
 
 # test:
 #   imports:

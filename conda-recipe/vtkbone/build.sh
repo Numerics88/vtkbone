@@ -60,11 +60,13 @@ cmake .. \
     -DCMAKE_MODULE_PATH:PATH="${SRC_DIR}/cmake/modules" \
     -DENABLE_TESTING:BOOL=ON \
     -DVTKBONE_WRAP_PYTHON=ON \
+    -DVTK_DIR:PATH="${BUILD}/lib/cmake/vtk-9.0" \
     -DPython3_EXECUTABLE:FILEPATH="$(which python)" \
     -DPython3_LIBRARY:FILEPATH="${PYTHON_LIBRARY}" \
     -DPython3_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
     -DPython3_ROOT_DIR:PATH="${PREFIX})" \
     -DPython3_FIND_STRATEGY="LOCATION" \
+    -DENABLE_TESTING:BOOL=ON \
     "${CMAKE_PLATFORM_FLAGS[@]}"
     
 # Compile and install
@@ -77,4 +79,5 @@ echo "PYTHON_SITE_PACKAGES: ${PREFIX}/lib/python${PY_VER}/site-packages"
 echo "PYTHON_INCLUDE_DIR: ${PYTHON_INCLUDE_DIR}"
 
 # Run tests
+ctest --output-on-failure
 # nosetests ${SRC_DIR}/Testing/Python

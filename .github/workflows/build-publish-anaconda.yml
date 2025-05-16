@@ -16,8 +16,8 @@ jobs:
           matrix:
             # OS types: Windows x64, macOS 13 (last intel based runner), macOS latest (Apple silicon), and Ubuntu x64
             # ------------------------------------------------------
-            os: ["macos-latest", "macos-13"]
-            python-minor-version: [10]
+            os: ["macos-latest"]
+            python-minor-version: [12]
 
         steps:
           - name: Checkout repo
@@ -25,7 +25,8 @@ jobs:
             with:
               ref: kean/ci
               fetch-depth: 0
-
+          
+          # This was needed for <VTK 9.0. Remove if no longer needed
           - name: Download OSX 11.1 SDK tar and extract to /Library/Developer/CommandLineTools/SDKs
             if: startsWith(matrix.os, 'macos')
             run: |
@@ -59,33 +60,4 @@ jobs:
               token: ${{ secrets.KEAN_CONDA_TOKEN }}
               publish: true
               label: main
-
-          
-          # - name: Setup Conda
-          #   uses: conda-incubator/setup-miniconda@v3
-          #   with:
-          #     python-version: 3.${{ matrix.python-minor-version }}
-          #     auto-update-conda: false
-          #     auto-activate-base: false
-          #     show-channel-urls: true
-
-
-          # - name: Install conda-build & anaconda-client
-          #   run: |
-          #     conda install -y conda-build anaconda-client
-        
-          # - name: Build Conda package
-          #   run: |
-          #     conda build conda-recipe/vtkbone \
-          #       -c friedchickean -c conda-forge \
-          #       --python 3.${{ matrix.python-minor-version }} \
-          #       --output-folder build_artifacts
-
-          # - name: Upload Conda package to channel
-          #   run: |
-          #     PACKAGE_PATH=$(conda build conda-recipe/vtkbone \
-          #       -c friedchickean -c conda-forge \
-          #       --python 3.${{ matrix.python-minor-version }} --output)
-          #     echo "Uploading $PACKAGE_PATH"
-          #     anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
             
