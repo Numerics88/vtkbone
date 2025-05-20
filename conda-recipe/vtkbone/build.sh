@@ -85,4 +85,12 @@ ctest --output-on-failure
 # nosetests ${SRC_DIR}/Testing/Python
 
 # rename vtkbone.cpython-*.so to vtkbone.so
-mv ${PYTHONPATH}/vtkbone/vtkbone.cpython-*.so ${PYTHONPATH}/vtkbone/vtkbone.so
+site_packages_dir="${PREFIX}/lib/python${PY_VER}/site-packages/vtkbone"
+cd "$site_packages_dir"
+
+for f in vtkbone.cpython-*.so; do
+    if [[ -f "$f" && ! -f vtkbone.so ]]; then
+        mv "$f" vtkbone.so
+        echo "Renamed $f to vtkbone.so"
+    fi
+done
