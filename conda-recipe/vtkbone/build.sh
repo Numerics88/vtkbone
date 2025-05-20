@@ -74,6 +74,13 @@ cmake .. \
 # Compile and install
 ninja install -v
 
+# Fix the vtkbone.so file name to be consistent with what vtkboneModuleWrapPython.cmake expects
+cd ${PREFIX}/lib/python${PY_VER}/site-packages/vtkbone
+# Only rename if the file exists and the plain .so does not
+if [[ -f vtkbone.cpython-*.so && ! -f vtkbone.so ]]; then
+    mv vtkbone.cpython-*.so vtkbone.so
+fi
+
 find ${PREFIX} -name '*vtkbone*'
 
 # Print site_packages folder
