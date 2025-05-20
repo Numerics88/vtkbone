@@ -28,10 +28,18 @@ requirements:
     - n88util
   run:
     - python >3.8
+    - numpy >=1.24.3,<=1.26.4
+    - pqctio
+    - aimio
+    - tbb-devel
+    - pugixml
+    - n88util
+    - boost =1.85.0
+    - libnetcdf >=4.8
 
-# test:
-#   imports:
-#     - vtkbone
+  test:
+    imports:
+      - vtkbone
 
 about:
   home: https://github.com/Numerics88/vtkbone

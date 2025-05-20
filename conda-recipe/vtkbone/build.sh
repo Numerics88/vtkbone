@@ -17,6 +17,7 @@ if libdir and ldlib:
 else:
     print("")
 ')
+PYTHON_SITE_PACKAGES="${PREFIX}/lib/python${PY_VER}/site-packages"
 # Fallback to shared library if static library is missing
 if [[ ! -f "${PYTHON_LIBRARY}" ]]; then
     PYTHON_LIBRARY="${BUILD_PREFIX}/lib/libpython${PY_VER}.dylib"
@@ -64,13 +65,16 @@ cmake .. \
     -DPython3_EXECUTABLE:FILEPATH="$(which python)" \
     -DPython3_LIBRARY:FILEPATH="${PYTHON_LIBRARY}" \
     -DPython3_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
-    -DPython3_ROOT_DIR:PATH="${PREFIX})" \
+    -DPython3_ROOT_DIR:PATH="${PREFIX}" \
     -DPython3_FIND_STRATEGY="LOCATION" \
+    -DPYTHON_SITE_PACKAGES:PATH="${PYTHON_SITE_PACKAGES}" \
     -DENABLE_TESTING:BOOL=ON \
     "${CMAKE_PLATFORM_FLAGS[@]}"
     
 # Compile and install
 ninja install -v
+
+find ${PREFIX} -name '*vtkbone*'
 
 # Print site_packages folder
 echo "PYTHONPATH: ${PYTHONPATH}"

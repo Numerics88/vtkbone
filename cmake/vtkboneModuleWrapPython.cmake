@@ -3,7 +3,6 @@
 find_package(Python3 QUIET
     COMPONENTS Development)
 
-message(STATUS "Executing vtk_module_wrap_python for vtkbone")
 vtk_module_wrap_python(
     MODULES         ${vtkbone_modules}
     TARGET          vtkbone::vtkbonemodules
