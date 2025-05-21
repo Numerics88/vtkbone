@@ -16,7 +16,7 @@ jobs:
           matrix:
             # OS types: Windows x64, macOS 13 (last intel based runner), macOS latest (Apple silicon), and Ubuntu x64
             # ------------------------------------------------------
-            os: ["macos-13", "macos-latest", "ubuntu-latest"]
+            os: ["macos-13"]
             python-minor-version: [12]
 
         steps:
@@ -25,6 +25,31 @@ jobs:
             with:
               ref: kean/ci
               fetch-depth: 0
+          
+          # This was needed for <VTK 9.0. Remove if no longer needed
+          - name: Download OSX 11.1 SDK tar and extract to /Library/Developer/CommandLineTools/SDKs
+            if: startsWith(matrix.os, 'macos')
+            run: |
+              sudo mkdir -p /Library/Developer/CommandLineTools/SDKs
+              sudo chown -R $USER /Library/Developer/CommandLineTools/SDKs
+              curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.1.sdk.tar.xz -o MacOSX11.1.sdk.tar.xz
+              tar -xJf MacOSX11.1.sdk.tar.xz -C /Library/Developer/CommandLineTools/SDKs
+
+          - name: Set CONDA_BUILD_SYSROOT dynamically
+            if: startsWith(matrix.os, 'macos')
+            run: |
+              if [[ "${{ matrix.os }}" == "macos-13" ]]; then
+                echo "CONDA_BUILD_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk" >> $GITHUB_ENV
+                echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
+                echo "  - /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk >> ./conda-recipe/vtkbone/conda_build_config.yaml
+              fi
+
+          - name: (Debug) Print conda_build_config.yaml
+            run: |
+              echo "CONDA_BUILD_SYSROOT:"
+              cat ./conda-recipe/vtkbone/conda_build_config.yaml
+              echo "CONDA_BUILD_SYSROOT:"
+              echo $CONDA_BUILD_SYSROOT
 
           - name: Build and publish
             uses: openalea/action-build-publish-anaconda@v0.1.5
