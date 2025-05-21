@@ -41,7 +41,7 @@ jobs:
               if [[ "${{ matrix.os }}" == "macos-13" ]]; then
                 echo "CONDA_BUILD_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk" >> $GITHUB_ENV
                 echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
-                echo "  - /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk >> ./conda-recipe/vtkbone/conda_build_config.yaml
+                echo "  - /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk" >> ./conda-recipe/vtkbone/conda_build_config.yaml
               fi
 
           - name: (Debug) Print conda_build_config.yaml
