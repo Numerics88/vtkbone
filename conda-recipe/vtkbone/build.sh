@@ -71,8 +71,12 @@ cmake .. \
     -DENABLE_TESTING:BOOL=ON \
     "${CMAKE_PLATFORM_FLAGS[@]}"
     
+
+# Deactivate before running ninja
+conda deactivate
 # Compile and install
 ninja install -v
+conda activate
 
 # Print site_packages folder
 echo "PYTHONPATH: ${PYTHONPATH}"
