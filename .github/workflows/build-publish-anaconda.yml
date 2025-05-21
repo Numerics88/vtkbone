@@ -16,7 +16,7 @@ jobs:
           matrix:
             # OS types: Windows x64, macOS 13 (last intel based runner), macOS latest (Apple silicon), and Ubuntu x64
             # ------------------------------------------------------
-            os: ["macos-latest"]
+            os: ["macos-13"]
             python-minor-version: [9, 10, 11, 12]
 
         steps:
