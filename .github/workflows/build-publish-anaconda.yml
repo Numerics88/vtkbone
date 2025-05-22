@@ -67,10 +67,10 @@ jobs:
             uses: conda-incubator/setup-miniconda@v3
             with:
               python-version: 3.${{ matrix.python-minor-version }}
-              environment-file: conda-recipe/vtkbone/environment.yml
               auto-update-conda: false
               auto-activate-base: false
               show-channel-urls: true
+              channels: conda-forge, friedchickean
 
           - name: Install conda-build & anaconda-client
             run: |
