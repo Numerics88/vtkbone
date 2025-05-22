@@ -12,7 +12,6 @@ build:
 # Refer to https://github.com/Numerics88/faimsuperbuild for requirements
 requirements:
   build:
-    - {{ compiler('cxx') }}
     - cmake >=3.12
     - ninja
     - gtest
@@ -26,18 +25,10 @@ requirements:
     - tbb-devel
     - pugixml
     - n88util
+    - {{ compiler('cxx') }}
   run:
     - python {{ python }}
-    - numpy >=1.24.3,<=1.26.4
     - vtk =9.3.1
-    - pqctio
-    - aimio
-    - tbb-devel
-    - pugixml
-    - n88util
-    - boost =1.85.0
-    - libnetcdf >=4.8
-
   test:
     imports:
       - vtkbone
