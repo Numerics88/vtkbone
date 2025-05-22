@@ -6,6 +6,10 @@ cxx_compiler:
   - gxx                        # [linux]
   - clangxx                    # [osx]
   - vs2015                     # [win]
+MACOSX_DEPLOYMENT_TARGET:
+  - 13.4                       # [osx]
+  - 11.1                       # [osx]
+  - 15.0                       # [osx]
 channels:
   - friedchickean
   - conda-forge

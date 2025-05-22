@@ -49,10 +49,7 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
   *)
 esac
 
-which clang
-clang --version
-which ld
-ld --version || true
+echo $(which clang)
 
 # Conda's Clang is not compatible with intel mac runners, so we must force the use of system clang
 # See: https://github.com/llvm/llvm-project/issues/55836#issuecomment-1295200406
@@ -60,7 +57,7 @@ mv $CONDA_PREFIX/bin/clang $CONDA_PREFIX/bin/clang-conda
 mv $CONDA_PREFIX/bin/clang++ $CONDA_PREFIX/bin/clang++-conda
 
 echo "CLANG after renaming----"
-which clang
+echo $(which clang)
 
 # CMake
 cmake .. \
