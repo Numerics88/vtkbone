@@ -76,6 +76,7 @@ jobs:
         
           - name: Build Conda package
             run: |
+              source $CONDA/etc/profile.d/conda.sh
               echo "Current conda environment: $CONDA_DEFAULT_ENV"
               conda activate n88
               conda build conda-recipe/vtkbone \
