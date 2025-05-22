@@ -58,26 +58,15 @@ jobs:
               auto-activate-base: false
               show-channel-urls: true
 
-
-          - name: Check if n88 environment is activated
-            run: |
-              conda init
-              echo "Current conda environment: $CONDA_DEFAULT_ENV"
-              echo "Current conda prefix: $CONDA_PREFIX"
-              echo "Current conda path: $PATH"
-              echo "Current conda version: $(conda --version)"
-              echo "Current python version: $(python --version)"
-              echo "Current pip version: $(pip --version)"
-              echo "Current conda list: $(conda list)"
-
           - name: Install conda-build & anaconda-client
             run: |
               conda install -y conda-build anaconda-client
+              
         
-          - name: Build Conda package
+          - name: Build Conda package with environemnt.yaml
             run: |
               source $CONDA/etc/profile.d/conda.sh
-              echo "Current conda environment: $CONDA_DEFAULT_ENV"
+              conda env create -f conda-recipe/vtkbone/environment.yml
               conda activate n88
               conda build conda-recipe/vtkbone \
                 -c friedchickean -c defaults \
@@ -91,6 +80,7 @@ jobs:
                 --python 3.${{ matrix.python-minor-version }} --output)
               echo "Uploading $PACKAGE_PATH"
               anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
+            
 
 
           # - name: Build and publish
