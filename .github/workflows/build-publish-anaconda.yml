@@ -26,12 +26,6 @@ jobs:
               ref: kean/ci
               fetch-depth: 0
           
-          # Fix to incompatible !tapi. See https://forum.freecad.org/viewtopic.php?t=38548
-          - name: Delete SDK folder
-            if: startsWith(matrix.os, 'macos-13')
-            run: |
-              sudo rm -rf /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-          
           # This was needed for <VTK 9.0. Remove if no longer needed
           - name: Download OSX 11.1 SDK tar
             if: startsWith(matrix.os, 'macos-13')

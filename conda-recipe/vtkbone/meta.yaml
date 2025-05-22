@@ -24,7 +24,8 @@ requirements:
     - aimio
     - n88util
     - libcxx >=20.0
-    # - {{ compiler('cxx') }}
+    - {{ compiler('cxx') }}
+    # - {{ compiler('c') }}
     # - vtk =9.3.1
     # - tbb-devel
     # - pugixml

@@ -49,6 +49,18 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
   *)
 esac
 
+which clang
+clang --version
+which ld
+ld --version || true
+
+# Save the original conda clang
+mv $CONDA_PREFIX/bin/clang $CONDA_PREFIX/bin/clang-conda
+mv $CONDA_PREFIX/bin/clang++ $CONDA_PREFIX/bin/clang++-conda
+
+echo "CLANG after renaming----"
+which clang
+
 # CMake
 cmake .. \
     -G "Ninja" \
