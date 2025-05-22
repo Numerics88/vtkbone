@@ -68,7 +68,7 @@ jobs:
             with:
               python-version: 3.${{ matrix.python-minor-version }}
               auto-update-conda: false
-              auto-activate-base: false
+              auto-activate-base: true
               show-channel-urls: true
               channels: conda-forge, friedchickean
 
