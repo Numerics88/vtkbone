@@ -72,6 +72,11 @@ jobs:
               show-channel-urls: true
               channels: conda-forge, friedchickean
 
+          - name: Create conda environment
+            run: |
+              conda create -n buildenv -y python=3.${{ matrix.python-minor-version }}
+              conda activate buildenv
+
           - name: Install conda-build & anaconda-client
             run: |
               conda install -y conda-build anaconda-client
