@@ -28,7 +28,7 @@ jobs:
           
           # This was needed for <VTK 9.0. Remove if no longer needed
           - name: Download OSX 11.1 SDK tar and extract to /Library/Developer/CommandLineTools/SDKs
-            if: startsWith(matrix.os, 'macos')
+            if: startsWith(matrix.os, 'macos-13')
             run: |
               sudo mkdir -p /Library/Developer/CommandLineTools/SDKs
               sudo chown -R $USER /Library/Developer/CommandLineTools/SDKs
@@ -36,13 +36,11 @@ jobs:
               tar -xJf MacOSX11.1.sdk.tar.xz -C /Library/Developer/CommandLineTools/SDKs
 
           - name: Set CONDA_BUILD_SYSROOT dynamically
-            if: startsWith(matrix.os, 'macos')
+            if: startsWith(matrix.os, 'macos-13')
             run: |
-              if [[ "${{ matrix.os }}" == "macos-13" ]]; then
                 echo "CONDA_BUILD_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk" >> $GITHUB_ENV
                 echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
                 echo "  - /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk" >> ./conda-recipe/vtkbone/conda_build_config.yaml
-              fi
 
           - name: (Debug) Print conda_build_config.yaml
             run: |
@@ -50,6 +48,48 @@ jobs:
               cat ./conda-recipe/vtkbone/conda_build_config.yaml
               echo "CONDA_BUILD_SYSROOT:"
               echo $CONDA_BUILD_SYSROOT
+
+          - name: Setup Conda
+            uses: conda-incubator/setup-miniconda@v3
+            with:
+              python-version: 3.${{ matrix.python-minor-version }}
+              environment-file: conda-recipe/vtkbone/environment.yml
+              auto-update-conda: false
+              auto-activate-base: false
+              show-channel-urls: true
+
+
+          - name: Check if n88 environment is activated
+            run: |
+              echo "Current conda environment: $CONDA_DEFAULT_ENV"
+              echo "Current conda prefix: $CONDA_PREFIX"
+              echo "Current conda path: $PATH"
+              echo "Current conda version: $(conda --version)"
+              echo "Current python version: $(python --version)"
+              echo "Current pip version: $(pip --version)"
+              echo "Current conda list: $(conda list)"
+
+          - name: Install conda-build & anaconda-client
+            run: |
+              conda install -y conda-build anaconda-client
+        
+          - name: Build Conda package
+            run: |
+              echo "Current conda environment: $CONDA_DEFAULT_ENV"
+              conda activate n88
+              conda build conda-recipe/vtkbone \
+                -c friedchickean -c defaults \
+                --python 3.${{ matrix.python-minor-version }} \
+                --output-folder build_artifacts
+
+          - name: Upload Conda package to channel
+            run: |
+              PACKAGE_PATH=$(conda build conda-recipe/vtkbone \
+                -c friedchickean -c conda-forge \
+                --python 3.${{ matrix.python-minor-version }} --output)
+              echo "Uploading $PACKAGE_PATH"
+              anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
+
 
           # - name: Build and publish
           #   uses: openalea/action-build-publish-anaconda@v0.1.5
@@ -63,21 +103,7 @@ jobs:
           #     publish: true
           #     label: main
 
-          - name: Setup Conda
-            uses: conda-incubator/setup-miniconda@v3
-            with:
-              python-version: 3.${{ matrix.python-minor-version }}
-              auto-update-conda: false
-              auto-activate-base: true
-
-          - name: Create conda environment from environment.yml
-            run: |
-              conda env create -f conda-recipe/vtkbone/environment.yml
-              conda activate n88
-
-          - name: Build and Upload Conda package to channel
-            run: |
-              conda-build conda-recipe/vtkbone -c friedchickean -c conda-forge --variants "{'python': ['3.12']}"
+          
           
           
             
