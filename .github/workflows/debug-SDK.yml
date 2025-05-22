@@ -24,3 +24,9 @@ jobs:
               xcode-select -p
               echo "ls -l /Library/Developer/CommandLineTools/SDKs"
               ls -l /Library/Developer/CommandLineTools/SDKs
+              echo "----"
+              echo "ls -l /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs"
+              ls -l /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+              echo "----"
+              echo "ls -l /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+              ls -l /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
