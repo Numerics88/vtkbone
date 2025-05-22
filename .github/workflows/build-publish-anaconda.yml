@@ -61,6 +61,7 @@ jobs:
 
           - name: Check if n88 environment is activated
             run: |
+              conda init
               echo "Current conda environment: $CONDA_DEFAULT_ENV"
               echo "Current conda prefix: $CONDA_PREFIX"
               echo "Current conda path: $PATH"
