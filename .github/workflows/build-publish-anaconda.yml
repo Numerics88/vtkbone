@@ -78,10 +78,7 @@ jobs:
 
           - name: Build and Upload Conda package to channel
             run: |
-              PACKAGE_PATH=$(conda build conda-recipe/vtkbone \
-                -c friedchickean -c conda-forge \
-                --python 3.${{ matrix.python-minor-version }} --output)
-              echo "Uploading $PACKAGE_PATH"
-              anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
+              conda-build conda-recipe/vtkbone -c friedchickean -c conda-forge --variants "{'python': ['3.12']}"
+          
           
             
