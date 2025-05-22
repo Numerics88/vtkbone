@@ -16,7 +16,7 @@ jobs:
           matrix:
             # OS types: Windows x64, macOS 13 (last intel based runner), macOS latest (Apple silicon), and Ubuntu x64
             # ------------------------------------------------------
-            os: ["macos-13"]
+            os: ["macos-13", "macos-latest"]
             python-minor-version: [12]
 
         steps:
@@ -62,4 +62,5 @@ jobs:
               token: ${{ secrets.KEAN_CONDA_TOKEN }}
               publish: true
               label: main
+          
             

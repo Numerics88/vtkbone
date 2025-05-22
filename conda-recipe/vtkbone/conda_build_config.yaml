@@ -6,6 +6,8 @@ cxx_compiler:
   - gxx                        # [linux]
   - clangxx                    # [osx]
   - vs2015                     # [win]
+CONDA_BUILD_SYSROOT:
+  - /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk # [osx]
 channels:
   - friedchickean
   - conda-forge
