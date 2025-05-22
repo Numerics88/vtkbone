@@ -72,16 +72,7 @@ jobs:
                 -c friedchickean -c defaults \
                 --python 3.${{ matrix.python-minor-version }} \
                 --output-folder build_artifacts
-
-          - name: Upload Conda package to channel
-            run: |
-              PACKAGE_PATH=$(conda build conda-recipe/vtkbone \
-                -c friedchickean -c conda-forge \
-                --python 3.${{ matrix.python-minor-version }} --output)
-              echo "Uploading $PACKAGE_PATH"
-              anaconda -t ${{ secrets.KEAN_CONDA_TOKEN }} upload "$PACKAGE_PATH" --label main
             
-
 
           # - name: Build and publish
           #   uses: openalea/action-build-publish-anaconda@v0.1.5
