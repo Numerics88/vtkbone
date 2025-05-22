@@ -23,6 +23,7 @@ requirements:
     - pqctio
     - aimio
     - n88util
+    - libcxx >=20.0
     - {{ compiler('cxx') }}
     # - vtk =9.3.1
     # - tbb-devel
@@ -30,6 +31,7 @@ requirements:
     # - libnetcdf >=4.8
   run:
     - python {{ python }}
+    - libcxx >=20.0
     - vtk =9.3.1
   test:
     imports:
