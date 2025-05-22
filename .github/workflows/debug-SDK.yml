@@ -1,9 +1,9 @@
 name: Debug SDK folder for MacOS 13
 
 on:
-    push:
-        branches:
-            - kean/ci
+    # push:
+    #     branches:
+    #         - kean/ci
     workflow_dispatch:
 
 jobs:
