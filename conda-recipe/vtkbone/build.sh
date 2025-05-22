@@ -49,6 +49,9 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
   *)
 esac
 
+# Deactivate before running CMake
+conda deactivate
+
 # CMake
 cmake .. \
     -G "Ninja" \
@@ -71,12 +74,10 @@ cmake .. \
     -DENABLE_TESTING:BOOL=ON \
     "${CMAKE_PLATFORM_FLAGS[@]}"
     
+conda activate
 
-# Deactivate before running ninja
-conda deactivate
 # Compile and install
 ninja install -v
-conda activate
 
 # Print site_packages folder
 echo "PYTHONPATH: ${PYTHONPATH}"
