@@ -1,0 +1,26 @@
+name: Debug SDK folder for MacOS 13
+
+on:
+    push:
+        branches:
+            - kean/ci
+    workflow_dispatch:
+
+jobs:
+    debug:
+        name: Debug SDK folder for MacOS 13
+        runs-on: macos-13
+        steps:
+          - name: Checkout repo
+            uses: actions/checkout@v4
+            with:
+              ref: kean/ci
+              fetch-depth: 0
+
+          - name: Print SDK folder
+            run: |
+              ls -l /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+              echo "xcode-select -p"
+              xcode-select -p
+              echo "ls -l /Library/Developer/CommandLineTools/SDKs"
+              ls -l /Library/Developer/CommandLineTools/SDKs

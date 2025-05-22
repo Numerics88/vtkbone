@@ -3,9 +3,9 @@
 name: Conda Build And Publish
 
 on:
-    push:
-        branches:
-            - kean/ci
+    # push:
+    #     branches:
+    #         - kean/ci
     workflow_dispatch:
 
 jobs:
