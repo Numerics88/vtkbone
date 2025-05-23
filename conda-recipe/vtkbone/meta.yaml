@@ -32,6 +32,10 @@ requirements:
   run:
     - python {{ python }}
     - vtk =9.3.1
+    - numpy >=1.24.3,<=1.26.4
+    - pqctio
+    - aimio
+    - n88util
   test:
     imports:
       - vtkbone
