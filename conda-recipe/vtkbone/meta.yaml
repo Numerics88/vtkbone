@@ -23,7 +23,7 @@ requirements:
     - pqctio
     - aimio
     - n88util
-    - {{ compiler('cxx') }}
+    # - {{ compiler('cxx') }}
     # - {{ compiler('c') }}
     # - vtk =9.3.1
     # - tbb-devel

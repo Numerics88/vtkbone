@@ -33,6 +33,9 @@ jobs:
               xcode-select -p
               xcodebuild -showsdks
               xcodebuild -version
+              echo "CONDA_BUILD_SYSROOT=/Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> $GITHUB_ENV
+              echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
+              echo "  - /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> ./conda-recipe/vtkbone/conda_build_config.yaml
           
           # # This was needed for <VTK 9.0. Remove if no longer needed
           # - name: Download OSX 11.1 SDK tar
