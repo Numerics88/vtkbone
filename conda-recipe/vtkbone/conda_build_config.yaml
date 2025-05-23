@@ -1,7 +1,7 @@
 c_compiler:
   - gcc                        # [linux]
   - clang                      # [osx]
-  - vs2019                     # [win]
+  - vs2015                     # [win]
 cxx_compiler:
   - gxx                        # [linux]
   - clangxx                    # [osx]
