@@ -27,10 +27,6 @@ fi
 declare -a CMAKE_PLATFORM_FLAGS
 case $(uname | tr '[:upper:]' '[:lower:]') in
   linux*)
-		# (Old workaround for VTK 8.2.0)
-		# See crazy vtk hacks here: https://github.com/conda-forge/vtk-feedstock/issues/86
-		# sed -i '/vtkhdf5_LIBRARIES/d' $BUILD_PREFIX/lib/cmake/vtk-8.2/Modules/vtkhdf5.cmake
-
 		# Environment variables for nosetests
 		export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
 		export PYTHONPATH="${PREFIX}/lib/python${PY_VER}/site-packages/:${PYTHONPATH}"
@@ -48,16 +44,6 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
     ;;
   *)
 esac
-
-echo $(which clang)
-
-# # Conda's Clang is not compatible with intel mac runners, so we must force the use of system clang
-# # See: https://github.com/llvm/llvm-project/issues/55836#issuecomment-1295200406
-# mv $CONDA_PREFIX/bin/clang $CONDA_PREFIX/bin/clang-conda
-# mv $CONDA_PREFIX/bin/clang++ $CONDA_PREFIX/bin/clang++-conda
-
-# echo "CLANG after renaming----"
-# echo $(which clang)
 
 # CMake
 cmake .. \
@@ -91,11 +77,9 @@ echo "PYTHON_INCLUDE_DIR: ${PYTHON_INCLUDE_DIR}"
 
 # Run tests
 ctest --output-on-failure
-# nosetests ${SRC_DIR}/Testing/Python
 
 # rename vtkbone.cpython-*.so to vtkbone.so
 site_packages_dir="${PREFIX}/lib/python${PY_VER}/site-packages/vtkbone"
-ls -l ${site_packages_dir}
 cd "$site_packages_dir"
 
 for f in vtkbone.cpython-*.so; do
