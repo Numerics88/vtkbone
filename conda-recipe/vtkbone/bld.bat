@@ -23,7 +23,8 @@ cmake .. ^
 	-DCMAKE_MODULE_PATH:PATH="%SRC_DIR%\\cmake\\modules" ^
 	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
 	-DBUILD_SHARED_LIBS:BOOL=ON ^
-	-DARCHIVE_DESTINATION:PATH="%PREFIX%\\lib" ^
+	-DARCHIVE_DESTINATION:PATH="%PREFIX%\\lib"
+	
 if errorlevel 1 exit 1
 
 :: Compile and install
