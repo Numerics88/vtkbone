@@ -29,8 +29,12 @@ requirements:
     # - vtk =9.3.1
     # - pugixml
     # - libnetcdf >=4.8
+  host:
+    - python {{ python }}
+    - tbb-devel
   run:
     - python {{ python }}
+    - tbb-devel
     - vtk =9.3.1
     - numpy >=1.24.3,<=1.26.4
     - pqctio
