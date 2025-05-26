@@ -35,7 +35,7 @@ cmake .. ^
 	-DPython3_EXECUTABLE:FILEPATH="%PYTHON%"^
 	-DPython3_ROOT_DIR:PATH="%PREFIX%" ^
 	-DPython3_FIND_STRATEGY="LOCATION" ^
-	-DPython3_INCLUDE_DIR:PATH="%PREFIX%\\include"
+	-DPython3_INCLUDE_DIR:PATH="%PREFIX%\\include" ^
 	-DPython3_LIBRARY="%PREFIX%\libs\python%PY_VER%.lib"
 
 @REM if errorlevel 1 exit 1
