@@ -17,13 +17,13 @@ requirements:
     - ninja
     - gtest
     - boost =1.85.0
-    - python {{ python }}
+    # - python {{ python }}
     - numpy >=1.24.3,<=1.26.4
     - vtk =9.3.1
     - pqctio
     - aimio
     - n88util
-    - tbb-devel
+    # - tbb-devel
     # - {{ compiler('cxx') }}
     # - {{ compiler('c') }}
     # - vtk =9.3.1
@@ -34,7 +34,7 @@ requirements:
     - tbb-devel
   run:
     - python {{ python }}
-    - tbb-devel
+    - tbb
     - vtk =9.3.1
     - numpy >=1.24.3,<=1.26.4
     - pqctio
