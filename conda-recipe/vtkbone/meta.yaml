@@ -23,11 +23,10 @@ requirements:
     - pqctio
     - aimio
     - n88util
-    - tbb
+    - tbb-devel
     # - {{ compiler('cxx') }}
     # - {{ compiler('c') }}
     # - vtk =9.3.1
-    # - tbb-devel
     # - pugixml
     # - libnetcdf >=4.8
   run:
