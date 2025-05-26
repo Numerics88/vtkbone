@@ -24,8 +24,7 @@ requirements:
     - aimio
     - n88util
     - tbb-devel
-    - python-devtools 
-    - {{ compiler('cxx') }}
+    # - {{ compiler('cxx') }}
     # - {{ compiler('c') }}
     # - vtk =9.3.1
     # - pugixml

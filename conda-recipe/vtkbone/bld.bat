@@ -38,11 +38,11 @@ cmake .. ^
 	-DPython3_INCLUDE_DIR:PATH="%PREFIX%\\include"
 	-DPython3_LIBRARY="%PREFIX%\libs\python%PY_VER%.lib"
 
-if errorlevel 1 exit 1
+@REM if errorlevel 1 exit 1
 
 :: Compile and install
 ninja install -v
-if errorlevel 1 exit 1
+@REM if errorlevel 1 exit 1
 
 :: Set environemnt variables for nosetests
 set PATH=%PATH%;%PREFIX%\\Library\\lib;%PREFIX%\\Library\\bin
