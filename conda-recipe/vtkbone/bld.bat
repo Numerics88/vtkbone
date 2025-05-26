@@ -17,6 +17,12 @@ echo PYTHONPATH=%PYTHONPATH%
 echo SRC_DIR=%SRC_DIR%
 echo LIBRARY_PREFIX=%LIBRARY_PREFIX%
 
+:: Debug: Find python file path:
+echo DEBUG Python executable: %PYTHON%
+where python
+:: Set PYTHON_EXECUTABLE to the python executable
+for /f "delims=" %%i in ('where python') do set PYTHON_EXECUTABLE=%%i
+
 :: CMake
 cmake .. ^
 	-G "Ninja" ^
@@ -29,7 +35,7 @@ cmake .. ^
 	-DENABLE_TESTING:BOOL=ON ^
 	-DVTKBONE_WRAP_PYTHON:BOOL=ON ^
 	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
-	-DPython3_EXECUTABLE:FILEPATH="%PYTHON%" ^
+	-DPython3_EXECUTABLE:FILEPATH="%PYTHON_EXECUTABLE%"^
 	-DPython3_ROOT_DIR:PATH="%PREFIX%" ^
 	-DPython3_FIND_STRATEGY="LOCATION"
 
