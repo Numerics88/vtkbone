@@ -1,7 +1,6 @@
 # Create rules for Python wrapping
 
-find_package(Python3 QUIET
-    COMPONENTS Development)
+find_package(Python3 COMPONENTS Development)
 
 vtk_module_wrap_python(
     MODULES         ${vtkbone_modules}
