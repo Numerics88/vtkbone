@@ -20,6 +20,9 @@ echo LIBRARY_PREFIX=%LIBRARY_PREFIX%
 :: Debug: Find python file path:
 echo DEBUG Python executable: %PYTHON%
 
+:: Set PATHS:
+set PATH=%PATH%;%PREFIX%;%PREFIX%\\Scripts;%PREFIX%\\Library;%PREFIX%\\Library\\bin;%PREFIX%\\Lib;%PREFIX%\\include;;%PREFIX%\\Lib\\site-packages;
+
 :: CMake
 cmake .. ^
 	-G "Ninja" ^
