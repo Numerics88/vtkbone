@@ -6,10 +6,10 @@ cd build
 set BUILD_CONFIG=Release
 
 :: Set PATHS:
-set PATH=%PATH%;%PREFIX%;%PREFIX%\\Scripts;%PREFIX%\\Library;%PREFIX%\\Library\\bin;%PREFIX%\\Lib;%PREFIX%\\include;;%PREFIX%\\Lib\\site-packages;
+set PATH=%PATH%;%PREFIX%;%PREFIX%\\Scripts;%PREFIX%\\Library;%PREFIX%\\Library\\bin;%PREFIX%\\Lib;%PREFIX%\\include;;%PREFIX%\\Lib\\site-packages;%PREFIX%\\libs
 :: Set environemnt variables for nosetests
 set PATH=%PATH%;%PREFIX%\\Library\\lib;%PREFIX%\\Library\\bin
-set PYTHONPATH=%PYTHONPATH%;%PREFIX%\\Lib\\site-packages
+set PYTHONPATH=%PYTHONPATH%;%PREFIX%\\Lib\\site-packages;%PREFIX%\\libs
 
 :: CMake
 cmake .. ^
@@ -25,6 +25,7 @@ cmake .. ^
 	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
 	-DPython3_EXECUTABLE:FILEPATH="%PYTHON%"^
 	-DPython3_ROOT_DIR:PATH="%PREFIX%" ^
+	-DPython3_LIBRARY:FILEPATH="%PREFIX%\\libs\\python3.lib" ^
 	-DPython3_FIND_STRATEGY="LOCATION" 
 
 :: if errorlevel 1 exit 1

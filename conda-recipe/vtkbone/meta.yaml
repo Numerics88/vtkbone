@@ -24,6 +24,9 @@ requirements:
     - aimio
     - n88util
     - tbb-devel
+    - python-devel
+    #  WARNING: Jinja compiler('cxx') will be needed for conda-build 4.0 and later. Commenting this out is a workaround to
+    #  resolve an SDK mismatch with macos-13 runner. This will need to be revisited when conda-build 4.0 is released.
     # - {{ compiler('cxx') }}
     # - {{ compiler('c') }}
     # - vtk =9.3.1
