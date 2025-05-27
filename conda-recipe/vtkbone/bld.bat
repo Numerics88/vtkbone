@@ -5,23 +5,11 @@ mkdir build
 cd build
 set BUILD_CONFIG=Release
 
-@REM Print environment variables
-echo DEBUG Printing environment variables
-echo BUILD_PREFIX=%BUILD_PREFIX%
-echo BUILD_CONFIG=%BUILD_CONFIG%
-echo PREFIX=%PREFIX%
-echo PYTHON=%PYTHON%
-echo PYTHON_LIBRARY=%PYTHON_LIBRARY%
-echo PYTHON_INCLUDE_DIR=%PYTHON_INCLUDE_DIR%
-echo PYTHONPATH=%PYTHONPATH%
-echo SRC_DIR=%SRC_DIR%
-echo LIBRARY_PREFIX=%LIBRARY_PREFIX%
-
-:: Debug: Find python file path:
-echo DEBUG Python executable: %PYTHON%
-
 :: Set PATHS:
 set PATH=%PATH%;%PREFIX%;%PREFIX%\\Scripts;%PREFIX%\\Library;%PREFIX%\\Library\\bin;%PREFIX%\\Lib;%PREFIX%\\include;;%PREFIX%\\Lib\\site-packages;
+:: Set environemnt variables for nosetests
+set PATH=%PATH%;%PREFIX%\\Library\\lib;%PREFIX%\\Library\\bin
+set PYTHONPATH=%PYTHONPATH%;%PREFIX%\\Lib\\site-packages
 
 :: CMake
 cmake .. ^
@@ -37,23 +25,17 @@ cmake .. ^
 	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
 	-DPython3_EXECUTABLE:FILEPATH="%PYTHON%"^
 	-DPython3_ROOT_DIR:PATH="%PREFIX%" ^
-	-DPython3_FIND_STRATEGY="LOCATION" ^
-	@REM -DPython3_INCLUDE_DIR:PATH="%PREFIX%\\include" ^
-	@REM -DPython3_LIBRARY="%PREFIX%\libs\python3.lib"
+	-DPython3_FIND_STRATEGY="LOCATION" 
 
-@REM if errorlevel 1 exit 1
+:: if errorlevel 1 exit 1
 
 :: Compile and install
 ninja install -v
-@REM if errorlevel 1 exit 1
-
-:: Set environemnt variables for nosetests
-set PATH=%PATH%;%PREFIX%\\Library\\lib;%PREFIX%\\Library\\bin
-set PYTHONPATH=%PYTHONPATH%;%PREFIX%\\Lib\\site-packages
+:: if errorlevel 1 exit 1
 
 :: Run tests
 ::    Note that for >=py3.8, DLL look up no longer goes through `PATH`.
 ::    This is a hack to make nose run by adding dll's inside python
-@REM python %RECIPE_DIR%/test_windows.py %SRC_DIR%/Testing/Python
+:: python %RECIPE_DIR%/test_windows.py %SRC_DIR%/Testing/Python
 
 if errorlevel 1 exit 1
