@@ -27,8 +27,8 @@ cmake .. ^
 	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
 	-DPython3_EXECUTABLE:FILEPATH="%PYTHON%"^
 	-DPython3_ROOT_DIR:PATH="%PREFIX%" ^
-	-DPython3_LIBRARY:FILEPATH="%PREFIX%\\libs\\python3.lib" ^
 	-DPython3_FIND_STRATEGY="LOCATION" 
+	:: -DPython3_LIBRARY:FILEPATH="%PREFIX%\\libs\\python3.lib" ^
 
 :: Print out build logs
 
