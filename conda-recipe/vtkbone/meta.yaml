@@ -30,7 +30,7 @@ requirements:
     # - {{ compiler('c') }}
     # - vtk =9.3.1
     # - pugixml
-    # - libnetcdf >=4.8
+    - libnetcdf >=4.8
   host:
     - python {{ python }}
   run:
