@@ -29,11 +29,8 @@ cmake .. ^
 	-DPython3_FIND_STRATEGY="LOCATION" 
 
 :: Print out build logs
-for /d %%D in ("%SRC_DIR%\..\vtkbone_*") do (
-    if exist "%%D\work\build\CMakeFiles\CMakeOutput.log" (
-        type "%%D\work\build\CMakeFiles\CMakeOutput.log"
-    )
-)
+
+type "%PREFIX%\\..\\work\\build\\CMakeFiles\\CMakeOutput.log"
 
 if errorlevel 1 exit 1
 
