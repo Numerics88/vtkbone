@@ -5,6 +5,8 @@ mkdir build
 cd build
 set BUILD_CONFIG=Release
 
+:: Remove MinGW from PATH to force MSVC usage
+set "PATH=%PATH:C:\mingw64\bin;=%"
 :: Set PATHS:
 set PATH=%PATH%;%PREFIX%;%PREFIX%\\Scripts;%PREFIX%\\Library;%PREFIX%\\Library\\bin;%PREFIX%\\Lib;%PREFIX%\\include;;%PREFIX%\\Lib\\site-packages;%PREFIX%\\libs
 :: Set environemnt variables for nosetests
