@@ -13,6 +13,10 @@ set PATH=%PATH%;%PREFIX%;%PREFIX%\\Scripts;%PREFIX%\\Library;%PREFIX%\\Library\\
 set PATH=%PATH%;%PREFIX%\\Library\\lib;%PREFIX%\\Library\\bin
 set PYTHONPATH=%PYTHONPATH%;%PREFIX%\\Lib\\site-packages;%PREFIX%\\libs
 
+where python
+where cmake
+where ninja
+
 :: CMake
 cmake .. ^
 	-G "Ninja" ^
@@ -27,7 +31,8 @@ cmake .. ^
 	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
 	-DPython3_EXECUTABLE:FILEPATH="%PYTHON%"^
 	-DPython3_ROOT_DIR:PATH="%PREFIX%" ^
-	-DPython3_FIND_STRATEGY="LOCATION" 
+	-DPython3_LIBRARY="%PREFIX%\\python3.dll" ^
+    -DPython3_INCLUDE_DIR="%PREFIX%\\Include"
 	:: -DPython3_LIBRARY:FILEPATH="%PREFIX%\\libs\\python3.lib" ^
 
 :: Print out build logs
