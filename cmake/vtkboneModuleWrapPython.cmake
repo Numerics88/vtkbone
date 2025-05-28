@@ -1,6 +1,6 @@
 # Create rules for Python wrapping
 
-find_package(Python3 COMPONENTS Development)
+find_package(Python3 REQUIRED COMPONENTS Development PATHS ${CMAKE_CURRENT_LIST_DIR}/../conda/bin)
 
 vtk_module_wrap_python(
     MODULES         ${vtkbone_modules}

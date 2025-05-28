@@ -17,6 +17,11 @@ where python
 where cmake
 where ninja
 
+:: print Python Library directory contents
+echo %PREFIX%
+dir "%PREFIX%\\Lib" /b /s
+dir "%PREFIX%\\libs" /b /s
+
 :: CMake
 cmake .. ^
 	-G "Ninja" ^
@@ -29,10 +34,10 @@ cmake .. ^
 	-DENABLE_TESTING:BOOL=ON ^
 	-DVTKBONE_WRAP_PYTHON:BOOL=ON ^
 	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
-	-DPython3_EXECUTABLE:FILEPATH="%PYTHON%"^
-	-DPython3_ROOT_DIR:PATH="%PREFIX%" ^
-	-DPython3_LIBRARY="%PREFIX%\\python3.dll" ^
-    -DPython3_INCLUDE_DIR="%PREFIX%\\Include"
+	-DPython3_EXECUTABLE:FILEPATH="%PYTHON%"
+	@REM -DPython3_ROOT_DIR:PATH="%PREFIX%" ^
+	@REM -DPython3_LIBRARY="%PREFIX%\\python3.dll" ^
+    @REM -DPython3_INCLUDE_DIR="%PREFIX%\\Include"
 	:: -DPython3_LIBRARY:FILEPATH="%PREFIX%\\libs\\python3.lib" ^
 
 :: Print out build logs
