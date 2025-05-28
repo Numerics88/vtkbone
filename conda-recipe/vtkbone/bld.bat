@@ -28,7 +28,16 @@ cmake .. ^
 	-DPython3_LIBRARY:FILEPATH="%PREFIX%\\libs\\python3.lib" ^
 	-DPython3_FIND_STRATEGY="LOCATION" 
 
-:: if errorlevel 1 exit 1
+:: Print out build logs
+for /d %%D in ("%SRC_DIR%\..\vtkbone_*") do (
+    if exist "%%D\work\build\CMakeFiles\CMakeOutput.log" (
+        type "%%D\work\build\CMakeFiles\CMakeOutput.log"
+    )
+)
+
+if errorlevel 1 exit 1
+
+
 
 :: Compile and install
 ninja install -v
