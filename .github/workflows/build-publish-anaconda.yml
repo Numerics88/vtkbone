@@ -25,31 +25,6 @@ jobs:
             with:
               ref: kean/ci
               fetch-depth: 0
-
-          - name: Switch XCode version for macos-13
-            if: startsWith(matrix.os, 'macos-13')
-            run: |
-              sudo xcode-select -s /Applications/Xcode_14.1.app/Contents/Developer
-              xcode-select -p
-              xcodebuild -showsdks
-              xcodebuild -version
-              echo "CONDA_BUILD_SYSROOT=/Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> $GITHUB_ENV
-              echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
-              echo "  - /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" >> ./conda-recipe/vtkbone/conda_build_config.yaml
-          
-          # # This was needed for <VTK 9.0. Remove if no longer needed
-          # - name: Download OSX 11.1 SDK tar
-          #   if: startsWith(matrix.os, 'macos-13')
-          #   run: |
-          #     curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.1.sdk.tar.xz -o MacOSX11.1.sdk.tar.xz
-          #     tar -xJf MacOSX11.1.sdk.tar.xz -C /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
-
-          # - name: Set CONDA_BUILD_SYSROOT dynamically
-          #   if: startsWith(matrix.os, 'macos-13')
-          #   run: |
-          #       echo "CONDA_BUILD_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk" >> $GITHUB_ENV
-          #       echo "CONDA_BUILD_SYSROOT:" >> ./conda-recipe/vtkbone/conda_build_config.yaml
-          #       echo "  - /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk" >> ./conda-recipe/vtkbone/conda_build_config.yaml
             
           - name: Build and publish
             uses: openalea/action-build-publish-anaconda@v0.1.5
@@ -63,38 +38,6 @@ jobs:
               publish: true
               label: main
 
-          # - name: (Debug) Print conda_build_config.yaml
-          #   run: |
-          #     echo "CONDA_BUILD_SYSROOT:"
-          #     cat ./conda-recipe/vtkbone/conda_build_config.yaml
-          #     echo "CONDA_BUILD_SYSROOT:"
-          #     echo $CONDA_BUILD_SYSROOT
-
-          # - name: Setup Conda
-          #   uses: conda-incubator/setup-miniconda@v3
-          #   with:
-          #     python-version: 3.${{ matrix.python-minor-version }}
-          #     environment-file: conda-recipe/vtkbone/environment.yml
-          #     auto-update-conda: false
-          #     auto-activate-base: false
-          #     show-channel-urls: true
-
-          # - name: Install conda-build & anaconda-client
-          #   run: |
-          #     conda install -y conda-build anaconda-client
-              
-        
-          # - name: Build Conda package with environemnt.yaml
-          #   run: |
-          #     source $CONDA/etc/profile.d/conda.sh
-          #     conda env create -f conda-recipe/vtkbone/environment.yml
-          #     conda activate n88
-          #     conda build conda-recipe/vtkbone \
-          #       -c friedchickean -c defaults \
-          #       --python 3.${{ matrix.python-minor-version }} \
-          #       --output-folder build_artifacts
-
-          
           
           
             
