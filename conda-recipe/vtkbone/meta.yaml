@@ -24,6 +24,8 @@ requirements:
     - aimio
     - n88util
     - tbb-devel
+    - eigen # [win]
+    - expat # [win]
     # - {{ compiler('cxx') }} # [win]
     # - {{ compiler('c') }}
     # - vtk =9.3.1
