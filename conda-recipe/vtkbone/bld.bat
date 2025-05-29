@@ -7,24 +7,33 @@ set BUILD_CONFIG=Release
 
 :: CMake
 cmake .. ^
-	-G "Visual Studio 17 2022" ^
+	-G "Ninja" ^
 	-DCMAKE_BUILD_TYPE=%BUILD_CONFIG% ^
-	-DCMAKE_PREFIX_PATH:PATH="%PREFIX%" ^
 	-DCMAKE_INSTALL_PREFIX:PATH="%LIBRARY_PREFIX%" ^
-	-DCMAKE_INSTALL_RPATH:PATH="%PREFIX%\\Lib" ^
+	-DBOOST_ROOT:PATH="%PREFIX%" ^
 	-DBUILD_SHARED_LIBS:BOOL=ON ^
-	-DCMAKE_MODULE_PATH:PATH="%SRC_DIR%\\cmake\\modules" ^
 	-DENABLE_TESTING:BOOL=ON ^
 	-DVTKBONE_WRAP_PYTHON:BOOL=ON ^
-	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
-	-DPython3_EXECUTABLE:FILEPATH="%PYTHON%"
+	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF
+
+@REM -G "Ninja" ^
+@REM 	-DCMAKE_BUILD_TYPE=%BUILD_CONFIG% ^
+@REM 	-DCMAKE_INSTALL_PREFIX:PATH="%LIBRARY_PREFIX%" ^
+@REM 	-DBOOST_ROOT:PATH="%PREFIX%" ^
+@REM 	-DENABLE_TESTING:BOOL=ON ^
+@REM     -DPYTHON_INCLUDE_PATH:PATH="%PREFIX%\\include" ^
+@REM     -DPYTHON_LIBRARY:FILEPATH="%PREFIX%\\libs\\python%PY_VER%.lib" ^
+@REM 	-DPython_ROOT_DIR:PATH="${PREFIX}" ^
+@REM 	-DVTKBONE_PYTHON_VERSION:STRING="%PY_VER%" ^
+@REM 	-DCMAKE_MODULE_PATH:PATH="%SRC_DIR%\cmake\modules" ^
+@REM 	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
+@REM 	-DBUILD_SHARED_LIBS:BOOL=ON
 
 if errorlevel 1 exit 1
 
 :: Compile and install
-cmake --build . --config %BUILD_CONFIG% --target INSTALL
-:: ninja install -v
-if errorlevel 1 exit 1
+ninja install -v
+:: if errorlevel 1 exit 1
 
 :: Run tests
 ::    Note that for >=py3.8, DLL look up no longer goes through `PATH`.
