@@ -22,8 +22,9 @@ cmake .. ^
 if errorlevel 1 exit 1
 
 :: Compile and install
-ninja install -v
-:: if errorlevel 1 exit 1
+cmake --build . --config %BUILD_CONFIG% --target INSTALL
+:: ninja install -v
+if errorlevel 1 exit 1
 
 :: Run tests
 ::    Note that for >=py3.8, DLL look up no longer goes through `PATH`.
