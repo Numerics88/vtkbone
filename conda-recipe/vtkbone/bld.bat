@@ -7,7 +7,7 @@ set BUILD_CONFIG=Release
 
 :: CMake
 cmake .. ^
-	-G "Ninja" ^
+	-G "Visual Studio 17 2022" ^
 	-DCMAKE_BUILD_TYPE=%BUILD_CONFIG% ^
 	-DCMAKE_PREFIX_PATH:PATH="%PREFIX%" ^
 	-DCMAKE_INSTALL_PREFIX:PATH="%LIBRARY_PREFIX%" ^
