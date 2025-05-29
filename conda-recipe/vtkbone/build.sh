@@ -63,6 +63,7 @@ cmake .. \
     -DPython3_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
     -DPython3_ROOT_DIR:PATH="${PREFIX}" \
     -DPython3_FIND_STRATEGY="LOCATION" \
+    # -DPYTHON_SITE_PACKAGES:PATH="${PYTHON_SITE_PACKAGES}" \
     "${CMAKE_PLATFORM_FLAGS[@]}"
 
 # Compile and install

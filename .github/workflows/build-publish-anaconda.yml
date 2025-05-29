@@ -58,7 +58,7 @@ jobs:
               mamba: false
               python: ${{ matrix.python-minor-version }}
               numpy: '22'
-              channels: friedchickean, defaults
+              channels: friedchickean, conda-forge, defaults
               token: ${{ secrets.KEAN_CONDA_TOKEN }}
               publish: true
               label: main
