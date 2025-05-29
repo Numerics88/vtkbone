@@ -8,19 +8,10 @@ set BUILD_CONFIG=Release
 :: Remove MinGW from PATH to force MSVC usage
 set "PATH=%PATH:C:\mingw64\bin;=%"
 :: Set PATHS:
-set PATH=%PATH%;%PREFIX%;%PREFIX%\\Scripts;%PREFIX%\\Library;%PREFIX%\\Library\\bin;%PREFIX%\\Lib;%PREFIX%\\include;;%PREFIX%\\Lib\\site-packages;%PREFIX%\\libs
+:: set PATH=%PATH%;%PREFIX%;%PREFIX%\\Scripts;%PREFIX%\\Library;%PREFIX%\\Library\\bin;%PREFIX%\\Lib;%PREFIX%\\include;;%PREFIX%\\Lib\\site-packages;%PREFIX%\\libs
 :: Set environemnt variables for nosetests
-set PATH=%PATH%;%PREFIX%\\Library\\lib;%PREFIX%\\Library\\bin
-set PYTHONPATH=%PYTHONPATH%;%PREFIX%\\Lib\\site-packages;%PREFIX%\\libs
-
-where python
-where cmake
-where ninja
-
-:: print Python Library directory contents
-echo %PREFIX%
-dir "%PREFIX%\\Lib" /b /s
-dir "%PREFIX%\\libs" /b /s
+:: set PATH=%PATH%;%PREFIX%\\Library\\lib;%PREFIX%\\Library\\bin
+:: set PYTHONPATH=%PYTHONPATH%;%PREFIX%\\Lib\\site-packages;%PREFIX%\\libs
 
 :: CMake
 cmake .. ^
