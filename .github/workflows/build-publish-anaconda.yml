@@ -20,8 +20,8 @@ jobs:
             python-minor-version: [9, 10, 11, 12]
             exclude:
             - os: windows-latest
-              python-minor-version: 9
-              # Windows vtk 9.3.1 does not support Python 3.9. Need to circle back on this.
+              python-minor-version: [9, 10, 11]
+              # Windows vtk only works for Python 12. Need to circle back to this.
 
         steps:
           - name: Checkout repo
