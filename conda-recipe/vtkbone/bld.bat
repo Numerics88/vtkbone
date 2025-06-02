@@ -25,11 +25,11 @@ if errorlevel 1 exit 1
 :: Manually copy the python module to the site-packages directory
 :: This is necessary because the vtkboneWrapper CMake install does not handle this correctly
 if exist "%LIBRARY_PREFIX%\bin\Lib\site-packages\vtkbone\vtkbone.pyd" (
-    if not exist "%LIBRARY_PREFIX%\lib\site-packages\vtkbone" (
-        mkdir "%LIBRARY_PREFIX%\lib\site-packages\vtkbone"
+    if not exist "%PREFIX%\Lib\site-packages\vtkbone" (
+        mkdir "%PREFIX%\Lib\site-packages\vtkbone"
     )
-    move "%LIBRARY_PREFIX%\bin\Lib\site-packages\vtkbone\*" "%LIBRARY_PREFIX%\lib\site-packages\vtkbone\"
-    rmdir /s /q "%LIBRARY_PREFIX%\bin\Lib"
+    move "%LIBRARY_PREFIX%\bin\Lib\site-packages\vtkbone\*" "%PREFIX%\Lib\site-packages\vtkbone\"
+    rmdir /s /q "%LIBRARY_PREFIX%\bin\Lib\site-packages"
 )
 
 :: Verify that the files were moved correctly
