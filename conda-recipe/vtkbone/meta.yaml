@@ -26,7 +26,6 @@ requirements:
     - tbb-devel
     - eigen # [win]
     - expat # [win]
-    - {{ compiler('cxx') }}
   run:
     - python {{ python }}
     - vtk =9.3.1
