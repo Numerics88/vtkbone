@@ -33,7 +33,7 @@ if exist "%LIBRARY_PREFIX%\bin\Lib\site-packages\vtkbone\vtkbone.pyd" (
 )
 
 :: Verify that the files were moved correctly
-if not exist "%LIBRARY_PREFIX%\lib\site-packages\vtkbone\vtkbone.pyd" (
+if not exist "%PREFIX%\Lib\site-packages\vtkbone\vtkbone.pyd" (
 	echo "Error: vtkbone.pyd was not moved correctly."
 	exit /b 1
 ) else (
