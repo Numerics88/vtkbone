@@ -32,7 +32,13 @@ if exist "%LIBRARY_PREFIX%\bin\Lib\site-packages\vtkbone\vtkbone.pyd" (
     rmdir /s /q "%LIBRARY_PREFIX%\bin\Lib"
 )
 
-::
+:: Verify that the files were moved correctly
+if not exist "%LIBRARY_PREFIX%\lib\site-packages\vtkbone\vtkbone.pyd" (
+	echo "Error: vtkbone.pyd was not moved correctly."
+	exit /b 1
+) else (
+	echo "vtkbone.pyd moved successfully."
+)
 :: Run tests
 
 :: OLD NOTES:
