@@ -19,14 +19,6 @@ jobs:
             # os: ["ubuntu-latest", "macos-13", "macos-latest", "windows-latest"]
             os: ["windows-latest"]
             python-minor-version: [9, 10, 11, 12]
-            exclude:
-            - os: windows-latest
-              python-minor-version: 9
-            - os: windows-latest
-              python-minor-version: 10
-            - os: windows-latest
-              python-minor-version: 11
-              # Windows vtk only works for Python 12. Need to circle back to this.
 
         steps:
           - name: Checkout repo
