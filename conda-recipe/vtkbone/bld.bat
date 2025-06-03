@@ -9,7 +9,7 @@ set BUILD_CONFIG=Release
 echo "Building vtkbone for Python %CONDA_PY%"
 
 :: Set Python paths explicitly to use conda's Python
-set PYTHON_EXECUTABLE=%PREFIX%\python
+set PYTHON_EXECUTABLE=%PREFIX%\python.exe
 set PYTHON_INCLUDE_DIR=%PREFIX%\include
 set PYTHON_LIBRARY=%PREFIX%\libs\python"%CONDA_PY%.lib
 
