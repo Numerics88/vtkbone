@@ -5,6 +5,14 @@ mkdir build
 cd build
 set BUILD_CONFIG=Release
 
+:: print out %CONDA_PY%
+echo "Building vtkbone for Python %CONDA_PY%"
+
+:: Set Python paths explicitly to use conda's Python
+set PYTHON_EXECUTABLE=%PREFIX%\python.exe
+set PYTHON_INCLUDE_DIR=%PREFIX%\include
+set PYTHON_LIBRARY=%PREFIX%\libs\python"%CONDA_PY%.dll
+
 :: CMake
 cmake .. ^
 	-G "Ninja" ^
@@ -14,7 +22,10 @@ cmake .. ^
 	-DBUILD_SHARED_LIBS:BOOL=ON ^
 	-DENABLE_TESTING:BOOL=ON ^
 	-DVTKBONE_WRAP_PYTHON:BOOL=ON ^
-	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF
+	-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=OFF ^
+	-DPYTHON_EXECUTABLE:FILEPATH="%PYTHON_EXECUTABLE%" ^
+	-DPYTHON_INCLUDE_DIRS:PATH="%PYTHON_INCLUDE_DIR%" ^
+	-DPYTHON_LIBRARY:PATH="%PYTHON_LIBRARY%"
 
 if errorlevel 1 exit 1
 
