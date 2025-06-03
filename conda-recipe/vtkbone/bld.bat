@@ -70,4 +70,7 @@ if not exist "%PREFIX%\Lib\site-packages\vtkbone\vtkbone.pyd" (
 ::    This is a hack to make nose run by adding dll's inside python
 :: python %RECIPE_DIR%/test_windows.py %SRC_DIR%/Testing/Python
 
+:: Use CTEST to run the tests
+ctest --output-on-failure
+
 if errorlevel 1 exit 1
