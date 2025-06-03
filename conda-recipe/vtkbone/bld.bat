@@ -9,9 +9,22 @@ set BUILD_CONFIG=Release
 echo "Building vtkbone for Python %CONDA_PY%"
 
 :: Set Python paths explicitly to use conda's Python
-set PYTHON_EXECUTABLE=%PREFIX%\python.exe
+set PYTHON_EXECUTABLE=%PREFIX%\python
 set PYTHON_INCLUDE_DIR=%PREFIX%\include
-set PYTHON_LIBRARY=%PREFIX%\libs\python"%CONDA_PY%.dll
+set PYTHON_LIBRARY=%PREFIX%\libs\python"%CONDA_PY%.lib
+
+%PYTHON_EXECUTABLE% --version
+
+:: Verify the paths exist
+if not exist "%PYTHON_EXECUTABLE%" (
+    echo "DEBUGERROR: Python executable not found at %PYTHON_EXECUTABLE%"
+)
+if not exist "%PYTHON_INCLUDE_DIR%" (
+    echo "DEBUGERROR: Python include directory not found at %PYTHON_INCLUDE_DIR%"
+)
+if not exist "%PYTHON_LIBRARY%" (
+    echo "DEBUGERROR: Python library not found at %PYTHON_LIBRARY%"
+)
 
 :: CMake
 cmake .. ^
