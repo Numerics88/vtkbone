@@ -72,19 +72,16 @@ cmake .. \
 # Compile and install
 ninja install -v
 
-# Print site_packages folder
-echo "PYTHONPATH: ${PYTHONPATH}"
-echo "PREFIX: ${PREFIX}"
-echo "PYTHON_SITE_PACKAGES: ${PREFIX}/lib/python${PY_VER}/site-packages"
-echo "PYTHON_INCLUDE_DIR: ${PYTHON_INCLUDE_DIR}"
-
 # Run tests
 ctest --output-on-failure
 
-# rename vtkbone.cpython-*.so to vtkbone.so
+# Post-installation steps
+# Ensure that the vtkbone.so is correctly named
+# This is necessary because CMake generates a file with SOABI suffix but Conda expects vtkbone.so
+
+# Rename the generated vtkbone shared object file to vtkbone.so
 site_packages_dir="${PREFIX}/lib/python${PY_VER}/site-packages/vtkbone"
 cd "$site_packages_dir"
-
 for f in vtkbone.cpython-*.so; do
     if [[ -f "$f" && ! -f vtkbone.so ]]; then
         mv "$f" vtkbone.so

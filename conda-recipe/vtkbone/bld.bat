@@ -5,26 +5,10 @@ mkdir build
 cd build
 set BUILD_CONFIG=Release
 
-:: print out %CONDA_PY%
-echo "Building vtkbone for Python %CONDA_PY%"
-
 :: Set Python paths explicitly to use conda's Python
 set PYTHON_EXECUTABLE=%PREFIX%\python.exe
 set PYTHON_INCLUDE_DIR=%PREFIX%\include
 set PYTHON_LIBRARY=%PREFIX%\libs\python%CONDA_PY%.lib
-
-%PYTHON_EXECUTABLE% --version
-
-:: Verify the paths exist
-if not exist "%PYTHON_EXECUTABLE%" (
-    echo "DEBUGERROR: Python executable not found at %PYTHON_EXECUTABLE%"
-)
-if not exist "%PYTHON_INCLUDE_DIR%" (
-    echo "DEBUGERROR: Python include directory not found at %PYTHON_INCLUDE_DIR%"
-)
-if not exist "%PYTHON_LIBRARY%" (
-    echo "DEBUGERROR: Python library not found at %PYTHON_LIBRARY%"
-)
 
 :: CMake
 cmake .. ^
@@ -63,12 +47,8 @@ if not exist "%PREFIX%\Lib\site-packages\vtkbone\vtkbone.pyd" (
 ) else (
 	echo "vtkbone.pyd moved successfully."
 )
-:: Run tests
 
-:: OLD NOTES:
-::    Note that for >=py3.8, DLL look up no longer goes through `PATH`.
-::    This is a hack to make nose run by adding dll's inside python
-:: python %RECIPE_DIR%/test_windows.py %SRC_DIR%/Testing/Python
+if errorlevel 1 exit 1
 
 :: Use CTEST to run the tests
 ctest --output-on-failure
