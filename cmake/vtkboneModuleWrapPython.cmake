@@ -1,7 +1,12 @@
 # Create rules for Python wrapping
+# Force CMake to use the same python
+find_package(Python3 QUIET COMPONENTS Development)
 
-find_package(Python3 QUIET
-    COMPONENTS Development)
+# Verify we're using the expected Python version
+message(STATUS "Python3_VERSION: ${Python3_VERSION}")
+message(STATUS "Python3_EXECUTABLE: ${Python3_EXECUTABLE}")
+message(STATUS "Python3_INCLUDE_DIRS: ${Python3_INCLUDE_DIRS}")
+message(STATUS "Python3_LIBRARIES: ${Python3_LIBRARIES}")
 
 vtk_module_wrap_python(
     MODULES         ${vtkbone_modules}

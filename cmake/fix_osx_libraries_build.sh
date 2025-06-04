@@ -1,11 +1,20 @@
 #!/bin/bash
 #
-# This script must be run from directory containing the library or executable to modify.
+# This script must be run from the directory containing the library or executable to modify.
 
 libpath=libvtkbone.dylib
 insertString=/Users/Shared/install/vtk-6.3.0/lib/
-for myfile in `otool -L $libpath | grep libvtk | grep -v vtkbone | awk '{print $1}'`
+
+# Iterate over dependencies
+for myfile in $(otool -L $libpath | grep libvtk | grep -v vtkbone | awk '{print $1}')
 do
-   echo "changing $myfile to $insertString$myfile" 
-   install_name_tool -change "$myfile" "$insertString$myfile" "$libpath"
+   # Skip system libraries
+   if [[ "$myfile" == /usr/lib/* || "$myfile" == /Library/Developer/CommandLineTools/* ]]; then
+      echo "Skipping system library: $myfile"
+      continue
+   fi
+
+   # Modify library path
+   echo "Changing $myfile to $insertString$(basename $myfile)"
+   install_name_tool -change "$myfile" "$insertString$(basename $myfile)" "$libpath"
 done
