@@ -6,21 +6,16 @@ cd build
 BUILD_CONFIG=Release
 
 # Specify Python
-# Use Conda's python
-PYTHON_EXECUTABLE=="${PREFIX}/bin/python"
-PYTHON_INCLUDE_DIR="${PREFIX}/include/python${PY_VER}"
-# PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
-# PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')
-# PYTHON_LIBRARY=$(python -c '
-# import sysconfig
-# libdir = sysconfig.get_config_var("LIBDIR")
-# ldlib = sysconfig.get_config_var("LDLIBRARY")
-# if libdir and ldlib:
-#     print(f"{libdir}/{ldlib}")
-# else:
-#     print("")
-# ')
-PYTHON_LIBRARY="${PREFIX}/lib/libpython${PY_VER}.dylib"
+PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
+PYTHON_LIBRARY=$(python -c '
+import sysconfig
+libdir = sysconfig.get_config_var("LIBDIR")
+ldlib = sysconfig.get_config_var("LDLIBRARY")
+if libdir and ldlib:
+    print(f"{libdir}/{ldlib}")
+else:
+    print("")
+')
 PYTHON_SITE_PACKAGES="${PREFIX}/lib/python${PY_VER}/site-packages"
 # Fallback to shared library if static library is missing
 if [[ ! -f "${PYTHON_LIBRARY}" ]]; then
@@ -65,7 +60,7 @@ cmake .. \
     -DPython3_EXECUTABLE:FILEPATH="$(which python)" \
     -DPython3_LIBRARY:FILEPATH="${PYTHON_LIBRARY}" \
     -DPython3_INCLUDE_DIR:PATH="${PYTHON_INCLUDE_DIR}" \
-    # -DPython3_ROOT_DIR:PATH="${PREFIX}" \
+    -DPython3_ROOT_DIR:PATH="${PREFIX}" \
     -DPython3_FIND_STRATEGY="LOCATION" \
     "${CMAKE_PLATFORM_FLAGS[@]}"
 
