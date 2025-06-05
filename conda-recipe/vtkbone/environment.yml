@@ -1,0 +1,8 @@
+name: n88
+channels:
+  - friedchickean
+  - conda-forge
+  - defaults
+dependencies:
+  - conda-build
+  - anaconda-client

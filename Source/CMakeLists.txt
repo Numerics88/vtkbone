@@ -171,20 +171,20 @@ list (APPEND VTKBONE_DISTRIBUTED_HDRS
 
 # Requires Boost
 # set (Boost_USE_STATIC_LIBS ON)
-find_package (Boost 1.70.0
+find_package (Boost
     COMPONENTS date_time filesystem thread system
     CONFIG REQUIRED)
 
 # Requires n88util
-find_package (n88util 2.0 REQUIRED)
+find_package (n88util REQUIRED)
 mark_as_advanced (n88util_DIR)
 
 # Requires AimIO
-find_package (AimIO 1.0 REQUIRED)
+find_package (AimIO REQUIRED)
 mark_as_advanced (AimIO_DIR)
 
 # Requires pQCT
-find_package (pQCTIO 1.0 REQUIRED)
+find_package (pQCTIO REQUIRED)
 mark_as_advanced (pQCTIO_DIR)
 
 # Requires netCDF, optionally use VTK::netcdf

@@ -1,0 +1,42 @@
+# This workflow builds and publishes the conda package to the Numerics88 channel
+# using the openalea/action-build-publish-anaconda action.
+name: Conda Build And Publish
+
+on:
+    release:
+        types: [published]
+    workflow_dispatch:
+
+jobs:
+    build-and-publish:
+        name: Conda deployment
+        runs-on: ${{ matrix.os }}
+        strategy:
+          matrix:
+            # OS types: Windows x64, macOS 13 (last intel based runner), macOS latest (Apple silicon), and Ubuntu x64
+            # ------------------------------------------------------
+            os: ["ubuntu-latest", "macos-13", "macos-latest", "windows-latest"]
+            python-minor-version: [9, 10, 11, 12]
+
+        steps:
+          - name: Checkout repo
+            uses: actions/checkout@v4
+            with:
+              ref: master
+              fetch-depth: 0
+            
+          - name: Build and publish
+            uses: openalea/action-build-publish-anaconda@v0.1.5
+            with:
+              conda: conda-recipe/vtkbone
+              mamba: false
+              python: ${{ matrix.python-minor-version }}
+              numpy: '22'
+              channels: Numerics88, conda-forge, defaults
+              token: ${{ secrets.ANACONDA_TOKEN }}
+              publish: true
+              label: main
+
+          
+          
+            
