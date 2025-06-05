@@ -2,8 +2,9 @@
 VTK classes for processing of finite element models derived from micro-CT.
 vtkbone was formerly vtkn88.
 
-[![Build Status](https://dev.azure.com/babesler/n88/_apis/build/status/Numerics88.vtkbone?branchName=master)](https://dev.azure.com/babesler/n88/_build/latest?definitionId=9&branchName=master)
-[![Anaconda-Server Badge](https://anaconda.org/numerics88/vtkbone/badges/installer/conda.svg)](https://anaconda.org/numerics88/vtkbone)
+[![Conda Build And Publish](https://github.com/Numerics88/vtkbone/actions/workflows/build-publish-anaconda.yml/badge.svg?branch=master)](https://github.com/Numerics88/vtkbone/actions/workflows/build-publish-anaconda.yml)
+[![Anaconda-Server Badge](https://anaconda.org/numerics88/vtkbone/badges/version.svg)](https://anaconda.org/numerics88/vtkbone)
+[![Anaconda-Server Badge](https://anaconda.org/numerics88/vtkbone/badges/platforms.svg)](https://anaconda.org/numerics88/vtkbone)
 
 ## Documentation
 
