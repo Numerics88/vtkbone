@@ -1,6 +1,6 @@
 name: n88
 channels:
-  - friedchickean
+  - Numerics88
   - conda-forge
   - defaults
 dependencies:
