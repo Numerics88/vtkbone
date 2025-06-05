@@ -1,6 +1,13 @@
 # CMake code for handling VTK 9 and later
 
-find_package(VTK REQUIRED)
+find_package(VTK COMPONENTS
+   CommonCore
+   CommonDataModel
+   CommonExecutionModel
+   IOCore
+   FiltersExtraction
+   FiltersGeometry
+   FiltersFlowPaths)
 
 # Set suffix for VTK directories
 set(vtk_version_suffix "-${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}")

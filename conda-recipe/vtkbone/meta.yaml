@@ -1,7 +1,7 @@
-
 package:
   name: vtkbone
-  version: {{ GIT_DESCRIBE_TAG | lower | replace("v","") }}
+  version: 2.0.0
+  # version: {{ GIT_DESCRIBE_TAG | lower | replace("v","") }}
 
 source:
   path: ./../../
@@ -10,33 +10,32 @@ build:
   number: 0
   string: "py{{ CONDA_PY }}"
 
-# Note, boost has an upperbound right now to hanlde cmake correctly
-# and we need tbb-devel because of a CMake error upstream of VTK
+# Refer to https://github.com/Numerics88/faimsuperbuild for requirements
 requirements:
   build:
-    - {{ compiler('cxx') }}
     - cmake >=3.12
     - ninja
     - gtest
+    - boost =1.85.0
     - python {{ python }}
-    - boost >=1.57,<=1.67
-    - libnetcdf =4.7
+    - numpy >=1.24.3,<=1.26.4
+    - vtk =9.3.1
     - pqctio
     - aimio
-    - vtk =8.2
+    - n88util
     - tbb-devel
-    - nose
+    - eigen # [win]
+    - expat # [win]
   run:
     - python {{ python }}
-    - boost >=1.57
-    - libnetcdf =4.7
+    - vtk =9.3.1
+    - numpy >=1.24.3,<=1.26.4
     - pqctio
     - aimio
-    - vtk =8.2
-
-test:
-  imports:
-    - vtkbone
+    - n88util
+  test:
+    imports:
+      - vtkbone
 
 about:
   home: https://github.com/Numerics88/vtkbone
