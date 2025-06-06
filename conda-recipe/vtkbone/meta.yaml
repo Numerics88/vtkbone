@@ -1,7 +1,6 @@
 package:
   name: vtkbone
-  version: 2.0.0
-  # version: {{ GIT_DESCRIBE_TAG | lower | replace("v","") }}
+  version: {{ GIT_DESCRIBE_TAG | lower | replace("v","") }}
 
 source:
   path: ./../../
