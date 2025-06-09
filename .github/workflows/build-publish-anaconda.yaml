@@ -28,14 +28,14 @@ jobs:
               ref: kean/rebuild-1.0
               fetch-depth: 0
 
-          - name: Download OSX SDK
-            if: matrix.os == 'macos-13'
-            run: |
-              sudo mkdir -p /opt/
-              sudo chown -R $USER /opt/
-              curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz -o MacOSX10.9.sdk.tar.xz
-              tar -xJf MacOSX10.9.sdk.tar.xz -C /opt/
-              
+        #   - name: Download OSX SDK
+        #     if: matrix.os == 'macos-13'
+        #     run: |
+        #       sudo mkdir -p /opt/
+        #       sudo chown -R $USER /opt/
+        #       curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz -o MacOSX10.9.sdk.tar.xz
+        #       tar -xJf MacOSX10.9.sdk.tar.xz -C /opt/
+
           - name: Build and publish
             uses: openalea/action-build-publish-anaconda@v0.1.5
             with:
