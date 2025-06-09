@@ -17,7 +17,7 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake >=3.12
     - ninja
-    - gtest
+    - gtest=1.8.0
     - python {{ python }}
     - boost >=1.57,<=1.67
     - libnetcdf >=4.7.1,<4.7.5
