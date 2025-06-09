@@ -27,6 +27,7 @@ requirements:
     - vtk =8.2
     - tbb-devel
     - nose
+    - libxcrypt  # [linux]
   run:
     - python {{ python }}
     - boost >=1.61
