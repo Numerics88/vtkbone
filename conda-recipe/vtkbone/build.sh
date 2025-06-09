@@ -5,6 +5,10 @@ mkdir -p build
 cd build
 BUILD_CONFIG=Release
 
+echo "DEBUG OSX SDK"
+xcode-select -p
+echo "CONDA BUILD SYSROOT ${CONDA_BUILD_SYSROOT}"
+
 # Specify Python
 PYTHON_INCLUDE_DIR=$(python -c 'import sysconfig;print("{0}".format(sysconfig.get_path("platinclude")))')
 PYTHON_LIBRARY=$(python -c 'import sysconfig;print("{0}/{1}".format(*map(sysconfig.get_config_var, ("LIBDIR", "LDLIBRARY"))))')

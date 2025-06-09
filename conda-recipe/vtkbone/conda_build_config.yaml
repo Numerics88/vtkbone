@@ -11,4 +11,4 @@ macos_min_version:             # [osx]
 MACOSX_DEPLOYMENT_TARGET:      # [osx]
   - 10.9                       # [osx]
 CONDA_BUILD_SYSROOT:
-  - /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk        # [osx]
+  - /Library/Developer/CommandLineTools/SDKs/MacOSX10.9.sdk        # [osx]

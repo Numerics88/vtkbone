@@ -21,6 +21,7 @@ requirements:
     - python {{ python }}
     - boost >=1.57,<=1.67
     - libnetcdf >=4.7.1,<4.7.5
+    - libcxx=11.1.0 # [osx]
     - n88util=2.0.0
     - pqctio=1.0.0
     - aimio=1.0.0
@@ -32,6 +33,7 @@ requirements:
     - python {{ python }}
     - boost >=1.57,<=1.67
     - libnetcdf >=4.7.1,<4.7.5
+    - libcxx=11.1.0 # [osx]
     - n88util=2.0.0
     - pqctio=1.0.0
     - aimio=1.0.0
