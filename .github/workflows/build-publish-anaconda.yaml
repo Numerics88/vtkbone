@@ -16,25 +16,15 @@ jobs:
           matrix:
             # OS types: Windows x64, macOS 13 (last intel based runner), macOS latest (Apple silicon), and Ubuntu x64
             # ------------------------------------------------------
-            os: ["macos-13", "windows-latest"]
+            os: ["macos-13", "ubuntu-latest", "windows-latest"]
             python-minor-version: [6, 7]
-            exclude:
-              - os: ubuntu-latest
-                python-minor-version: 6
+            
         steps:
           - name: Checkout repo
             uses: actions/checkout@v4
             with:
               ref: kean/rebuild-1.0
               fetch-depth: 0
-
-        #   - name: Download OSX SDK and replace /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-        #     if: matrix.os == 'macos-13'
-        #     run: |
-        #       sudo mkdir -p /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/
-        #       sudo chown -R $USER /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/
-        #       curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz -o MacOSX10.9.sdk.tar.xz
-        #       tar -xJf MacOSX10.9.sdk.tar.xz -C /Applications/Xcode_14.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/
 
           - name: Download OSX 10.9 SDK tar and extract to /Library/Developer/CommandLineTools/SDKs
             if: startsWith(matrix.os, 'macos-13')
