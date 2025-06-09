@@ -18,7 +18,7 @@ jobs:
             # ------------------------------------------------------
             os: ["macos-13", "ubuntu-latest", "windows-latest"]
             python-minor-version: [6, 7]
-            
+
         steps:
           - name: Checkout repo
             uses: actions/checkout@v4
@@ -42,7 +42,7 @@ jobs:
               python: ${{ matrix.python-minor-version }}
               numpy: '22'
               channels: Numerics88, conda-forge, defaults
-              token: ${{ secrets.KEAN_CONDA_TOKEN }}
+              token: ${{ secrets.ANACONDA_TOKEN }}
               publish: true
               label: main
 
