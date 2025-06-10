@@ -1,13 +1,13 @@
 
 package:
   name: vtkbone
-  version: 1.1.1
+  version: 1.1.0
 
 source:
   path: ./../../
 
 build:
-  number: 0
+  number: 1
   string: "py{{ CONDA_PY }}"
 
 # Note, boost has an upperbound right now to hanlde cmake correctly
@@ -33,7 +33,6 @@ requirements:
     - python {{ python }}
     - boost >=1.57,<=1.67
     - libnetcdf >=4.7.1,<4.7.5
-    - libcxx=11.1.0 # [osx]
     - n88util=2.0.0
     - pqctio=1.0.0
     - aimio=1.0.0

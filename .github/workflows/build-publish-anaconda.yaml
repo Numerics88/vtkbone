@@ -42,7 +42,7 @@ jobs:
               python: ${{ matrix.python-minor-version }}
               numpy: '22'
               channels: Numerics88, conda-forge, defaults
-              token: ${{ secrets.ANACONDA_TOKEN }}
+              token: ${{ secrets.KEAN_CONDA_TOKEN }}
               publish: true
               label: main
 
