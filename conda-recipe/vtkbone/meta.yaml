@@ -13,8 +13,8 @@ build:
 # Refer to https://github.com/Numerics88/faimsuperbuild for requirements
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
+    - {{ compiler('c') }} # [linux, osx]
+    - {{ compiler('cxx') }} # [linux, osx]
     - cmake >=3.12
     - ninja
     - gtest
