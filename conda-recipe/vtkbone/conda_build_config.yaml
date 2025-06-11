@@ -7,6 +7,6 @@ cxx_compiler:
   - clangxx                    # [osx]
   - vs2019                     # [win]
 channels:
-  - friedchickean
+  - Numerics88
   - conda-forge
   - defaults
