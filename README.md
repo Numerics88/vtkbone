@@ -8,7 +8,7 @@ vtkbone was formerly vtkn88.
 
 ## Documentation
 
-The API documentation for vtkbone can be found on-line at http://numerics88.com/documentation/vtkbone/current/ . Or, you can generate it yourself from the
+The API documentation for vtkbone can be found on-line at https://bonelab.github.io/n88/documentation/vtkbone/2.0/. Or, you can generate it yourself from the
 source code using DOxygen.
 
 A manual exists for the Faim FE package that includes a chapter on using vtkbone,
