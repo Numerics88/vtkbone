@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2010-2016 Eric Nodwell and Steven K. Boyd
+Copyright (c) 2010-2025, Numerics88 Solutions.
 http://numerics88.com
 
 

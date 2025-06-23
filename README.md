@@ -40,11 +40,9 @@ On Windows the procedure is a rather different: refer to CMake documentation.
 
 ## Authors and Contributors
 
-vtkbone is maintained and supported by Numerics88
-Solutions Ltd (http://numerics88.com). It was originally developed
-at the University of Calgary
-by Eric Nodwell (eric.nodwell@numerics88.com) and Steven K. Boyd
-(https://bonelab.ucalgary.ca/).
+vtkbone is maintained and supported by Numerics88 Solutions (http://numerics88.com). 
+It was originally developed at the University of Calgary by Eric Nodwell and 
+Steven K. Boyd (skboyd@ucalgary.ca).
 
 ## Licence
 

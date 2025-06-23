@@ -4,7 +4,7 @@
 
   VTK classes for building and analyzing Numerics88 finite element models.
 
-  Copyright (c) 2010, Numerics88 Solutions Ltd.
+  Copyright (c) 2010-2025, Numerics88 Solutions.
   All rights reserved.
 
 =========================================================================*/
