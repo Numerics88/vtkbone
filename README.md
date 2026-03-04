@@ -38,6 +38,28 @@ ctest -V
 
 On Windows the procedure is a rather different: refer to CMake documentation.
 
+## Use vtkbone in a Conda environment
+
+It might be convenient to use `vtkbone` in a conda environment instead of building it yourself.
+
+```commandline
+# Setup the environment called bl
+conda create --name bl --channel numerics88 python=3 vtkbone
+
+# Activate the environemnt
+conda activate bl
+
+# Try reading an AIM file
+python
+>>> import vtkbone
+>>> dir(vtkbone)
+>>> reader = vtkbone.vtkboneAIMReader()
+>>> reader.SetFileName("test25a.aim")
+>>> reader.Update()
+>>> print(reader.GetDimension())
+(25, 25, 25)
+```
+
 ## Authors and Contributors
 
 vtkbone is maintained and supported by Numerics88 Solutions (http://numerics88.com). 
